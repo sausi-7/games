@@ -1,0 +1,57 @@
+{
+    "entry": "Customjumpdot/index.html",
+    "orientation": {
+        "frame": "portrait",
+        "width": 1080,
+        "height": 1920
+    },
+    "images1": {
+        "object_to_avoid": "assets/bomb1.png",
+        "player": "assets/player.png"
+    },
+    "images2": {
+        "background": "assets/bg.png",
+        "winbg": "assets/winbg.png",
+        "ovrbg": "assets/ovrbg.png"
+    },
+    "ui": {
+        "scorebar": "assets/scorebar.png",
+        "htpbox": "assets/htpbox.png",
+        "playbtn": "assets/playbtn.png",
+        "ovrbox": "assets/ovrbox.png",
+        "replay": "assets/replay.png",
+        "lvl_replay": "assets/lvl_replay.png",
+        "lvlbox": "assets/lvlbox.png",
+        "next": "assets/next.png"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "collision": "assets/Collision.mp3",
+        "collect": "assets/collect.mp3"
+    },
+    "spritesheets": {
+        
+    },
+    "mechanics": {
+        "bounceHeight": 20,
+        "bounceSpeed": 500,
+        "obstacleInterval": 1500,
+        "obstacleVelocityBase": 400,
+        "obstacleVelocityPerScore": 5,
+        "targetScore": 10
+    },
+     "texts": {
+    "ui.score": "Score",
+    "ui.target": "Target",
+
+    "menu.title": "How to Play",
+    "menu.avoid": "Avoid:",
+    "menu.instructions": "Tap left or right to switch positions.",
+
+    "over.title": "Game Over",
+    "over.score": "Your Score: {score}",
+
+    "win.title": "Level Completed",
+    "win.score": "Your Score: {score}"
+  }
+}

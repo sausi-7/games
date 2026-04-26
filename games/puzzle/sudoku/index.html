@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sudoku with Timer & Celebration</title>
+  <style>
+    body{
+      margin:0;display:flex;justify-content:center;align-items:center;height:100vh;
+      background:#0b1020 no-repeat center center fixed;
+      background-size:cover;font-family:'Segoe UI',sans-serif;color:#fff;overflow:hidden
+    }
+    .overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6)}
+    .container{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
+    .timer{font-size:1.5rem;font-weight:bold;margin-bottom:10px}
+    .sudoku{
+      width:min(500px,95vw);aspect-ratio:1;
+      display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);
+      box-shadow:0 0 30px rgba(0,0,0,0.7);
+      border-radius:12px;overflow:hidden;
+      animation:fadeIn 1s ease forwards;
+    }
+    .cell{border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:background 0.3s, transform 0.3s;background:rgba(255,255,255,0.05);backdrop-filter:blur(4px)}
+    .cell.given{color:#60a5fa;font-weight:bold;cursor:default}
+    .cell.selected{background:rgba(251,191,36,0.8);color:#fff;transform:scale(1.1)}
+    .cell.valid{background:rgba(16,185,129,0.7)!important;animation:pulse 1s infinite alternate}
+    .cell.invalid{background:rgba(239,68,68,0.8)!important;animation:shake 0.4s}
+    .cell[data-c="2"],.cell[data-c="5"]{border-right:2px solid rgba(255,255,255,0.4)}
+    .cell[data-r="2"],.cell[data-r="5"]{border-bottom:2px solid rgba(255,255,255,0.4)}
+    .num-pad{margin-top:20px;display:grid;grid-template-columns:repeat(9,1fr);gap:10px}
+    .num{padding:12px;background:rgba(255,255,255,0.1);text-align:center;cursor:pointer;border-radius:8px;font-size:1.2rem;font-weight:bold;transition:transform 0.2s, background 0.3s}
+    .num:hover{background:rgba(255,255,255,0.25);transform:translateY(-4px)}
+    .controls{margin-top:20px;display:flex;gap:10px}
+    .btn{padding:10px 20px;background:rgba(255,255,255,0.15);border-radius:8px;cursor:pointer;font-weight:bold;transition:background 0.3s, transform 0.2s}
+    .btn:hover{background:rgba(255,255,255,0.3);transform:translateY(-2px)}
+    #winMessage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;font-weight:bold;color:#fbbf24;display:none;z-index:10;text-shadow:0 0 20px #000}
+    canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9}
+
+    @keyframes pulse{from{box-shadow:0 0 10px rgba(16,185,129,0.3)}to{box-shadow:0 0 20px rgba(16,185,129,0.8)}}
+    @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+    @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    @keyframes floatIn{from{opacity:0;transform:translateY(10px) scale(0.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="timer" id="timer">10:00</div>
+    <div class="sudoku" id="board"></div>
+    <div class="num-pad" id="numPad">
+      <div class="num">1</div><div class="num">2</div><div class="num">3</div>
+      <div class="num">4</div><div class="num">5</div><div class="num">6</div>
+      <div class="num">7</div><div class="num">8</div><div class="num">9</div>
+    </div>
+    <div class="controls">
+      <div class="btn" id="clearBtn">Clear Cell</div>
+    </div>
+  </div>
+  <div id="winMessage">🎉 You Win! 🎉</div>
+  <canvas id="confetti"></canvas>
+
+  <!-- Add this near the top of your <script> (after grabbing refs is fine) -->
+<script>
+  fetch('config.json')
+    .then(r => r.json())
+    .then(cfg => {
+      const bg = cfg?.images2?.background;
+      if (bg) {
+        document.body.style.backgroundImage = `url("${bg}")`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center center';
+        document.body.style.backgroundAttachment = 'fixed';
+      }
+    })
+    .catch(() => { /* ignore if config missing */ });
+</script>
+
+<script>
+    const payload = JSON.stringify({ type: "orientation", value: "portrait" });
+    if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+      window.ReactNativeWebView.postMessage(payload);
+    } else if (window.parent) {
+      window.parent.postMessage(payload, "*");
+    }
+</script>
+
+
+  <script>
+    const boardEl=document.getElementById('board');
+    const numPad=document.getElementById('numPad');
+    const clearBtn=document.getElementById('clearBtn');
+    const winMessage=document.getElementById('winMessage');
+    const timerEl=document.getElementById('timer');
+
+    const puzzle=[[0,0,0,0,0,0,0,1,2],[0,0,0,0,3,5,0,0,0],[0,0,0,0,0,0,4,0,0],[0,5,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,9,0,6,0],[0,0,1,0,0,0,0,0,0],[0,0,0,7,2,0,0,0,0],[6,2,0,0,0,0,0,0,0]];
+
+    const solutionA=[[5,8,9,4,6,7,3,1,2],[2,1,4,9,3,5,6,7,8],[3,6,7,2,1,8,4,5,9],[7,5,6,1,4,2,9,8,3],[9,4,8,6,5,3,1,2,7],[1,3,2,8,7,9,5,6,4],[8,7,1,3,9,6,2,4,53],[4,9,5,7,2,1,8,3,6],[6,2,3,5,8,4,7,9,1]];
+    const solutionB=[[5,8,9,4,6,7,3,1,2],[2,1,4,9,3,5,6,7,8],[3,6,7,2,1,8,4,5,9],[7,5,6,1,4,2,9,8,3],[9,4,8,6,5,3,7,2,1],[1,3,2,8,7,9,5,6,4],[4,7,1,3,8,6,2,9,5],[8,9,5,7,2,4,1,3,6],[6,2,3,5,9,1,8,4,7]];
+
+    let grid=puzzle.map(r=>r.slice());
+    let given=puzzle.map(r=>r.map(v=>v!==0));
+    let selected=null;
+    let gameOver=false;
+
+    function makeBoard(){
+      boardEl.innerHTML='';
+      for(let r=0;r<9;r++){
+        for(let c=0;c<9;c++){
+          const cell=document.createElement('div');
+          cell.className='cell';cell.dataset.r=r;cell.dataset.c=c;
+          if(given[r][c]){cell.textContent=grid[r][c];cell.classList.add('given');}
+          cell.addEventListener('click',()=>selectCell(r,c));
+          boardEl.appendChild(cell);
+        }
+      }
+    }
+
+    function render(){
+      for(let r=0;r<9;r++)for(let c=0;c<9;c++){
+        const idx=r*9+c;
+        const cell=boardEl.children[idx];
+        if(!given[r][c])cell.textContent=grid[r][c]||'';
+        if(!given[r][c]&&grid[r][c]){cell.style.animation='floatIn 0.3s ease';setTimeout(()=>cell.style.animation='',300);}
+        cell.classList.toggle('selected',selected&&selected.r===r&&selected.c===c);
+        cell.classList.remove('invalid','valid');
+      }
+      highlightCompletedBlocks();
+      checkWin();
+    }
+
+    function selectCell(r,c){if(gameOver)return;if(given[r][c]){selected=null;render();return;}selected={r,c};render();}
+
+    function validPlacement(r,c,n){
+      for(let i=0;i<9;i++)if(grid[r][i]===n&&i!==c)return false;
+      for(let i=0;i<9;i++)if(grid[i][c]===n&&i!==r)return false;
+      const br=Math.floor(r/3)*3,bc=Math.floor(c/3)*3;
+      for(let i=0;i<3;i++)for(let j=0;j<3;j++){const rr=br+i,cc=bc+j;if((rr!==r||cc!==c)&&grid[rr][cc]===n)return false;}
+      return true;
+    }
+
+    function enterNumber(n){if(gameOver)return;if(!selected)return;const {r,c}=selected;if(given[r][c])return;grid[r][c]=n;render();const idx=r*9+c;const cell=boardEl.children[idx];if(n!==0){if(validPlacement(r,c,n)){cell.classList.add('valid');}else{cell.classList.add('invalid');}}}
+
+    function highlightCompletedBlocks(){for(let br=0;br<3;br++)for(let bc=0;bc<3;bc++){let nums=new Set();let complete=true;for(let i=0;i<3;i++)for(let j=0;j<3;j++){let val=grid[br*3+i][bc*3+j];if(val===0){complete=false;}else if(nums.has(val)){complete=false;}else nums.add(val);}if(complete&&nums.size===9){for(let i=0;i<3;i++)for(let j=0;j<3;j++){const idx=(br*3+i)*9+(bc*3+j);boardEl.children[idx].classList.add('valid');}}}}
+
+    function checkWin(){
+      for(let r=0;r<9;r++)for(let c=0;c<9;c++){if(grid[r][c]===0)return;}
+      if(JSON.stringify(grid)===JSON.stringify(solutionA)||JSON.stringify(grid)===JSON.stringify(solutionB)){
+        triggerWin();
+      }
+    }
+
+    function triggerWin(){gameOver=true;clearInterval(timerInterval);winMessage.style.display='block';launchConfetti();}
+
+    numPad.addEventListener('click',e=>{if(e.target.classList.contains('num')){enterNumber(parseInt(e.target.textContent));}});
+    window.addEventListener('keydown',e=>{if(e.key>='1'&&e.key<='9')enterNumber(parseInt(e.key));if(e.key==='Backspace'||e.key==='Delete')enterNumber(0);});
+    clearBtn.addEventListener('click',()=>{if(gameOver)return;if(selected&&!given[selected.r][selected.c]){grid[selected.r][selected.c]=0;render();}});
+
+    // Timer logic
+    let timeLeft=600; // 10 minutes in seconds
+    function updateTimer(){
+      const m=Math.floor(timeLeft/60);const s=timeLeft%60;
+      timerEl.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+      if(timeLeft<=0){gameOver=true;timerEl.textContent="Time's up!";clearInterval(timerInterval);}
+      timeLeft--;}
+    const timerInterval=setInterval(updateTimer,1000);
+
+    // Confetti animation
+    function launchConfetti(){
+      const confetti=document.getElementById('confetti');
+      const ctx=confetti.getContext('2d');
+      confetti.width=window.innerWidth;confetti.height=window.innerHeight;
+      const pieces=Array.from({length:150},()=>({x:Math.random()*confetti.width,y:Math.random()*confetti.height,dx:Math.random()*2-1,dy:Math.random()*3+2,r:Math.random()*6+4,color:`hsl(${Math.random()*360},100%,50%)`}));
+      function draw(){ctx.clearRect(0,0,confetti.width,confetti.height);pieces.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.y>confetti.height){p.y=0;p.x=Math.random()*confetti.width;}});requestAnimationFrame(draw);}draw();
+    }
+
+    makeBoard();render();
+  </script>
+</body>
+</html>

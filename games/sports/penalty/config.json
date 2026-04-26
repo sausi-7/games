@@ -1,0 +1,63 @@
+{
+    "entry": "custompenalty/index.html",
+    "font": {
+        "family": "Outfit",
+        "url": "assets/outfit.ttf"
+    },
+    "texts": {
+        "how_to_play": "Penalties: On your turn, choose Left/Center/Right and tap Action to shoot. On defense, choose a dive direction and tap Action to commit. Score more than the CPU in 5 rounds. Ties go to sudden death.",
+        "score_label": "Score",
+        "win_title": "Champions!",
+        "game_over_title": "Defeated!"
+    },
+    "gameplay": {
+        "orientation": "portrait",
+        "rounds": 5,
+        "turnTimeMs": 6000,
+        "ballFlightMs": 700,
+        "keeperDiveMs": 350,
+        "keeperResetMs": 250,
+        "laneSpreadX": 260,
+        "goalWidth": 800,
+        "goalHeight": 280,
+        "keeperWidth": 300,
+        "keeperHeight": 180,
+        "cpuSaveBias": 0.4,
+        "timerSeconds": 60,
+        "playerSpeed": 300,
+        "enemySpawnRate": 3000
+    },
+    "images": {
+        "background": "assets/images/platform4.png",
+        "goal": "assets/images/platform1.png",
+        "goalkeeper": "assets/images/obj7.png",
+        "ball": "assets/images/obj3.png",
+        "left": "assets/images/left.png",
+        "right": "assets/images/right.png",
+        "action": "assets/images/action.png",
+        "htpbox": "assets/images/htpbox.png",
+        "ovrbox": "assets/images/ovrbox.png",
+        "replay": "assets/images/replay.png",
+        "lvl_replay": "assets/images/lvl_replay.png",
+        "lvlbox": "assets/images/lvlbox.png",
+        "next": "assets/images/next.png",
+        "playbtn": "assets/images/playbtn.png"
+    },
+    "spritesheets": {},
+    "audio": {
+        "bgm": "assets/audio/Game_Background.mp3",
+        "kick": "assets/audio/Attack.mp3",
+        "save": "assets/audio/Collision.mp3",
+        "goal": "assets/audio/Level_Complete.mp3",
+        "miss": "assets/audio/Destroy.mp3",
+        "attack": "assets/audio/Attack.mp3",
+        "collision": "assets/audio/Collision.mp3",
+        "destroy": "assets/audio/Destroy.mp3",
+        "level_complete": "assets/audio/Level_Complete.mp3",
+        "jump": "assets/audio/Jump.mp3",
+        "hit": "assets/audio/Taking_a_Hit.mp3",
+        "collect": "assets/audio/Collection.mp3",
+        "explosion": "assets/audio/Explosion.mp3",
+        "game_over": "assets/audio/Game_Over.mp3"
+    }
+}

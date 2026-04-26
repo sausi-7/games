@@ -1,0 +1,106 @@
+{
+  "entry": "Customcolourpour/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap a bottle, then tap another to pour. You can only pour onto the same color or into an empty bottle, and only the contiguous top segment moves. Make every non-empty bottle a single color.",
+    "score_label": "Moves: ",
+    "win_title": "Perfect Pour!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {
+    "timerSeconds": 30,
+    "playerSpeed": 0,
+    "enemySpawnRate": 0,
+    "bottleCapacity": 4,
+    "columns": 5,
+    "pourMsPerUnit": 180,
+    "levelLayout": [
+      [
+        "ruby",
+        "ruby",
+        "ruby",
+        "mint"
+      ],
+      [
+        "mint",
+        "mint",
+        "mint",
+        "sun"
+      ],
+      [
+        "sun",
+        "sun",
+        "sun",
+        "ocean"
+      ],
+      [
+        "ocean",
+        "ocean",
+        "ocean",
+        "plum"
+      ],
+      [
+        "plum",
+        "plum",
+        "plum",
+        "rose"
+      ],
+      [
+        "rose",
+        "rose",
+        "teal",
+        "teal"
+      ],
+      [
+        "teal",
+        "cocoa",
+        "cocoa",
+        "cocoa"
+      ],
+      [
+        "ruby",
+        "rose",
+        "teal",
+        "cocoa"
+      ],
+      [],
+      []
+    ]
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "player": "assets/player.png",
+    "enemy": "assets/obj5.png",
+    "collectible": "assets/obj12.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/attack.mp3",
+    "collision": "assets/collision.mp3",
+    "level_complete": "assets/win.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3"
+  },
+  "colors": {
+    "ruby": "#e25458",
+    "mint": "#35d0a1",
+    "sun": "#f3c34a",
+    "ocean": "#4db2ff",
+    "plum": "#9146e8",
+    "rose": "#ff7aa2",
+    "teal": "#22b3b9",
+    "cocoa": "#7a5440"
+  }
+}

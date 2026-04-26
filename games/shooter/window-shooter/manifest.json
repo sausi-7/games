@@ -1,0 +1,8 @@
+{
+  "name": "Window Shooter",
+  "type": "phaser",
+  "entry": "window-shooter/index.html",
+  "orientation": "landscape",
+  "width": 1920,
+  "height": 1080
+}

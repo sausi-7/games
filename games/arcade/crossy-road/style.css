@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
+body {
+  margin: 0;
+  font-family: "Press Start 2P", cursive;
+  font-size: 2em;
+  color: white;
+}
+button {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  box-shadow: 3px 5px 0px 0px rgba(0, 0, 0, 0.75);
+}
+#counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+#end {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+}
+#end button {
+  background-color: red;
+  padding: 20px 50px 20px 50px;
+  font-family: inherit;
+  font-size: inherit;
+}
+#controlls {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+#controlls div {
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  margin-bottom: 140px;
+}
+#controlls button {
+  width: 100%;
+  background-color: white;
+  border: 1px solid lightgray;
+}
+#controlls button:first-of-type {
+  grid-column: 1/-1;
+}
+
+#howToPlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.htp-panel {
+  background: #111;
+  border: 3px solid #fff;
+  padding: 20px 30px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.htp-panel h1 {
+  font-size: 0.8em;
+  margin-bottom: 20px;
+}
+
+.htp-panel p {
+  font-size: 0.5em;
+  line-height: 1.4;
+  margin: 5px 0;
+}
+
+.htp-tap {
+  margin-top: 15px;
+  font-size: 0.4em;
+  opacity: 0.8;
+}
+
+/* END SCREEN PANEL */
+.end-panel {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px 30px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+#end-message {
+  margin-bottom: 20px;
+  font-size: 0.6em;
+}
+
+.end-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+

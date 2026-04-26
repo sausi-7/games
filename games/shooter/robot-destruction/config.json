@@ -1,0 +1,62 @@
+{
+  "entry": "Customrobotdestruction/index.html",
+  "spawn": {
+    "x": 190,
+    "y": 400
+  },
+  "images1": {
+    "round_bullet": "./assets/bullet.png",
+    "enemy": "./assets/enemy.png"
+  },
+  "images2": {
+    "platform": "./assets/plt.png",
+    "background": "./assets/bg.png"
+  },
+  "ui": {
+    "right": "./assets/right.png",
+    "jump": "./assets/up.png",
+    "left": "./assets/left.png",
+    "restart": "./assets/restart.png",
+    "restart1": "./assets/restart1.png",
+    "gameovrbg": "./assets/gameovrbg.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "hp1": "./assets/hp1.png",
+    "hp2": "./assets/hp2.png",
+    "hp3": "./assets/hp3.png",
+    "hp4": "./assets/hp4.png",
+    "htpbox": "./assets/htpbox.png",
+    "box": "./assets/box.png",
+    "playbtn": "./assets/playbtn.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "texts": {
+    "clueLabel": "Clue:",
+    "clueValue": "Plain and Simple",
+    "hintMessage": "Are you kidding me?\nJust stand on the button",
+    "htp": "How to Play",
+    "htpMessage": "Unlock the door to finish\nthe level. For hints, tap\nthe bulb.",
+    "leveltxt": "Game Over"
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "timer": "./assets/time.mp3",
+    "gun": "./assets/gun.mp3"
+  },
+  "mechanics": {
+    "playerSpeed": 300,
+    "jumpForce": 780,
+    "deactivationTime": 3,
+    "bulletDamage": 50
+  }
+}

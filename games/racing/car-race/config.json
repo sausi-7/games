@@ -1,0 +1,45 @@
+{
+  "entry": "Customcarrace/index.html",
+  "mechanics": {
+    "target": 50,
+    "speedStart": 0.28,
+    "speedAcceleration": 0.035,
+    "speedMax": 0.65
+  },
+  "lanes": {
+    "left": -2.5,
+    "center": 0,
+    "right": 2.5
+  },
+  "spawn": {
+    "coinMs": 700,
+    "trafficMs": 900,
+    "coinZ": 70,
+    "trafficZ": 80
+  },
+  "track": {
+    "tileCount": 22,
+    "tileLength": 12,
+    "tileWidth": 9,
+    "recycleOffset": 264
+  },
+  "camera": {
+    "fov": 65,
+    "height": 4,
+    "distance": 9,
+    "followLerp": 0.08
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3"
+  },
+  "text": {
+    "title": "Car Runner",
+    "howToPlay": "Swipe or use arrow keys to change lanes.\nAvoid traffic cars.\n\nCollect 100 coins to win.",
+    "winTitle": "You Win!",
+    "winMessage": "You escaped traffic!",
+    "loseTitle": "Game Over",
+    "loseMessage": "Crashed into traffic!"
+  }
+}

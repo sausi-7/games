@@ -1,0 +1,67 @@
+{
+  "entry": "Customflipjump/index.html",
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "game": {
+    "playerSize": 64,
+    "obstacleWidth": 48,
+    "obstacleHeight": 128,
+    "floorOffsetY": 96,
+    "ceilingOffsetY": 96,
+    "playerSpeed": 300,
+    "obstacleSpeed": 180,
+    "finishLineX": 3000,
+    "obstacleGapMin": 340,
+    "obstacleGapMax": 520
+  },
+  "colors": {
+    "background": "#232323",
+    "distance": "#ffffff",
+    "gameOver": "#ff4444",
+    "win": "#00ff00"
+  },
+  "images1": {
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "obstacle": "assets/obstacle.png",
+    "floor": "assets/floor.png",
+    "ceiling": "assets/ceiling.png",
+    "finish": "assets/finish.png",
+    "bg": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "start_overlay": "assets/start_bg.png",
+    "gameover_overlay": "assets/gameover_bg.png",
+    "levelcomplete_overlay": "assets/levelcomplete_bg.png",
+    "button_play": "assets/play_button.png",
+    "button_retry": "assets/replay.png",
+    "scorebar": "assets/scorebar.png",
+    "next": "assets/next.png",
+    "replay_level": "assets/replay_level.png"
+  },
+  "audio": {
+    "bgm": "https://games.chaoswale.in/temporary_sounds/Hk29ZlCQGNRZQGUhRrA1Nr8M7ig1/chlao.mp3",
+    "bomb": "assets/bomb.mp3"
+  },
+  "spritesheets": {
+   
+  },
+  "texts": {
+    "tapToStart": "Tap to start",
+    "distance": "Distance:  ",
+    "gameOver": "Game Over",
+    "win": "Level Completed",
+    "restart": "",
+    "startBtn": "",
+    "title": "FLIP JUMP",
+    "instructions": "How to Play",
+    "instructions1": "Tap to flip:"
+  }
+}

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>StrikeFlow — Ten‑Pin Bowling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #0b0f1a;
+      overflow: hidden;
+    }
+
+    #game {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .hint {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      color: #a6c6ff;
+      font: 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      opacity: .9;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+      user-select: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+
+<body>
+  <div id="game"></div>
+  <div class="hint"></div>
+
+  <script>
+    /* ------------------------------------------------
+      Utility: Deep Merge (defaults <- user config)
+    ------------------------------------------------- */
+    function deepMerge(target, src) {
+      if (typeof src !== 'object' || src === null) return target;
+      for (const k of Object.keys(src)) {
+        if (src[k] && typeof src[k] === 'object' && !Array.isArray(src[k])) {
+          if (!target[k] || typeof target[k] !== 'object') target[k] = {};
+          deepMerge(target[k], src[k]);
+        } else {
+          target[k] = src[k];
+        }
+      }
+      return target;
+    }
+
+    /* ------------------------------------------------
+       Default Config (used if config.json is missing
+       or to fill any missing fields)
+    ------------------------------------------------- */
+    const DEFAULT_CFG = {
+      targetScore: 30,
+      strings: {
+        howto: "Classic Bowling Game.\nDrag, aim, and release to roll the ball.\nYou get 2 rolls per frame and a total of 10 frames.",
+        startButton: "Tap to Start",
+        scoreLabel: "Score",
+        targetLabel: "Target",
+        frameTitle: "Frame / Rolls",
+        winTitle: "You Win! 🎉",
+        loseTitle: "Try Again!",
+        finalScore: "Final"
+      },
+      assets: {
+        images: {
+          lane: "assets/images/lane.png",
+          ball: "assets/images/ball.png",
+          pin: "assets/images/pin.png",
+          ui_btn: "assets/images/ui_btn.png",
+          htpbox: "assets/images/htpbox.png",
+          playbtn: "assets/images/playbtn.png",
+          ovrbox: "assets/images/ovrbox.png",
+          replay: "assets/images/replay.png",
+          lvlbox: "assets/images/lvlbox.png",
+          next: "assets/images/next.png",
+          lvl_replay: "assets/images/lvl_replay.png"
+        },
+        audio: {
+          roll_sfx: "assets/audio/roll.mp3",
+          pin_sfx: "assets/audio/pin.mp3",
+          strike_sfx: "assets/audio/strike.mp3",
+          spare_sfx: "assets/audio/spare.mp3"
+        }
+      },
+      audioVolume: { roll: 0.25, pin: 0.25, strike: 0.3, spare: 0.3 },
+      mechanics: {
+        lane: { widthFactor: 0.9, height: 1500, railMargin: 40 },
+        ball: { restitution: 0.05, friction: 0.02, frictionAir: 0.012, mass: 6, radius: 44, speedScale: 0.10 },
+        pin: { restitution: 0.12, friction: 0.2, frictionAir: 0.002, mass: 0.5, width: 24, height: 92, scale: 0.3, rowSpacingY: 72, spacingX: 64 },
+        detection: { tilt: 0.22, angularSpeed: 0.6, linearSpeed: 3.2, stopSpeed: 0.15, stopTicks: 60 }
+      }
+    };
+
+    /* --------------------------------
+       Utility: Safe Audio Playback
+    --------------------------------- */
+    function playIfExists(scene, key, volume = 0.4) {
+      try {
+        if (!scene.sound || !scene.cache || !scene.cache.audio || !scene.cache.audio.exists(key)) return;
+        const s = scene.sound.add(key, { volume });
+        s.play();
+      } catch (e) { /* ignore */ }
+    }
+
+    /* --------------------------------
+       AssetManager (visual fallbacks)
+    --------------------------------- */
+    class AssetManager {
+      constructor(scene) {
+        this.scene = scene;
+        this.fallbacks = {
+          background: { type: 'fill', color: 0x2b2b44 },
+          lane: { type: 'fill', color: 0x2b2b44 },
+          ball: { type: 'circle', radius: 48, color: 0x00ffff, label: 'BALL' },
+          pin: { type: 'rectangle', width: 24, height: 92, color: 0xffffff, label: 'PIN' },
+          ui_btn: { type: 'rectangle', width: 240, height: 72, color: 0x334477, label: 'BTN' }
+        };
+        this.createdFallbacks = new Map();
+      }
+      createFallback(key) {
+        if (this.createdFallbacks.has(key)) return this.createdFallbacks.get(key);
+        const fb = this.fallbacks[key] || { type: 'rectangle', width: 32, height: 32, color: 0xff00ff, label: 'UNKNOWN' };
+        let sprite;
+        switch (fb.type) {
+          case 'rectangle': sprite = this.scene.add.rectangle(0, 0, fb.width, fb.height, fb.color); break;
+          case 'circle': sprite = this.scene.add.circle(0, 0, fb.radius, fb.color); break;
+          case 'fill':
+            sprite = this.scene.add.rectangle(this.scene.scale.width / 2, this.scene.scale.height / 2,
+              this.scene.scale.width, this.scene.scale.height, fb.color);
+            break;
+          default: sprite = this.scene.add.rectangle(0, 0, 32, 32, 0xff00ff); break;
+        }
+        if (fb.label && fb.type !== 'fill') {
+          const t = this.scene.add.text(0, 0, fb.label, { fontSize: '40px', fill: '#000', fontFamily: 'Arial' }).setOrigin(0.5);
+          const c = this.scene.add.container(0, 0, [sprite, t]);
+          this.createdFallbacks.set(key, c); return c;
+        }
+        this.createdFallbacks.set(key, sprite); return sprite;
+      }
+      getSprite(key, x, y) {
+        if (this.scene.textures.exists(key)) return this.scene.add.sprite(x, y, key);
+        const fb = this.createFallback(key); fb.setPosition(x, y); return fb;
+      }
+    }
+
+    /* ---------------------------------------------
+       Generated Texture helpers (physics fallbacks)
+    ---------------------------------------------- */
+    function ensureTextureCircle(scene, key, diameter, fill = 0x00aaff) {
+      if (scene.textures.exists(key)) return;
+      const g = scene.make.graphics({ x: 0, y: 0, add: false });
+      const r = diameter / 2;
+      g.fillStyle(fill, 1); g.fillCircle(r, r, r);
+      g.lineStyle(6, 0xffffff, 0.15); g.strokeCircle(r, r, r - 3);
+      g.fillStyle(0xffffff, 0.25); g.fillCircle(r - r * 0.35, r - r * 0.35, r * 0.25);
+      g.generateTexture(key, diameter, diameter); g.destroy();
+    }
+
+    function ensureTextureRect(scene, key, w, h, fill = 0xffffff) {
+      if (scene.textures.exists(key)) return;
+      const g = scene.make.graphics({ x: 0, y: 0, add: false });
+      g.fillStyle(fill, 1);
+      g.fillRoundedRect(0, 0, w, h, Math.min(w, h) * 0.2);
+      g.lineStyle(4, 0xeeeeee, 0.6);
+      g.strokeRoundedRect(2, 2, w - 4, h - 4, Math.min(w, h) * 0.18);
+      g.generateTexture(key, w, h); g.destroy();
+    }
+
+    function ensureLaneTexture(scene, key, w, h) {
+      if (scene.textures.exists(key)) return;
+      const g = scene.make.graphics({ x: 0, y: 0, add: false });
+      for (let i = 0; i < h; i += 8) {
+        const shade = Phaser.Display.Color.GetColor(120 + (i % 16), 80 + (i % 32), 40);
+        g.fillStyle(shade, 1); g.fillRect(0, i, w, 8);
+      }
+      g.generateTexture(key, w, h); g.destroy();
+    }
+
+    function markPinFallen(scene, pin) {
+      if (!pin.getData('standing')) return;
+      pin.setData('standing', false);
+      pin.setCollisionCategory(0);
+      scene.tweens.add({ targets: pin, angle: pin.angle + (Math.random() * 40 - 20), y: pin.y + 32, alpha: 0.85, duration: 200 });
+    }
+
+    /* ------------------------------    c  
+       Bowling Scoring Helpers
+    ------------------------------- */
+    function computeScore(rolls) {
+      let total = 0, i = 0;
+      const frames = [];
+      for (let f = 1; f <= 10; f++) {
+        if (rolls[i] === undefined) { frames.push({ f, mark1: '', mark2: '', mark3: '', sum: total }); continue; }
+        if (f < 10) {
+          if (rolls[i] === 10) {
+            const bonus = (rolls[i + 1] ?? 0) + (rolls[i + 2] ?? 0);
+            total += 10 + bonus;
+            frames.push({ f, mark1: 'X', mark2: '', mark3: '', sum: total });
+            i += 1;
+          } else {
+            const r1 = rolls[i] ?? 0, r2 = rolls[i + 1] ?? 0;
+            if (r1 + r2 === 10) { total += 10 + (rolls[i + 2] ?? 0); frames.push({ f, mark1: String(r1), mark2: '/', mark3: '', sum: total }); }
+            else { total += r1 + r2; frames.push({ f, mark1: String(r1), mark2: String(r2), mark3: '', sum: total }); }
+            i += 2;
+          }
+        } else {
+          const r1 = rolls[i] ?? 0, r2 = rolls[i + 1] ?? 0, r3 = rolls[i + 2] ?? 0;
+          let m1 = r1 === 10 ? 'X' : String(r1);
+          let m2 = (r1 === 10) ? (r2 === 10 ? 'X' : String(r2)) : (r1 + r2 === 10 ? '/' : String(r2));
+          let m3 = (r1 === 10 || r1 + r2 === 10) ? (r3 === 10 ? 'X' : String(r3)) : '';
+          total += r1 + r2 + r3;
+          frames.push({ f, mark1: m1, mark2: m2, mark3: m3, sum: total });
+          break;
+        }
+      }
+      return { total, frames };
+    }
+
+    /* ------------------------------
+       BootScene: load JSON + assets
+    ------------------------------- */
+    class BootScene extends Phaser.Scene {
+      constructor() { super('Boot'); }
+
+      preload() {
+        // Try to load external config.json (optional)
+        this.load.json('cfg', 'config.json');
+
+        // When cfg is available (or even if it fails), build the asset queue
+        this.load.once('complete', () => {
+          const userCfg = this.cache.json.get('cfg') || {};
+          const cfg = deepMerge(JSON.parse(JSON.stringify(DEFAULT_CFG)), userCfg);
+
+          // Queue images
+          const img = (cfg.images1 && cfg.images1) || {};
+          const img2 = (cfg.images2 && cfg.images2) || {};
+          const ui = (cfg.ui && cfg.ui) || {};
+          for (const k of Object.keys(img)) {
+            try { this.load.image(k, img[k]); } catch (e) { /* ignore */ }
+          }
+
+          for (const k of Object.keys(img2)) {
+            try { this.load.image(k, img2[k]); } catch (e) { /* ignore */ }
+          }
+
+          // Queue UI
+          for (const k of Object.keys(ui)) {
+            try { this.load.image(k, ui[k]); } catch (e) { /* ignore */ }
+          }
+
+          // Queue audio
+          const aud = (cfg.audio && cfg.audio) || {};
+          for (const k of Object.keys(aud)) {
+            try { this.load.audio(k, aud[k]); } catch (e) { /* ignore */ }
+          }
+
+          // Start second-phase loading for the assets we just enqueued
+          this.load.once('complete', () => {
+            this.registry.set('cfg', cfg);
+            this.scene.start('BowlingScene');
+          });
+          this.load.start();
+        });
+      }
+    }
+
+    /* ------------------------------
+       Main Game Scene
+    ------------------------------- */
+    class BowlingScene extends Phaser.Scene {
+      constructor() {
+        super('BowlingScene');
+        this.assetMan = null;
+        this.ball = null;
+        this.pins = [];
+        this.inAim = false;
+        this.rollInProgress = false;
+        this.currentFrame = 1;
+        this.rollIndexInFrame = 1;
+        this.rolls = [];
+        this.aimLine = null;
+        this.hudTexts = { frames: [], total: null, frameTitle: null, target: null };
+        this.stopTick = 0;
+        this.allowBonusRollsInTenth = 0;
+        this.gameStarted = false;
+        this.endUI = [];
+        this.startUI = [];
+        this.cfg = null;
+      }
+
+      preload() {
+        this.assetMan = new AssetManager(this);
+      }
+
+      create() {
+        this.cfg = this.registry.get('cfg') || DEFAULT_CFG;
+        const W = 1080, H = 1920;
+        this.cameras.main.setBackgroundColor('#0b0f1a');
+        this.scale.on('resize', this.onResize, this);
+
+        // Physics
+        this.matter.world.setGravity(0, 0);
+
+        // Fallback physics textures
+        ensureLaneTexture(this, 'lane_fallback', W, this.cfg.mechanics.lane.height);
+        ensureTextureCircle(this, 'ball_fallback', this.cfg.mechanics.ball.radius * 2, 0x00aaff);
+        ensureTextureRect(this, 'pin_fallback', this.cfg.mechanics.pin.width, this.cfg.mechanics.pin.height, 0xffffff);
+
+        // Lane sprite & rails
+        const laneKey = this.textures.exists('lane') ? 'lane' : 'lane_fallback';
+        const laneDisplayW = W * this.cfg.mechanics.lane.widthFactor;
+        const lane = this.add.image(W / 2, 200 + this.cfg.mechanics.lane.height / 2, laneKey)
+          .setDisplaySize(laneDisplayW, this.cfg.mechanics.lane.height)
+          .setAlpha(0.95);
+
+        const m = this.cfg.mechanics.lane.railMargin;
+        const laneLeft = W * 0.5 - lane.displayWidth / 2 + m;
+        const laneRight = W * 0.5 + lane.displayWidth / 2 - m;
+        const topY = lane.y - lane.displayHeight / 2 + 10;
+        const bottomY = lane.y + lane.displayHeight / 2 - 10;
+
+        this.createRail(laneLeft - 20, topY, 40, lane.displayHeight);
+        this.createRail(laneRight + 20, topY, 40, lane.displayHeight);
+        this.createRail((laneLeft + laneRight) / 2, topY - 30, lane.displayWidth + 80, 60);
+
+        // Pins + Ball
+        this.setupPins(laneLeft, laneRight, topY + 220);
+        this.spawnBall(W / 2, bottomY - 80);
+
+        // HUD + aim line
+        this.createHUD();
+        this.aimLine = this.add.graphics();
+
+        // Input
+        this.input.on('pointerdown', this.startAim, this);
+        this.input.on('pointermove', this.updateAim, this);
+        this.input.on('pointerup', this.releaseBall, this);
+
+        // New Game button (text-only or image if present)
+        this.createButton(W / 2, 110, '', () => this.resetGame());
+
+        // Start overlay
+        this.showHowToOverlay();
+
+        // SFX on collisions
+        this.matter.world.on('collisionstart', (evt) => {
+          for (const p of evt.pairs) {
+            const a = p.bodyA, b = p.bodyB;
+            if ((a.isPin && b.isBall) || (b.isPin && a.isBall) || (a.isPin && b.isPin)) {
+              playIfExists(this, 'pin_sfx', this.cfg.audioVolume.pin);
+            }
+          }
+        });
+      }
+
+      onResize() { /* Phaser FIT handles canvas */ }
+
+      createRail(cx, topY, w, h) {
+        const rail = this.matter.add.rectangle(cx, topY + h / 2, w, h, { isStatic: true, restitution: 0.1, friction: 1 });
+        rail.isRail = true; return rail;
+      }
+
+      setupPins(lx, rx, firstRowY) {
+        for (const p of this.pins) { p.destroy(); }
+        this.pins.length = 0;
+
+        const centerX = (lx + rx) / 2;
+        const spacing = this.cfg.mechanics.pin.spacingX;
+        const rowCount = [1, 2, 3, 4];
+        let y = firstRowY;
+
+        const pinKey = this.textures.exists('pin') ? 'pin' : 'pin_fallback';
+        for (let r = 0; r < rowCount.length; r++) {
+          const count = rowCount[r];
+          const rowWidth = (count - 1) * spacing;
+          for (let i = 0; i < count; i++) {
+            const x = centerX - rowWidth / 2 + i * spacing;
+            const pin = this.matter.add.image(x, y, pinKey, undefined, {
+              restitution: this.cfg.mechanics.pin.restitution,
+              friction: this.cfg.mechanics.pin.friction,
+              frictionAir: this.cfg.mechanics.pin.frictionAir,
+              mass: this.cfg.mechanics.pin.mass
+            }).setScale(this.cfg.mechanics.pin.scale);
+
+            pin.setBody({ type: 'rectangle', width: this.cfg.mechanics.pin.width, height: this.cfg.mechanics.pin.height });
+            pin.setOrigin(0.5, 0.9);
+            pin.setFixedRotation(false);
+            pin.setBounce(this.cfg.mechanics.pin.restitution);
+            pin.setDepth(5);
+            pin.setData('standing', true);
+            pin.setData('initialY', y);
+            pin.body.isPin = true;
+            this.pins.push(pin);
+          }
+          y += this.cfg.mechanics.pin.rowSpacingY;
+        }
+        this.snapshotStandingCount = this.pins.length;
+      }
+
+      spawnBall(x, y) {
+        const k = this.textures.exists('ball') ? 'ball' : 'ball_fallback';
+        const m = this.cfg.mechanics.ball;
+        this.ball = this.matter.add.image(x, y, k, undefined, {
+          restitution: m.restitution, friction: m.friction, frictionAir: m.frictionAir, mass: m.mass
+        }).setCircle(m.radius).setScale(1);
+        this.ball.setDepth(10);
+        this.ball.setBounce(m.restitution);
+        this.ball.body.isBall = true;
+        this.ball.setSleepEvents(true, true);
+      }
+
+      makeImageButton(x, y, key, onClick, displayW = null, displayH = null, depth = 1002) {
+        if (!this.textures.exists(key)) return null;
+        const img = this.add.image(x, y, key).setDepth(depth).setInteractive({ useHandCursor: true });
+        if (displayW && displayH) img.setDisplaySize(displayW, displayH);
+        img.on('pointerdown', onClick);
+        img.on('pointerover', () => img.setScale(1.03));
+        img.on('pointerout', () => img.setScale(1.00));
+        return img;
+      }
+
+      createButton(x, y, label, onClick) {
+        const key = this.textures.exists('ui_btn') ? 'ui_btn' : null;
+        const btnW = 240, btnH = 72;
+        let btnBase;
+        if (key) {
+          btnBase = this.add.image(x, y, key).setDisplaySize(btnW, btnH).setInteractive({ useHandCursor: true });
+        } else {
+          btnBase = this.add.zone(x, y, btnW, btnH).setRectangleDropZone(btnW, btnH).setInteractive({ useHandCursor: true });
+        }
+        const t = this.add.text(x, y, label, { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#ffffff' }).setOrigin(0.5);
+        btnBase.on('pointerdown', onClick);
+        return { base: btnBase, text: t };
+      }
+
+      startAim(pointer) {
+        if (!this.gameStarted || this.rollInProgress) return;
+        this.inAim = true;
+        this.aimStart = new Phaser.Math.Vector2(pointer.worldX, pointer.worldY);
+      }
+
+      updateAim(pointer) {
+        if (!this.gameStarted || !this.inAim || this.rollInProgress) return;
+        const start = new Phaser.Math.Vector2(this.ball.x, this.ball.y);
+        const end = new Phaser.Math.Vector2(pointer.worldX, pointer.worldY);
+
+        this.aimLine.clear();
+        this.aimLine.lineStyle(3, 0xa6c6ff, 0.9);
+        this.aimLine.beginPath(); this.aimLine.moveTo(start.x, start.y); this.aimLine.lineTo(end.x, end.y); this.aimLine.strokePath();
+
+        const dist = Phaser.Math.Distance.Between(start.x, start.y, end.x, end.y);
+        const powerRatio = Phaser.Math.Clamp(dist / 800, 0, 1);
+        this.aimLine.lineStyle(6, 0x34d399, 0.9);
+        this.aimLine.beginPath(); this.aimLine.moveTo(start.x, start.y);
+        const mid = start.clone().lerp(end, powerRatio * 0.8);
+        this.aimLine.lineTo(mid.x, mid.y); this.aimLine.strokePath();
+      }
+
+      releaseBall(pointer) {
+        if (!this.gameStarted || !this.inAim || this.rollInProgress) return;
+        this.inAim = false; this.aimLine.clear();
+
+        const start = new Phaser.Math.Vector2(this.ball.x, this.ball.y);
+        const end = new Phaser.Math.Vector2(pointer.worldX, pointer.worldY);
+        let dir = start.clone().subtract(end);
+        const dist = dir.length();
+        if (dist < 10) return;
+        dir.normalize();
+
+        const power = Phaser.Math.Clamp(dist, 120, 1000);
+        const speedScale = this.cfg.mechanics.ball.speedScale;
+        this.ball.setVelocity(dir.x * power * speedScale, dir.y * power * speedScale);
+        playIfExists(this, 'roll_sfx', this.cfg.audioVolume.roll);
+
+        this.rollInProgress = true; this.stopTick = 0;
+      }
+
+      showHowToOverlay() {
+        const W = 1080, H = 1920;
+        this.gameStarted = false;
+
+        let box;
+        if (this.textures.exists('htpbox')) {
+          box = this.add.image(W / 2, H / 2 - 50, 'htpbox').setDepth(1001);
+          const maxW = 900, maxH = 900;
+          //   const s = Math.min(maxW / box.width, maxH / box.height, 1.0);
+          //   box.setScale(s);
+        }
+        this.startUI.push(box);
+
+        const t = `${this.cfg.strings.howto}\n${this.cfg.strings.targetLabel}: ${this.cfg.targetScore}`;
+        const htpText = this.add.text(W / 2, H / 2 - 140, t, {
+          fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
+          fontSize: '40px', color: 'white', align: 'left', wordWrap: { width: 700 }
+        }).setOrigin(0.5).setDepth(1002);
+        this.startUI.push(htpText);
+
+        const play = this.makeImageButton(W / 2, H / 2 + 600, 'playbtn', () => {
+          for (const n of this.startUI) { if (n) try { n.destroy(); } catch (e) { } }
+          this.startUI.length = 0; this.gameStarted = true;
+        });
+        if (!play) {
+          const btn = this.createButton(W / 2, H / 2 + 240, this.cfg.strings.startButton, () => {
+            for (const n of this.startUI) { if (n) try { n.destroy(); } catch (e) { } }
+            this.startUI.length = 0; this.gameStarted = true;
+          });
+          btn.base.setDepth(1002); btn.text.setDepth(1002);
+          this.startUI.push(btn.base, btn.text);
+        } else {
+          this.startUI.push(play);
+        }
+      }
+
+      update(time, delta) {
+        if (!this.rollInProgress) return;
+        const det = this.cfg.mechanics.detection;
+
+        for (const pin of this.pins) {
+          if (!pin.active) continue;
+          if (pin.getData('standing')) {
+            const ang = Math.abs(pin.rotation);
+            const spd = pin.body ? pin.body.speed : 0;
+            const aSpd = pin.body ? Math.abs(pin.body.angularSpeed) : 0;
+            if (ang > det.tilt || aSpd > det.angularSpeed || spd > det.linearSpeed) {
+              markPinFallen(this, pin);
+            }
+          }
+        }
+
+        const speed = this.ball.body ? this.ball.body.speed : 0;
+        const nearStopped = speed < det.stopSpeed;
+        if (nearStopped) this.stopTick++; else this.stopTick = 0;
+        const outTop = this.ball.y < 260;
+        const outBottom = this.ball.y > 1900;
+        if (this.stopTick > det.stopTicks || outTop || outBottom) {
+          this.finishRoll();
+        }
+      }
+
+      finishRoll() {
+        const standing = this.pins.filter(p => p.getData('standing'));
+        if (this.snapshotStandingCount === undefined) this.snapshotStandingCount = this.pins.length;
+        const knockedThisRoll = Math.max(0, this.snapshotStandingCount - standing.length);
+        this.rolls.push(Phaser.Math.Clamp(knockedThisRoll, 0, 10));
+
+        // Frame logic
+        if (this.currentFrame < 10) {
+          if (this.rollIndexInFrame === 1) {
+            if (knockedThisRoll === 10) {
+              playIfExists(this, 'strike_sfx', this.cfg.audioVolume.strike);
+              this.endFrameAndResetPins(true);
+            } else {
+              this.rollIndexInFrame = 2;
+              this.snapshotStandingCount = standing.length;
+              this.resetBallOnly();
+            }
+          } else {
+            const prev = this.rolls[this.rolls.length - 2] ?? 0;
+            if (prev + knockedThisRoll === 10) playIfExists(this, 'spare_sfx', this.cfg.audioVolume.spare);
+            this.endFrameAndResetPins(false);
+          }
+        } else {
+          // 10th frame
+          if (this.rollIndexInFrame === 1) {
+            if (knockedThisRoll === 10) {
+              playIfExists(this, 'strike_sfx', this.cfg.audioVolume.strike);
+              this.allowBonusRollsInTenth = 2;
+              this.resetPinsFull();
+            } else {
+              this.rollIndexInFrame = 2;
+              this.snapshotStandingCount = standing.length;
+              this.resetBallOnly();
+            }
+          } else if (this.rollIndexInFrame === 2) {
+            const prev = this.rolls[this.rolls.length - 2] ?? 0;
+            if (prev === 10) {
+              if (knockedThisRoll === 10) { /* back-to-back strike */ }
+              this.allowBonusRollsInTenth = 1;
+              this.resetPinsFull(); this.resetBallOnly(); this.rollIndexInFrame = 3;
+            } else {
+              if (prev + knockedThisRoll === 10) {
+                playIfExists(this, 'spare_sfx', this.cfg.audioVolume.spare);
+                this.allowBonusRollsInTenth = 1;
+                this.resetPinsFull(); this.resetBallOnly(); this.rollIndexInFrame = 3;
+              } else {
+                this.finishGame();
+              }
+            }
+          } else {
+            this.finishGame();
+          }
+        }
+        this.refreshHUD(); this.rollInProgress = false;
+      }
+
+      endFrameAndResetPins() {
+        this.currentFrame++; this.rollIndexInFrame = 1;
+        this.resetPinsFull(); this.snapshotStandingCount = this.pins.length;
+        this.resetBallOnly();
+        if (this.currentFrame > 10) this.finishGame();
+      }
+
+      resetPinsFull() {
+        const W = 1080;
+        const laneDisplayW = W * this.cfg.mechanics.lane.widthFactor;
+        const laneLeft = W * 0.5 - (laneDisplayW) / 2 + this.cfg.mechanics.lane.railMargin;
+        const laneRight = W * 0.5 + (laneDisplayW) / 2 - this.cfg.mechanics.lane.railMargin;
+        const topY = 200 + 10;
+        this.setupPins(laneLeft, laneRight, topY + 220);
+        this.snapshotStandingCount = this.pins.length;
+      }
+
+      resetBallOnly() {
+        const W = 1080;
+        if (this.ball) this.ball.destroy();
+        this.spawnBall(W / 2, 200 + this.cfg.mechanics.lane.height - 80);
+      }
+
+      finishGame() {
+        this.currentFrame = 10;
+        this.refreshHUD(true);
+        const { total } = computeScore(this.rolls);
+        const W = 1080, H = 1920;
+        const won = total >= this.cfg.targetScore;
+
+        if (this.endUI && this.endUI.length) { for (const n of this.endUI) { try { n.destroy(); } catch (e) { } } this.endUI.length = 0; }
+        const scrim = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.55).setDepth(1000);
+        this.endUI.push(scrim);
+
+        if (won) {
+          let box;
+          if (this.textures.exists('lvlbox')) {
+            box = this.add.image(W / 2, H / 2, 'lvlbox').setDepth(1001);
+            const s = Math.min(900 / box.width, 900 / box.height, 1.0);
+            box.setScale(s);
+          } else {
+            box = this.add.rectangle(W / 2, H / 2, 760, 420, 0x0b1220, 0.95).setStrokeStyle(4, 0xa6c6ff, 0.9).setDepth(1001);
+          }
+          this.endUI.push(box);
+
+          const info = this.add.text(W / 2, H / 2 , `${this.cfg.strings.winTitle}\n${this.cfg.strings.finalScore}: ${total} (${this.cfg.strings.targetLabel} ${this.cfg.targetScore})`, {
+            fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '44px', color: '#a6ffb4', align: 'center'
+          }).setOrigin(0.5).setDepth(1002);
+          this.endUI.push(info);
+
+          const nextBtn = this.makeImageButton(W / 2 - 235, H / 2 + 330, 'next', () => this.notifyParent('sceneComplete', { result: 'win' }));
+          if (nextBtn) this.endUI.push(nextBtn);
+          const replayBtn = this.makeImageButton(W / 2 + 235, H / 2 + 330, 'lvl_replay', () => this.resetGame());
+          if (replayBtn) this.endUI.push(replayBtn);
+          if (!nextBtn && !replayBtn) {
+            const b1 = this.createButton(W / 2, H / 2 + 160, 'New Game', () => this.resetGame());
+            this.endUI.push(b1.base, b1.text);
+          }
+        } else {
+          let box;
+          if (this.textures.exists('ovrbox')) {
+            box = this.add.image(W / 2, H / 2, 'ovrbox').setDepth(1001);
+            const s = Math.min(900 / box.width, 900 / box.height, 1.0);
+            box.setScale(s);
+          } else {
+            box = this.add.rectangle(W / 2, H / 2, 760, 420, 0x0b1220, 0.95).setStrokeStyle(4, 0xa6c6ff, 0.9).setDepth(1001);
+          }
+          this.endUI.push(box);
+
+          const info = this.add.text(W / 2, H / 2, `${this.cfg.strings.loseTitle}\n${this.cfg.strings.finalScore}: ${total} (${this.cfg.strings.targetLabel} ${this.cfg.targetScore})`, {
+            fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '44px', color: '#ffffff', align: 'center'
+          }).setOrigin(0.5).setDepth(1002);
+          this.endUI.push(info);
+
+          const replayBtn = this.makeImageButton(W / 2, H / 2 + 350, 'replay', () => this.resetGame());
+          if (replayBtn) this.endUI.push(replayBtn);
+          if (!replayBtn) {
+            const b = this.createButton(W / 2, H / 2 + 160, 'Replay', () => this.resetGame());
+            this.endUI.push(b.base, b.text);
+          }
+        }
+      }
+
+      notifyParent(type, data) {
+        if (window.parent !== window) {
+          window.parent.postMessage({ type, ...data }, "*");
+        }
+      }
+
+      resetGame() {
+        if (this.startUI && this.startUI.length) { for (const n of this.startUI) { try { n.destroy(); } catch (e) { } } this.startUI.length = 0; }
+        if (this.endUI && this.endUI.length) { for (const n of this.endUI) { try { n.destroy(); } catch (e) { } } this.endUI.length = 0; }
+
+        for (const p of this.pins) { try { p.destroy(); } catch (e) { } }
+        this.pins.length = 0;
+        if (this.ball) { try { this.ball.destroy(); } catch (e) { } }
+
+        this.rolls = [];
+        this.currentFrame = 1;
+        this.rollIndexInFrame = 1;
+        this.allowBonusRollsInTenth = 0;
+        this.rollInProgress = false;
+        this.inAim = false;
+        if (this.aimLine) this.aimLine.clear();
+
+        const W = 1080;
+        const laneDisplayW = W * this.cfg.mechanics.lane.widthFactor;
+        const laneLeft = W * 0.5 - (laneDisplayW) / 2 + this.cfg.mechanics.lane.railMargin;
+        const laneRight = W * 0.5 + (laneDisplayW) / 2 - this.cfg.mechanics.lane.railMargin;
+        const topY = 200 + 10;
+        this.setupPins(laneLeft, laneRight, topY + 220);
+        this.spawnBall(W / 2, 200 + this.cfg.mechanics.lane.height - 80);
+        this.snapshotStandingCount = this.pins.length;
+
+        for (const box of this.hudTexts.frames) {
+          if (box.g) box.g.destroy();
+          if (box.label) box.label.destroy();
+          if (box.t1) box.t1.destroy();
+          if (box.t2) box.t2.destroy();
+          if (box.sum) box.sum.destroy();
+          if (box.t3) box.t3.destroy();
+        }
+        this.hudTexts.frames = [];
+        if (this.hudTexts.total) this.hudTexts.total.destroy();
+        if (this.hudTexts.frameTitle) this.hudTexts.frameTitle.destroy();
+        if (this.hudTexts.target) this.hudTexts.target.destroy();
+
+        this.createHUD();
+        this.refreshHUD();
+
+        this.gameStarted = false;
+        this.showHowToOverlay();
+      }
+
+      createHUD() {
+        const topY = 70, left = 40, boxW = 94, gap = 8;
+        this.hudTexts.frameTitle = this.add.text(400, 160, this.cfg.strings.frameTitle, { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#a6c6ff' });
+        this.hudTexts.total = this.add.text(250, 220, `${this.cfg.strings.scoreLabel}: 0`, {
+          fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#a6ffb4'
+        }).setOrigin(1, 0.5);
+        this.hudTexts.target = this.add.text(960, 220, `${this.cfg.strings.targetLabel}: ${this.cfg.targetScore}`, {
+          fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#a6c6ff'
+        }).setOrigin(1, 0.5);
+
+        for (let i = 0; i < 10; i++) {
+          const x = left + i * (boxW + gap);
+          const g = this.add.graphics();
+          g.lineStyle(2, 0x7aa2ff, 0.9).strokeRoundedRect(x, topY, boxW, 60, 6);
+          g.lineStyle(1, 0x7aa2ff, 0.5).strokeLineShape(new Phaser.Geom.Line(x + boxW / 2, topY, x + boxW / 2, topY + 60));
+          const label = this.add.text(x + boxW / 2, topY - 10, String(i + 1), { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#a6c6ff' }).setOrigin(0.5, 1);
+          const t1 = this.add.text(x + boxW * 0.28, topY + 14, '', { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#ffffff' }).setOrigin(0.5);
+          const t2 = this.add.text(x + boxW * 0.72, topY + 14, '', { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#ffffff' }).setOrigin(0.5);
+          const sum = this.add.text(x + boxW / 2, topY + 44, '', { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#a6ffb4' }).setOrigin(0.5);
+          this.hudTexts.frames.push({ g, label, t1, t2, sum, t3: null });
+          if (i === 9) {
+            const t3 = this.add.text(x + boxW * 0.5, topY + 14, '', { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial', fontSize: '40px', color: '#ffffff' }).setOrigin(0.5);
+            this.hudTexts.frames[i].t3 = t3;
+          }
+        }
+      }
+
+      refreshHUD(final = false) {
+        const { total, frames } = computeScore(this.rolls);
+        if (this.hudTexts.total) this.hudTexts.total.setText(`${this.cfg.strings.scoreLabel}: ${total}`);
+        for (let i = 0; i < 10; i++) {
+          const f = frames[i]; if (!f) continue;
+          const box = this.hudTexts.frames[i]; if (!box) continue;
+          box.t1.setText(f.mark1 ?? ''); box.t2.setText(f.mark2 ?? '');
+          if (box.t3) box.t3.setText(f.mark3 ?? ''); box.sum.setText(f.sum ?? '');
+        }
+      }
+    }
+
+    /* ------------------------------
+       Game Config & Launch
+    ------------------------------- */
+    const config = {
+      type: Phaser.AUTO,
+      parent: 'game',
+      width: 1080,
+      height: 1920,
+      backgroundColor: '#0b0f1a',
+      physics: { default: 'matter', matter: { gravity: { y: 0 }, enableSleep: true } },
+      scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+      scene: [BootScene, BowlingScene]
+    };
+    new Phaser.Game(config);
+  </script>
+</body>
+
+</html>

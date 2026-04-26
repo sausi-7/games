@@ -1,0 +1,73 @@
+{
+  "entry": "Customwhackabug/index.html",
+  "mechanics": {
+    "MOLE_POP_UP_MS": 800,
+    "MOLE_HOLD_MS": 1500,
+    "MOLE_POP_DOWN_MS": 800,
+    "timeLimitSeconds": 60,
+    "maxPopUp": 3,
+    "scoreTarget": 600,
+    "holePattern": [
+      1,
+      2,
+      1,
+      2,
+      1,
+      2,
+      1
+    ],
+    "initialScore": 0
+  },
+  "spritesheets": {
+    "characterSprite": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "images1": {
+    "hammer": "./assets/hammer.png",
+    "enemy": "./assets/mole.png",
+    "enemy2": "./assets/mole2.png",
+    "enemy3": "./assets/mole3.png"
+  },
+  "images2": {
+    "background": "./assets/bg.png"
+  },
+  "ui": {
+    "hole": "./assets/hole.png",
+    "hole1": "./assets/hole1.png",
+    "pause": "./assets/pause.png",
+    "htpbox": "./assets/htpbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "restartbtn": "./assets/restartbtn.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "lvlbox": "./assets/lvlbox.png",
+    "ovrrestart": "./assets/ovrrestart.png",
+    "ovrbox": "./assets/ovrbox.png",
+    "scorebg": "./assets/scorebg.png",
+    "timebg": "./assets/timebg.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "audio": {
+    "bgmusic": "./assets/bgmusic.mp3",
+    "hit": "./assets/hit.mp3"
+  },
+  "text": {
+    "howToPlay": "How to Play",
+    "targetLabel": "Target",
+    "timeLabel": "Time",
+    "hitInstruction": "Hit these to gain\npoints.",
+    "avoidInstruction": "Avoid hitting this as it\nsteals your score.",
+    "scoreDisplay": "Score: {score}/{target}",
+    "timeDisplay": "Time: {mm}:{ss}",
+    "gameOver": "Game Over",
+    "yourScoreLabel": "Your Score",
+    "pauseTitle": "GAME PAUSED",
+    "resumeInstruction": "Click to Resume"
+  }
+}

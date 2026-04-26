@@ -1,0 +1,46 @@
+{
+  "entry": "Customabhita/index.html",
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "images2": {
+    "background": "./assets/bg.png",
+    "cool_image": "./assets/image1.png"
+  },
+  "ui": {
+    "dialog_bg_start": "./assets/dialog_bg_start.png",
+    "button": "./assets/play_button.png",
+    "level_complete": "./assets/level_complete.png",
+    "next_button": "./assets/next_button.png",
+    "replay_button": "./assets/replay_button.png",
+    "game_over": "./assets/game_over.png",
+    "replay_button_big": "./assets/replay_button_big.png"
+  },
+  "spritesheets": {},
+  "audio": {},
+  "tiles": {},
+  "fonts": [],
+  "texts": {
+    "title": "How to Play",
+    "instructions": "Drag and drop pieces to the grid below!\nSolve the puzzle to win.",
+    "levelComplete": "Level Complete!",
+    "gameOver": "Game Over",
+    "startButton": "Start",
+    "restartButton": "Restart",
+    "nextButton": "Next"
+  },
+  "mechanics": {
+    "cols": 2,
+    "rows": 4,
+    "pieceSourceWidth": 598,
+    "pieceSourceHeight": 932,
+    "puzzleWidth": 360,
+    "puzzleHeight": 600,
+    "timerSeconds": 60,
+    "snapDistance": 25,
+    "puzzleXPad": 0,
+    "puzzleYPad": 60
+  }
+}

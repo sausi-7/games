@@ -1,0 +1,72 @@
+{
+  "entry": "Customcolordash/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap LEFT/RIGHT to switch lanes. Collect paint orbs to change your color. You can pass through barriers only when your color MATCHES theirs. Mismatch = instant game over!",
+    "score_label": "Score",
+    "win_title": "You Win!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {
+    "speedAcceleration": 3,
+    "timerSeconds": 60,
+    "playerSpeed": 400,
+    "maxSpeed": 1000,
+    "laneCount": 3,
+    "laneStartIndex": 1,
+    "startColor": "blue",
+    "orbSpawnRate": 3000,
+    "barrierSpawnRate": 2000,
+    "minOrbSpawnRate": 1200,
+    "minBarrierSpawnRate": 900,
+    "spawnTightenStep": 150,
+    "speedIncreaseInterval": 20000,
+    "speedIncreaseAmount": 50,
+    "maxBarriers": 10,
+    "maxOrbs": 7,
+    "matchDestroyScore": 20,
+    "distanceScorePerSecond": 5,
+    "orbScore": 25,
+    "barrierPassScore": 10,
+    "useActionSwapColor": false,
+    "actionCooldownMs": 1200
+  },
+  "images2": {
+    "background": "assets/bg.png"
+  },
+  "ui": {
+    "lane": "assets/lane.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "orb_red": "assets/orb_red.png",
+    "orb_blue": "assets/orb_blue.png",
+    "orb_yellow": "assets/orb_yellow.png",
+    "barrier_red": "assets/barrier_red.png",
+    "barrier_blue": "assets/barrier_blue.png",
+    "barrier_yellow": "assets/barrier_yellow.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {
+    "player_colors": {
+      "url": "assets/player_colors.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 9
+    }
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "orb": "assets/orb.mp3",
+    "hit": "assets/hit.mp3"
+  }
+}

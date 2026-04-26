@@ -1,0 +1,81 @@
+{
+  "entry": "Customskyhigh/index.html",
+  "spawn": {
+    "x": 200,
+    "y": 800
+  },
+  "images1": {
+    "shield_gems": "./assets/shield_gems.png",
+    "enemy": "./assets/sun.png",
+     "shield": "./assets/shield.png"
+  },
+  "images2": {
+    "background": "./assets/background.png",
+    "platform1": "./assets/cloud_platform1.png",
+    "platform2": "./assets/cloud_platform2.png",
+    "platform3": "./assets/cloud_platform3.png"
+  },
+  "ui": {
+    "htp": "./assets/htp.png",
+    "play_game": "./assets/play_game.png",
+    "blur_background": "./assets/blur_background.png",
+    "fireball": "./assets/fireball.png",
+   
+    "key": "./assets/key.png",
+    "game_over": "./assets/game_over.png",
+    "next": "./assets/next.png",
+    "replay": "./assets/replay.png",
+    "level_complete": "./assets/level_complete.png",
+    "replay_level": "./assets/replay_level.png",
+    "health_bar_0": "./assets/health_bar_0.png",
+    "health_bar_1": "./assets/health_bar_1.png",
+    "health_bar_2": "./assets/health_bar_2.png",
+    "health_bar_3": "./assets/health_bar_3.png",
+    "shield_bar_0": "./assets/shield_bar_0.png",
+    "shield_bar_1": "./assets/shield_bar_1.png",
+    "shield_bar_2": "./assets/shield_bar_2.png",
+    "shield_bar_3": "./assets/shield_bar_3.png",
+    "movable_button": "./assets/movable_button.png",
+    "static_button": "./assets/static_button.png",
+    "shield_button": "./assets/shield_button.png",
+    "opened_gate": "./assets/opened_gate.png",
+    "closed_gate": "./assets/closed_gate.png"
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "fireball_sound": "./assets/fireball_sound.mp3",
+    "shield_activate": "./assets/shield_activate.mp3",
+    "up": "./assets/up.mp3",
+    "key_collect": "./assets/key_collect.mp3",
+    "gem_collect": "./assets/gem_collect.mp3"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "texts": {
+    "gameOver": "Game Over",
+    "levelComplete": "Level Complete!",
+    "htp": "How to Play",
+    "htpMessage": "Dodge the fireballs and help Player reach the key to unlock the gate"
+  },
+  "spritesheets": {
+    "eve": {
+      "path": "./assets/eve_spritesheet.png",
+      "frameWidth": 102,
+      "frameHeight": 158
+    }
+  },
+  "mechanics": {
+    "playerSpeed": 200,
+    "fireballSpeed": 800,
+    "fireballSpawnDelay": 900,
+    "shieldDuration": 5,
+    "cloudDisappearDelay": 5000,
+    "maxShieldPower": 3,
+    "gravityForce": 600,
+    "jumpForce": 700,
+    "fireballReflectForce": 300
+  }
+}

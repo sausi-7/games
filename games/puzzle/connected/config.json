@@ -1,0 +1,51 @@
+{
+  "entry": "Customconnected/index.html",
+  "mechanics": {
+    "rows": 6,
+    "cols": 6,
+    "targetScore": 30,
+    "timeLimit": 30,
+    "dotScaleRatio": 0.6,
+    "progressSegments": 12
+  },
+  "images1": {
+    "player1": "assets/dot1.png",
+    "player2": "assets/dot2.png",
+    "player3": "assets/dot3.png",
+    "player4": "assets/dot4.png"
+  },
+  "images2": {
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "bg": "assets/bg.png"
+  },
+  "ui": {
+    "bar": "assets/bar.png",
+    "scoreback": "assets/scoreback.png",
+    "progress": "assets/progress.png",
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "lvlbox": "assets/lvlbox.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "next": "assets/next.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png"
+  },
+  "spritesheets": {
+   
+  },
+  "audio": {
+    "tap1": "assets/tap1.wav",
+    "tap2": "assets/tap2.wav",
+    "tap3": "assets/tap3.wav",
+    "combo": "assets/combo.wav",
+    "bgm": "assets/bgm.mp3"
+  },
+  "texts": {
+    "htpTitle": "HOW TO PLAY",
+    "htpBody": "Connect same",
+    "winTitle": "LEVEL COMPLETED",
+    "gameOverTitle": "GAME OVER"
+  }
+}

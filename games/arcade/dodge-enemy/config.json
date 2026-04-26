@@ -1,0 +1,66 @@
+{
+  "entry": "Customdodgeenemy/index.html",
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "colors": {
+    "background": "white",
+    "timerText": "white",
+    "timerBg": "white",
+    "overlayBg": "white",
+    "overlayText": "white",
+    "win": "white",
+    "lose": "white"
+  },
+  "game": {
+    "arenaPadding": 32,
+    "playerRadius": 22,
+    "playerSpeed": 255,
+    "enemySize": 28,
+    "enemyBaseSpeed": 130,
+    "enemySpawnInterval": 1300,
+    "survivalDuration": 30
+  },
+  "images1": {
+    "enemy": "assets/enemy.png"
+  },
+  "images2": {
+    "background": "assets/arena.png"
+  },
+  "ui": {
+    "start_bg": "assets/start_bg.png",
+    "gameover_bg": "assets/gameover_bg.png",
+    "levelcomplete_bg": "assets/levelcomplete_bg.png",
+    "button_play": "assets/play_button.png",
+    "button_retry": "assets/replay.png",
+    "replay": "assets/replay_button.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png",
+    "htpbox": "assets/htp.png",
+    "joystick_base": "assets/joystick_base.png",
+    "joystick_thumb": "assets/joystick_thumb.png"
+  },
+  "spritesheets": {
+    "hero": {
+      "url": "assets/hero.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "texts": {
+    "title": "SURVIVE!",
+    "startBtn": "",
+    "timer": "Time: 00:30",
+    "win": "You Survived!",
+    "lose": "Try Again!",
+    "retry": "",
+    "playAgain": "",
+    "survive": "Survive for 30 seconds"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "gameover": "assets/gameover.mp3"
+  }
+}

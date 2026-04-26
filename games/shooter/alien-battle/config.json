@@ -1,0 +1,63 @@
+{
+  "entry": "Customalienbattle/index.html",
+  "spawn": {
+    "x": 190,
+    "y": 400
+  },
+  "images1": {
+    "enemy": "./assets/enemy.png",
+    "boss": "./assets/boss.png",
+    "boss2": "./assets/boss2.png"
+  },
+  "images2": {
+    "platform": "./assets/plt.png",
+    "background": "./assets/bg.png"
+  },
+  "ui": {
+    "hbullet": "./assets/hbullet.png",
+    "bbullet": "./assets/bbullet.png",
+    "ebullet": "./assets/ebullet.png",
+    "jump": "./assets/up.png",
+    "bosshp": "./assets/bosshp.png",
+    "bosshp1": "./assets/bosshp1.png",
+    "bosshp2": "./assets/bosshp2.png",
+    "bosshp3": "./assets/bosshp3.png",
+    "bosshp4": "./assets/bosshp4.png",
+    "bosshp5": "./assets/bosshp5.png",
+    "bosshp6": "./assets/bosshp6.png",
+    "htpbox": "./assets/htpbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "gameovrbox": "./assets/gameovrbox.png",
+    "restartbtn": "./assets/restartbtn.png",
+    "lvlbox": "./assets/lvlbox.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "restart1": "./assets/restart1.png"
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "bossfiresound": "./assets/bossfiresound.mp3",
+    "enemyfiresound": "./assets/enemyfiresound.mp3",
+    "herofiresound": "./assets/herofiresound.mp3",
+    "herodamagesound": "./assets/herodamagesound.mp3"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "texts": {
+    "clueLabel": "Clue:",
+    "clueValue": "Plain and Simple",
+    "hintMessage": "Are you kidding me?\nJust stand on the button",
+    "htp": "How to Play",
+    "htpMessage": "Unlock the door to finish\nthe level. For hints, tap\nthe bulb.",
+    "levelCompletedText": "Level Completed"
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+    "entry": "Customdoodlejump/index.html",
+    "assets": {
+        "images1": {
+            "spring": "./assets/spring.png",
+            "monster": "./assets/monster.png"
+        },
+        "images2": {
+            "background": "./assets/background.png",
+            "platform": "./assets/platform.png",
+            "platform-break": "./assets/platform-break.png",
+            "platform2": "./assets/platform-move.png"
+        },
+        "ui": {
+            "backdrop": "./assets/backdrop.png",
+            "taskpanel": "./assets/taskpanel.png",
+            "playbtn1": "./assets/playbtn1.png",
+            "gameover": "./assets/gameover.png",
+            "spring-compressed": "./assets/spring-compressed.png",
+            "lvlboard": "./assets/lvlboard.png",
+            "restart": "./assets/restart.png",
+            "nxtlvl": "./assets/nxtlvl.png",
+            "scorebg": "./assets/scorebg.png"
+        },
+        "audio": {
+            "jump": "./assets/jump.ogg",
+            "break": "./assets/break.ogg",
+            "spring-sound": "./assets/spring.ogg"
+        },
+        "atlas": {
+            "characters": {
+                "image": "characters.png",
+                "json": "characters.json"
+            }
+        }
+    },
+    "orientation": {
+        "frame": "portrait",
+        "width": 1080,
+        "height": 1920
+    },
+    "level2": {
+        "gravity": 500,
+        "jumpVelocity": -850,
+        "maxVelocity": 900,
+        "moveSpeed": 400,
+        "springJumpVelocity": -1000,
+        "platformSpeed": 100,
+        "platformSpacing": 200,
+        "targetScore": 400,
+        "initialPlatformCount": 12,
+        "enemySpawnChance": 0.1,
+        "springSpawnChance": 0.15
+    },
+    "spritesheets": {
+        "doodler": {
+            "path": "./assets/characters.png",
+            "frameWidth": 103,
+            "frameHeight": 143
+        },
+        "text": {
+            "scoreLabel": "Score",
+            "bestLabel": "Best",
+            "howToPlayTitle": "How to Play",
+            "howToPlayDescription": "Tap left or right to jump\nbetween platforms and\ndodge enemies",
+            "targetLabel": "Target",
+            "yourScoreLabel": "Your Score",
+            "targetScoreLabel": "Target",
+            "gameOverLabel": "Game Over",
+            "levelClearedLabel": "Level Cleared"
+        }
+    }
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Swipe Assassin</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<style>
+html,body{
+  margin:0;padding:0;width:100%;height:100%;
+  overflow:hidden;touch-action:none;
+  font-family:system-ui,sans-serif;
+  background:radial-gradient(circle at top,#0ea5e9 0%,#020617 55%);
+}
+canvas{display:block;margin:auto}
+
+.overlay{
+  position:fixed;inset:0;display:flex;
+  align-items:center;justify-content:center;
+  background:radial-gradient(circle at top,#020617,#000);
+  z-index:20;
+}
+.panel{
+  background:rgba(255,255,255,0.08);
+  border-radius:22px;padding:32px 36px;
+  text-align:center;color:#fff;max-width:320px;
+  backdrop-filter:blur(14px);
+}
+button{
+  padding:12px 30px;font-size:16px;
+  border:none;border-radius:16px;
+  cursor:pointer;font-weight:700;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+}
+button.secondary{background:#475569;color:#fff}
+</style>
+</head>
+
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="startOverlay" class="overlay">
+  <div class="panel">
+    <h1></h1>
+    <p></p>
+    <button onclick="startGame()"></button>
+  </div>
+</div>
+
+<div id="winOverlay" class="overlay" style="display:none">
+  <div class="panel">
+    <h1></h1>
+    <p></p>
+    <button onclick="restart()"></button>
+    <button class="secondary" onclick="nextLevel()"></button>
+  </div>
+</div>
+
+<div id="loseOverlay" class="overlay" style="display:none">
+  <div class="panel">
+    <h1></h1>
+    <p></p>
+    <button onclick="restart()"></button>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+let GAME_CONFIG=null;
+let VIRTUAL_WIDTH,VIRTUAL_HEIGHT,GRID,TILE,ENTITY_SIZE,PADDING;
+
+/* ================= ASSETS ================= */
+const bgm=new Audio(),sfxSwipe=new Audio(),sfxKill=new Audio(),sfxGameOver=new Audio();
+const playerImg=new Image(),enemyImg=new Image();
+
+/* ================= LOAD CONFIG ================= */
+async function loadConfig(){
+  const res=await fetch("config.json");
+  GAME_CONFIG=await res.json();
+}
+
+function applyConfig(){
+  const {gameplay,audio,images,texts}=GAME_CONFIG;
+
+  VIRTUAL_WIDTH=gameplay.virtualWidth;
+  VIRTUAL_HEIGHT=gameplay.virtualHeight;
+  GRID=gameplay.grid;
+  TILE=gameplay.tile;
+  ENTITY_SIZE=gameplay.entitySize;
+  PADDING=gameplay.padding;
+
+  bgm.src=audio.bgm; bgm.loop=true; bgm.volume=0.4;
+  sfxSwipe.src=audio.swipe;
+  sfxKill.src=audio.kill;
+  sfxGameOver.src=audio.gameover;
+
+  playerImg.src=images.player;
+  enemyImg.src=images.enemy;
+
+  document.querySelector("#startOverlay h1").textContent=texts.start_title;
+  document.querySelector("#startOverlay p").innerHTML=texts.how_to_play.replace(/\n/g,"<br>");
+  document.querySelector("#startOverlay button").textContent=texts.start_button;
+
+  document.querySelector("#winOverlay h1").textContent=texts.win_title;
+  document.querySelector("#winOverlay p").textContent=texts.win_desc;
+  document.querySelector("#winOverlay button").textContent=texts.replay_button;
+  document.querySelector("#winOverlay .secondary").textContent=texts.next_button;
+
+  document.querySelector("#loseOverlay h1").textContent=texts.lose_title;
+  document.querySelector("#loseOverlay p").textContent=texts.lose_desc;
+  document.querySelector("#loseOverlay button").textContent=texts.replay_button;
+}
+
+/* ================= CANVAS ================= */
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+  const s=Math.min(innerWidth/VIRTUAL_WIDTH,innerHeight/VIRTUAL_HEIGHT);
+  canvas.width=VIRTUAL_WIDTH*s;
+  canvas.height=VIRTUAL_HEIGHT*s;
+  ctx.setTransform(s,0,0,s,0,0);
+}
+addEventListener("resize",resize);
+
+/* ================= GAME ================= */
+let player,enemies,playing=false;
+
+const walls=[
+ [0,0,0,0,0,0],
+ [0,1,1,0,1,0],
+ [0,0,0,0,1,0],
+ [0,1,0,0,0,0],
+ [0,1,0,1,1,0],
+ [0,0,0,0,0,0]
+];
+
+function resetGame(){
+  player={x:0,y:0,dir:"right"};
+  enemies=[
+    {x:5,y:1,dir:"left",alive:true},
+    {x:3,y:4,dir:"up",alive:true},
+    {x:1,y:5,dir:"right",alive:true}
+  ];
+}
+
+/* ================= INPUT ================= */
+let sx=0,sy=0;
+canvas.onpointerdown=e=>{sx=e.clientX;sy=e.clientY};
+canvas.onpointerup=e=>{
+  if(!playing)return;
+  sfxSwipe.currentTime=0;sfxSwipe.play();
+  const dx=e.clientX-sx,dy=e.clientY-sy;
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(dx>30)move("right");else if(dx<-30)move("left");
+  }else{
+    if(dy>30)move("down");else if(dy<-30)move("up");
+  }
+};
+
+function blocked(x,y){
+  return x<0||y<0||x>=GRID||y>=GRID||walls[y][x];
+}
+
+function isBehind(e,px,py){
+  return (e.dir==="up"&&py>e.y)||(e.dir==="down"&&py<e.y)||
+         (e.dir==="left"&&px>e.x)||(e.dir==="right"&&px<e.x);
+}
+
+/* ================= MOVE ================= */
+function move(dir){
+  let nx=player.x,ny=player.y;
+  if(dir==="up")ny--; if(dir==="down")ny++;
+  if(dir==="left")nx--; if(dir==="right")nx++;
+  if(blocked(nx,ny))return;
+
+  player.dir=dir;
+
+  const hit=enemies.find(e=>e.alive&&e.x===nx&&e.y===ny);
+  if(hit){
+    if(isBehind(hit,player.x,player.y)){
+      hit.alive=false;
+      sfxKill.currentTime=0;sfxKill.play();
+    }else return lose();
+  }
+
+  player.x=nx;player.y=ny;
+
+  /* enemy movement */
+  enemies.forEach(e=>{
+    if(!e.alive)return;
+    let ex=e.x,ey=e.y;
+    if(e.dir==="up")ey--;
+    if(e.dir==="down")ey++;
+    if(e.dir==="left")ex--;
+    if(e.dir==="right")ex++;
+
+    if(blocked(ex,ey)){
+      const dirs=["up","down","left","right"].filter(d=>d!==e.dir);
+      e.dir=dirs[Math.floor(Math.random()*dirs.length)];
+      return;
+    }
+    if(ex===player.x&&ey===player.y)return lose();
+    e.x=ex;e.y=ey;
+  });
+
+  if(enemies.every(e=>!e.alive))winGame();
+}
+
+/* ================= ARROW DRAW ================= */
+function drawArrow(x,y,dir,color){
+  const ox=(VIRTUAL_WIDTH-GRID*TILE)/2;
+  const oy=(VIRTUAL_HEIGHT-GRID*TILE)/2;
+  const cx=ox+x*TILE+TILE/2;
+  const cy=oy+y*TILE+TILE/2;
+  const s=26;
+
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  if(dir==="up"){ctx.moveTo(cx,cy-s);ctx.lineTo(cx-s,cy);ctx.lineTo(cx+s,cy);}
+  if(dir==="down"){ctx.moveTo(cx,cy+s);ctx.lineTo(cx-s,cy);ctx.lineTo(cx+s,cy);}
+  if(dir==="left"){ctx.moveTo(cx-s,cy);ctx.lineTo(cx,cy-s);ctx.lineTo(cx,cy+s);}
+  if(dir==="right"){ctx.moveTo(cx+s,cy);ctx.lineTo(cx,cy-s);ctx.lineTo(cx,cy+s);}
+  ctx.fill();
+}
+
+/* ================= DRAW ================= */
+function draw(){
+  ctx.clearRect(0,0,VIRTUAL_WIDTH,VIRTUAL_HEIGHT);
+
+  const ox=(VIRTUAL_WIDTH-GRID*TILE)/2;
+  const oy=(VIRTUAL_HEIGHT-GRID*TILE)/2;
+
+  /* grid */
+  ctx.strokeStyle="#334155";
+  for(let i=0;i<=GRID;i++){
+    ctx.beginPath();ctx.moveTo(ox+i*TILE,oy);ctx.lineTo(ox+i*TILE,oy+GRID*TILE);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ox,oy+i*TILE);ctx.lineTo(ox+GRID*TILE,oy+i*TILE);ctx.stroke();
+  }
+
+  /* walls */
+  for(let y=0;y<GRID;y++)for(let x=0;x<GRID;x++){
+    if(walls[y][x]){
+      ctx.fillStyle="#475569";
+      ctx.fillRect(ox+x*TILE+10,oy+y*TILE+10,TILE-20,TILE-20);
+    }
+  }
+
+  /* player */
+  ctx.drawImage(playerImg,ox+player.x*TILE+PADDING,oy+player.y*TILE+PADDING,ENTITY_SIZE,ENTITY_SIZE);
+  drawArrow(player.x,player.y,player.dir,"#38bdf8");
+
+  /* enemies */
+  enemies.forEach(e=>{
+    if(e.alive){
+      ctx.drawImage(enemyImg,ox+e.x*TILE+PADDING,oy+e.y*TILE+PADDING,ENTITY_SIZE,ENTITY_SIZE);
+      drawArrow(e.x,e.y,e.dir,"#fca5a5");
+    }
+  });
+}
+
+function loop(){draw();requestAnimationFrame(loop);}
+
+/* ================= UI ================= */
+function startGame(){
+  bgm.currentTime=0;bgm.play();
+  document.getElementById("startOverlay").style.display="none";
+  resetGame();playing=true;
+}
+function winGame(){playing=false;document.getElementById("winOverlay").style.display="flex";}
+function lose(){playing=false;sfxGameOver.play();document.getElementById("loseOverlay").style.display="flex";}
+function restart(){
+  document.getElementById("winOverlay").style.display="none";
+  document.getElementById("loseOverlay").style.display="none";
+  resetGame();playing=true;
+}
+function nextLevel(){alert("Next level JSON hook");}
+
+/* ================= BOOT ================= */
+(async function boot(){
+  await loadConfig();
+  applyConfig();
+  resize();
+  resetGame();
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>

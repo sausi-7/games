@@ -1,0 +1,59 @@
+{
+  "entry": "Customfruitbasket/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "images1": {
+    "basket": "./assets/basket.png",
+    "object1": "./assets/apple.png",
+    "object2": "./assets/orange.png",
+    "object3": "./assets/mango.png",
+    "bomb": "./assets/bomb.png"
+  },
+  "images2": {
+    "background": "./assets/background.png",
+    "winbg": "./assets/winbg.png",
+    "ovrbg": "./assets/ovrbg.png"
+  },
+  "ui": {
+    "htp": "./assets/htp.png",
+    "scorebar": "./assets/scorebar.png",
+    "play_game": "./assets/play_game.png",
+    "game_over": "./assets/game_over.png",
+    "replay": "./assets/replay.png",
+    "next": "./assets/next.png",
+    "replay_level": "./assets/replay_level.png",
+    "level_complete": "./assets/level_complete.png"
+  },
+  "audio": {
+    "catch": "./assets/key_collect.mp3",
+    "miss": "./assets/pop_sound.mp3",
+    "gameover": "./assets/up.mp3",
+    "bgm": "./assets/bgm.mp3",
+    "bomb": "./assets/bomb.mp3"
+  },
+  "spritesheets": {},
+  "mechanics": {
+    "targetScore": 5,
+    "lives": 15,
+    "maxFruits": 6,
+    "fruitFallSpeed": 350,
+    "bombPenalty": 1
+  },
+  "texts": {
+    "ui.score": "Score",
+    "ui.target": "Target",
+    "ui.miss": "Miss: {miss}/{total}",
+    "menu.title": "How to Play",
+    "menu.control": "Control:",
+    "menu.collect": "Collect:",
+    "menu.avoid": "Avoid:",
+    "over.title": "Game Over",
+    "over.target": "Target:                   {target}",
+    "over.score": "Your Score:            {score}",
+    "win.title": "Level Completed",
+    "win.score": "Your Score {score}"
+  }
+}

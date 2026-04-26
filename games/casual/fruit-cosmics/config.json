@@ -1,0 +1,55 @@
+{
+  "entry": "Customfruitcosmics/index.html",
+  "labels": {
+    "howToPlayTitle": "How to Play",
+    "howToPlayDescription": "",
+    "targetLabel": "Target:",
+    "yourScoreLabel": "Your Score",
+    "gameOverText": "Game Over",
+    "winText": "Level Completed",
+    "avoidtext": "Avoid:",
+    "slicetext": "Slice:",
+    "livetext": "Lives:"
+  },
+  "targetScore": 200,
+  "timeLimit": 60,
+  "images1": {
+    "object": "assets/straw.png",
+    "object1": "assets/mango.png",
+    "object2": "assets/orange.png",
+    "bomb": "assets/stone.png"
+  },
+  "images2": {
+    "background": "assets/woddenBack.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "completed": "assets/completed.png",
+    "gameOver": "assets/gameover.png",
+    "htp": "assets/htp.png",
+    "next": "assets/next.png",
+    "replay_level": "assets/replay_level.png",
+    "replay": "assets/replay.png",
+    "htpBox": "assets/http.png",
+    "playbtn": "assets/playbtn.png",
+    "stopwatchIcon": "assets/scoreback.png",
+    "scoreback": "assets/scoreback.png",
+    "heart": "assets/heart.png",
+    "play_game": "assets/play_game.png"
+  },
+  "audio": {
+    "bgm": "assets/calm.mp3",
+    "slice": "assets/slices.mp3",
+    "bomb": "assets/bomb.mp3"
+  },
+  "spritesheets": {
+    "eve": {
+      "path": "assets/shark.png",
+      "frameWidth": 103,
+      "frameHeight": 150,
+      "frames": 4,
+      "frameRate": 12
+    }
+  }
+}

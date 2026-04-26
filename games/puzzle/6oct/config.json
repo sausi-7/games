@@ -1,0 +1,125 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap letters on the wheel to form words. Submit to fill the crossword. Wrong guesses cost time and points—play smart! Shuffle to rearrange letters, Clear to reset your attempt.",
+    "score_label": "Score:",
+    "win_title": "Legendary! Puzzle Complete!",
+    "game_over_title": "Time’s Up!"
+  },
+  "gameplay": {
+    "orientation": "landscape",
+
+    "timerSeconds": 150,                    
+    "streakBonusAfter": 2,
+    "streakBonusPoints": 5,
+    "wrongPenaltyScore": 3,              
+    "wrongPenaltyTime": 5,              
+    "diffEveryFound": 2,                 
+    "diffTimeCut": 5,                    
+
+    "sfxVolume": 0.9,
+    "bgmVolume": 0.6,
+
+    "gridCellW": 92,
+    "gridCellH": 92,
+    "gridLetterSize": 40,
+
+    "wheelRadius": 170,
+    "wheelCenterSize": 260,
+    "wheelTokenSize": 128,
+    "wheelLetterSize": 64,
+
+    "currentWordSize": 64,
+
+    "startPuzzleIndex": 0,
+    "gridGap": 14,
+
+    "puzzles": [
+      {
+        "bank": "SPHINX",
+        "targets": ["SPIN", "HIPS", "SHIN", "PIN", "SIN", "SIP"],
+        "grid": {
+          "rows": 8,
+          "cols": 12,
+          "cells": [
+            "............",
+            "..SPIN......",
+            "............",
+            "...HIPS.....",
+            "............",
+            "....SHIN....",
+            "............",
+            "............"
+          ]
+        }
+      },
+      {
+        "bank": "PYRAMID",
+        "targets": ["PRAM", "RAMP", "DRIP", "RAY", "DAY", "PAY", "MAY"],
+        "grid": {
+          "rows": 9,
+          "cols": 13,
+          "cells": [
+            ".............",
+            "...PRAM......",
+            ".............",
+            "....RAMP.....",
+            ".............",
+            "....DRIP.....",
+            ".............",
+            "..RAY.DAY....",
+            "............."
+          ]
+        }
+      },
+      {
+        "bank": "SCARAB",
+        "targets": ["SCAR", "CARS", "ARCS", "BAR", "ARC", "SABRA"],
+        "grid": {
+          "rows": 9,
+          "cols": 14,
+          "cells": [
+            "..............",
+            "....SCAR......",
+            "..............",
+            "....CARS......",
+            "..............",
+            "....ARCS......",
+            "..............",
+            "...BAR.ARC....",
+            ".............."
+          ]
+        }
+      }
+    ]
+  },
+  "images": {
+    "background": "assets/background.jpg",
+
+   
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+
+    "obj7": "assets/obj7.png",
+    "obj14": "assets/obj14.png",
+
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collect": "assets/bgm.mp3",
+    "hit": "assets/bgm.mp3",
+    "level_complete": "assets/bgm.mp3",
+    "game_over": "assets/bgm.mp3"
+  }
+}

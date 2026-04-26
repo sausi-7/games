@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c87ff"/>
+      <stop offset="50%" stop-color="#b06bff"/>
+      <stop offset="100%" stop-color="#ff7eb3"/>
+    </linearGradient>
+  </defs>
+  <text x="0" y="46" font-family="-apple-system, system-ui, Segoe UI, Roboto, sans-serif" font-size="44" font-weight="800" fill="url(#grad)">🎮 Games Hub</text>
+</svg>

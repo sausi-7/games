@@ -1,0 +1,52 @@
+{
+  "entry": "Customshootenemy/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Drag the joystick to aim (hold to charge) and release to shoot:",
+    "score_label": "Score ",
+    "win_title": "Level Completed",
+    "game_over_title": "Your Score:   "
+  },
+  "gameplay": {
+    "shots": 5,
+    "aimMaxDegrees": 25,
+    "shotsTotal": 20,
+    "targetGoals": 3
+  },
+  "images1": {
+    "player": "assets/obj2.png",
+    "enemy": "assets/obj6.png",
+    "collectible": "assets/obj12.png",
+    "bullet": "assets/bullet.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "background1": "assets/background1.png",
+    "background2": "assets/background2.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/hit.mp3",
+    "collision": "assets/bgm.mp3",
+    "collection": "assets/collect.mp3",
+    "level_complete": "assets/win.mp3",
+    "game_over": "assets/lose.mp3"
+  }
+}

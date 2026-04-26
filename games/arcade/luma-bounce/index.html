@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LumaBounce</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+  <style>
+    html, body {
+      margin: 0; background: #000; height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<script>
+const DEFAULT_CONFIG = {
+  images: {},
+  audio: {},
+  mechanics: {
+    gravityY: 800,
+    moveSpeed: 220,
+    jumpChargeMin: 500,
+    jumpChargeRate: 5,
+    jumpChargeMax: 100,
+    lightDrainPerTick: 0.05,
+    lightPickup: 15,
+    lightDamage: 25
+  },
+  text: {
+    htp: "Tap left/right to move. Hold JUMP or press SPACE to charge, release to bounce!",
+    win: "Level Complete!",
+    lose: "Game Over"
+  },
+  ui: { mobileButtonAlpha: 0.9, buttonScale: 1.0 }
+};
+
+class AssetManager {
+  constructor(scene) {
+    this.scene = scene;
+    this.createdTextures = new Map();
+    this.fallbacks = {
+      player: { type: "circle", radius: 16, color: 0xffffff },
+      platform: { type: "rect", w: 128, h: 32, color: 0x888888 },
+      hazard: { type: "tri", size: 32, color: 0xff3b3b },
+      light_fragment: { type: "circle", radius: 8, color: 0xfff000 },
+      goal_crystal: { type: "diamond", size: 18, color: 0x9400d3 },
+      background: { type: "fill", color: 0x1a0033 }
+    };
+  }
+  createFallbackTexture(key) {
+    if (this.createdTextures.has(key)) return this.createdTextures.get(key);
+    const s = this.scene;
+    const f = this.fallbacks[key] || { type: "rect", w: 32, h: 32, color: 0xff00ff };
+    const gfx = s.add.graphics();
+    gfx.fillStyle(f.color ?? 0xff00ff, 1);
+    let w = 32, h = 32;
+    switch (f.type) {
+      case "circle":
+        w = h = (f.radius ?? 16) * 2;
+        gfx.fillCircle(w / 2, h / 2, w / 2);
+        break;
+      case "tri":
+        w = h = f.size ?? 32;
+        gfx.beginPath(); gfx.moveTo(0, h); gfx.lineTo(w / 2, 0); gfx.lineTo(w, h);
+        gfx.closePath(); gfx.fillPath();
+        break;
+      case "diamond":
+        w = h = (f.size ?? 18) * 2;
+        gfx.fillPoints([{x:w/2,y:0},{x:w,y:h/2},{x:w/2,y:h},{x:0,y:h/2}], true);
+        break;
+      case "rect":
+      default:
+        w = f.w ?? 32; h = f.h ?? 32; gfx.fillRect(0, 0, w, h);
+        break;
+    }
+    const tkey = `fb_${key}`;
+    gfx.generateTexture(tkey, w, h);
+    gfx.destroy();
+    this.createdTextures.set(key, tkey);
+    return tkey;
+  }
+  addBackground() {
+    const W = this.scene.scale.width, H = this.scene.scale.height;
+    if (this.scene.textures.exists("background")) {
+      this.scene.add.image(0, 0, "background").setOrigin(0, 0).setDisplaySize(W, H);
+    } else {
+      const col = this.fallbacks.background.color;
+      this.scene.add.rectangle(0, 0, W, H, col).setOrigin(0, 0);
+    }
+  }
+}
+
+class GameScene extends Phaser.Scene {
+  constructor() {
+    super("GameScene");
+    this.cfg = DEFAULT_CONFIG;
+    this.state = "boot"; // boot | start | playing | win | gameover
+    this.inputState = { left: false, right: false, jumpHeld: false };
+    this.overlay = { box: null, text: null, buttons: [] };
+  }
+
+  preload() {
+    const basePath = ".";
+    this.load.json("levelConfig", `${basePath}/config.json`);
+    this.load.once("filecomplete-json-levelConfig", () => {
+      const loaded = this.cache.json.get("levelConfig");
+      if (loaded && typeof loaded === "object") this.cfg = this.mergeDeep(DEFAULT_CONFIG, loaded);
+      const images = this.cfg.images || {};
+      Object.entries(images).forEach(([key, rel]) => this.load.image(key, `${basePath}/${rel}`));
+      const audio = this.cfg.audio || {};
+      Object.entries(audio).forEach(([key, rel]) => this.load.audio(key, `${basePath}/${rel}`));
+    });
+  }
+
+  create() {
+    const cams = this.sys.cameras;
+    const world = this.physics.world;
+    cams.main.setBounds(0, 0, 1920, 1080);
+    world.setBounds(0, 0, 1920, 1080);
+
+    const M = this.cfg.mechanics || DEFAULT_CONFIG.mechanics;
+    this.assets = new AssetManager(this);
+    this.assets.addBackground();
+
+    this.platforms = this.physics.add.staticGroup();
+    this.hazards = this.physics.add.staticGroup();
+    this.lightFragments = this.physics.add.group({ allowGravity: false });
+
+    const levelLayout = [
+      { x: 200,  y: 800, key: "platform", sx: 2, sy: 1 },
+      { x: 500,  y: 700, key: "platform", sx: 1, sy: 1 },
+      { x: 800,  y: 900, key: "platform", sx: 3, sy: 1 },
+      { x: 1000, y: 750, key: "platform", sx: 1, sy: 1 },
+      { x: 1250, y: 600, key: "platform", sx: 1, sy: 1 },
+      { x: 1500, y: 950, key: "platform", sx: 4, sy: 1 },
+      { x: 900,  y: 820, key: "hazard",   sx: 0.6, sy: 0.6 },
+    ];
+    levelLayout.forEach(o => {
+      const k = this.textures.exists(o.key) ? o.key : this.assets.createFallbackTexture(o.key);
+      const g = (o.key === "platform") ? this.platforms : this.hazards;
+      g.create(o.x, o.y, k).setScale(o.sx, o.sy).refreshBody();
+    });
+
+    [{x:500,y:600},{x:1000,y:650},{x:1250,y:500}].forEach(o=>{
+      const k = this.textures.exists("light_fragment") ? "light_fragment" : this.assets.createFallbackTexture("light_fragment");
+      this.lightFragments.create(o.x, o.y, k).setScale(0.3);
+    });
+
+    const goalKey = this.textures.exists("goal_crystal") ? "goal_crystal" : this.assets.createFallbackTexture("goal_crystal");
+    this.goal = this.physics.add.staticSprite(1700, 850, goalKey).setScale(0.6);
+
+    const playerKey = this.textures.exists("player") ? "player" : this.assets.createFallbackTexture("player");
+    this.player = this.physics.add.sprite(200, 200, playerKey).setScale(0.3);
+    this.player.setCollideWorldBounds(true).setBounce(0.2);
+    try { this.player.body.setCircle(this.player.width * 0.3); } catch(e) {}
+
+    this.physics.world.gravity.y = M.gravityY ?? 800;
+
+    this.lightLevel = 100;
+    this.maxLightLevel = 100;
+    this.bounceCharge = 0;
+    this.maxBounceCharge = M.jumpChargeMax ?? 100;
+    this.isCharging = false;
+
+    this.lightBarFrame = this.add.graphics().lineStyle(4, 0xffffff, 1)
+      .strokeRect(this.scale.width / 2 - 152, 48, 304, 24);
+    this.lightBarFill = this.add.graphics();
+    this.updateLightBar();
+
+    this.keys = this.input.keyboard.addKeys({ left: "LEFT", right: "RIGHT", space: "SPACE", a: "A", d: "D" });
+    this.input.keyboard.on("keydown-SPACE", () => {
+      if (this.state !== "playing") return;
+      if (this.player.body.onFloor() || this.player.body.blocked.down) this.isCharging = true;
+    });
+    this.input.keyboard.on("keyup-SPACE", () => this.releaseBounce());
+
+    this.physics.add.collider(this.player, this.platforms, () => this.platformBounce());
+    this.physics.add.collider(this.player, this.hazards, (p, h) => this.hitHazard(p, h));
+    this.physics.add.overlap(this.player, this.lightFragments, (p, f) => this.collectLight(p, f));
+    this.physics.add.overlap(this.player, this.goal, () => this.reachGoal());
+
+    const a = this.cfg.audio || {};
+    if (a.ambient_music && this.cache.audio.exists("ambient_music")) {
+      this.sound.add("ambient_music", { loop: true, volume: 0.5 }).play();
+    }
+
+    this.createMobileControls(this.cfg.ui || {});
+    this.showStartOverlay(this.cfg.text || {}); // sets state="start" and PAUSES physics
+  }
+
+  // ---------- Overlays ----------
+  clearOverlay() {
+    // Use safe destroy() instead of sys.children.remove (not present in Phaser 3.55)
+    if (this.overlay.box && this.overlay.box.destroy) this.overlay.box.destroy();
+    if (this.overlay.text && this.overlay.text.destroy) this.overlay.text.destroy();
+    if (Array.isArray(this.overlay.buttons)) {
+      this.overlay.buttons.forEach(b => { if (b && b.destroy) b.destroy(); });
+    }
+    this.overlay = { box: null, text: null, buttons: [] };
+  }
+
+  showStartOverlay(textCfg) {
+    this.state = "start";
+    this.clearOverlay();
+    const W = this.sys.game.config.width, H = this.sys.game.config.height;
+
+    const boxKey = this.textures.exists("htpbox") ? "htpbox" : this.assets.createFallbackTexture("platform");
+    this.overlay.box = this.add.image(W/2, H/2, boxKey).setOrigin(0.5);
+
+    this.overlay.text = this.add.text(
+      W/2,
+      H/2 - (this.overlay.box.displayHeight || 200)*0.25+200,
+      textCfg.htp || DEFAULT_CONFIG.text.htp,
+      { fontFamily: "system-ui, outfit", fontSize: "28px", color: "#ffffff", align: "center",
+        wordWrap: { width: (this.overlay.box.displayWidth || 400)*0.85 } }
+    ).setOrigin(0.5);
+
+    const playKey = this.textures.exists("playbtn") ? "playbtn" : this.assets.createFallbackTexture("player");
+    const play = this.add.image(W/2, H/2 + (this.overlay.box.displayHeight || 200)*0.28+250, playKey)
+      .setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+    play.on("pointerdown", () => {
+      if (this.cache.audio.exists("bounce_sound")) this.sound.play("bounce_sound", { volume: 0.4 });
+      this.startGame();
+    });
+
+    this.overlay.buttons.push(play);
+
+    // Freeze gameplay while on HTP
+    this.physics.pause();
+  }
+
+  showGameOverOverlay(textCfg) {
+    this.state = "gameover";
+    this.clearOverlay();
+    const W = this.sys.game.config.width, H = this.sys.game.config.height;
+
+    const boxKey = this.textures.exists("ovrbox") ? "ovrbox" : this.assets.createFallbackTexture("platform");
+    this.overlay.box = this.add.image(W/2, H/2, boxKey).setOrigin(0.5);
+
+    this.overlay.text = this.add.text(
+      W/2,
+      H/2 - (this.overlay.box.displayHeight || 200)*0.25+100,
+      textCfg.lose || DEFAULT_CONFIG.text.lose,
+      { fontFamily: "system-ui, outfit", fontSize: "32px", color: "#ffdddd", align: "center" }
+    ).setOrigin(0.5);
+
+    const replayKey = this.textures.exists("replay") ? "replay" : this.assets.createFallbackTexture("player");
+    const replay = this.add.image(W/2, H/2 + (this.overlay.box.displayHeight || 200)*0.28+200, replayKey)
+      .setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+    replay.on("pointerdown", () => this.restartScene());
+    this.overlay.buttons.push(replay);
+
+    if (this.cache.audio.exists("damage_sound")) this.sound.play("damage_sound", { volume: 0.8 });
+
+    // Keep physics paused on game over
+    this.physics.pause();
+  }
+
+  showWinOverlay(textCfg) {
+    this.state = "win";
+    this.clearOverlay();
+    const W = this.sys.game.config.width, H = this.sys.game.config.height;
+
+    const boxKey = this.textures.exists("lvlbox") ? "lvlbox" : this.assets.createFallbackTexture("platform");
+    this.overlay.box = this.add.image(W/2, H/2, boxKey).setOrigin(0.5);
+
+    this.overlay.text = this.add.text(
+      W/2,
+      H/2 - (this.overlay.box.displayHeight || 200)*0.25+200,
+      textCfg.win || DEFAULT_CONFIG.text.win,
+      { fontFamily: "system-ui, outfit", fontSize: "32px", color: "#ddffdd", align: "center" }
+    ).setOrigin(0.5);
+
+    const nextKey = this.textures.exists("next") ? "next" : this.assets.createFallbackTexture("goal_crystal");
+    const replayKey = this.textures.exists("lvl_replay") ? "lvl_replay" : this.assets.createFallbackTexture("player");
+
+    const next = this.add.image(W/2 + (this.overlay.box.displayWidth || 400)*0.2-405, H/2 + (this.overlay.box.displayHeight || 200)*0.28+230, nextKey)
+      .setOrigin(0.5).setInteractive({ useHandCursor: true });
+    const lvlReplay = this.add.image(W/2 - (this.overlay.box.displayWidth || 400)*0.2+405, H/2 + (this.overlay.box.displayHeight || 200)*0.28+230, replayKey)
+      .setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+    next.on("pointerdown", () => this.restartScene()); // replace for real next level
+    lvlReplay.on("pointerdown", () => this.restartScene());
+
+    this.overlay.buttons.push(next, lvlReplay);
+
+    if (this.cache.audio.exists("win_sound")) this.sound.play("win_sound", { volume: 0.85 });
+
+    // Physics remains paused on win overlay
+    this.physics.pause();
+  }
+
+  startGame() {
+    this.state = "playing";
+    this.clearOverlay();
+    this.physics.resume();
+    this.player.clearTint();
+    this.bounceCharge = 0;
+  }
+
+  gameOverNow() {
+    if (this.state !== "playing") return;
+    this.player.setTint(0xff0000);
+    this.showGameOverOverlay(this.cfg.text || {});
+  }
+
+  winNow() {
+    if (this.state !== "playing") return;
+    this.player.setTint(0x00ff88);
+    this.showWinOverlay(this.cfg.text || {});
+  }
+
+  restartScene() { this.scene.restart(); }
+
+  // ---------- Mobile Controls ----------
+  createMobileControls(ui) {
+    const W = this.sys.game.config.width, H = this.sys.game.config.height;
+    const alpha = ui.mobileButtonAlpha ?? 0.9;
+    const scale = ui.buttonScale ?? 1.0;
+    const keyOrFb = (k, fb) => this.textures.exists(k) ? k : this.assets.createFallbackTexture(fb);
+
+    const left = this.add.image(120, H - 110, keyOrFb("left", "platform"))
+      .setOrigin(0.5).setScale(scale).setAlpha(alpha).setInteractive();
+    const right = this.add.image(340, H - 110, keyOrFb("right", "platform"))
+      .setOrigin(0.5).setScale(scale).setAlpha(alpha).setInteractive();
+    const jump = this.add.image(W - 120, H - 130, keyOrFb("jump", "player"))
+      .setOrigin(0.5).setScale(scale).setAlpha(alpha).setInteractive();
+
+    left.setScrollFactor(0).setDepth(1000);
+    right.setScrollFactor(0).setDepth(1000);
+    jump.setScrollFactor(0).setDepth(1000);
+
+    const press = (key, down) => {
+      if (key === "left") this.inputState.left = down;
+      if (key === "right") this.inputState.right = down;
+      if (key === "jump") {
+        this.inputState.jumpHeld = down;
+        if (down) {
+          if (this.state === "playing" && (this.player.body.onFloor() || this.player.body.blocked.down)) {
+            this.isCharging = true;
+          }
+        } else {
+          this.releaseBounce();
+        }
+      }
+    };
+
+    left.on("pointerdown", () => press("left", true));
+    left.on("pointerup",   () => press("left", false));
+    left.on("pointerout",  () => press("left", false));
+    right.on("pointerdown", () => press("right", true));
+    right.on("pointerup",   () => press("right", false));
+    right.on("pointerout",  () => press("right", false));
+    jump.on("pointerdown",  () => press("jump", true));
+    jump.on("pointerup",    () => press("jump", false));
+    jump.on("pointerout",   () => press("jump", false));
+  }
+
+  // ---------- Update ----------
+  update() {
+    // Hard gate: nothing runs until player taps Play
+    if (this.state !== "playing") return;
+
+    const M = this.cfg.mechanics || DEFAULT_CONFIG.mechanics;
+
+    // Light drain and death
+    this.lightLevel -= (M.lightDrainPerTick ?? 0.05);
+    this.updateLightBar();
+    if (this.lightLevel <= 0) { this.gameOverNow(); return; }
+
+    // Horizontal movement
+    const leftHeld  = this.keys.left.isDown || this.keys.a.isDown || this.inputState.left;
+    const rightHeld = this.keys.right.isDown || this.keys.d.isDown || this.inputState.right;
+
+    if (leftHeld === rightHeld) {
+      this.player.setVelocityX(0);
+    } else if (leftHeld) {
+      this.player.setVelocityX(-(M.moveSpeed ?? 220));
+    } else {
+      this.player.setVelocityX(M.moveSpeed ?? 220);
+    }
+
+    // Charging jump
+    if (this.isCharging) {
+      const max = this.maxBounceCharge;
+      const rate = M.jumpChargeRate ?? 5;
+      this.bounceCharge = Math.min(this.bounceCharge + rate, max);
+    }
+  }
+
+  // ---------- Helpers ----------
+  releaseBounce() {
+    if (!this.isCharging) return;
+    const M = this.cfg.mechanics || DEFAULT_CONFIG.mechanics;
+    const base = M.jumpChargeMin ?? 500;
+    const force = base + (this.bounceCharge * 5);
+    this.player.setVelocityY(-force);
+    this.isCharging = false;
+    this.bounceCharge = 0;
+    if (this.cache.audio.exists("bounce_sound")) this.sound.play("bounce_sound", { volume: 0.5 });
+  }
+
+  platformBounce() {
+    if (this.cache.audio.exists("bounce_sound")) this.sound.play("bounce_sound", { volume: 0.35 });
+  }
+
+  hitHazard(player, hazard) {
+    const M = this.cfg.mechanics || DEFAULT_CONFIG.mechanics;
+    this.lightLevel = Math.max(0, this.lightLevel - (M.lightDamage ?? 25));
+    this.player.setVelocityY(-300);
+    this.sys.cameras.main.shake(100, 0.01);
+    if (this.cache.audio.exists("damage_sound")) this.sound.play("damage_sound");
+  }
+
+  collectLight(player, fragment) {
+    fragment.disableBody(true, true);
+    const M = this.cfg.mechanics || DEFAULT_CONFIG.mechanics;
+    this.lightLevel = Math.min(this.maxLightLevel, this.lightLevel + (M.lightPickup ?? 15));
+    if (this.cache.audio.exists("collect_sound")) this.sound.play("collect_sound");
+  }
+
+  reachGoal() {
+    if (this.state !== "playing") return;
+    this.winNow();
+  }
+
+  updateLightBar() {
+    this.lightBarFill.clear();
+    this.lightBarFill.fillStyle(0xffff00, 1);
+    const width = 300 * (this.lightLevel / this.maxLightLevel);
+    if (width > 0) this.lightBarFill.fillRect(this.scale.width / 2 - 150, 50, width, 20);
+  }
+
+  mergeDeep(target, source) {
+    if (typeof target !== "object" || target === null) return source;
+    const output = Array.isArray(target) ? [...target] : { ...target };
+    if (typeof source !== "object" || source === null) return output;
+    Object.keys(source).forEach(key => {
+      if (Array.isArray(source[key])) output[key] = [...source[key]];
+      else if (typeof source[key] === "object") output[key] = this.mergeDeep(target[key] || {}, source[key]);
+      else output[key] = source[key];
+    });
+    return output;
+  }
+}
+
+const config = {
+  type: Phaser.AUTO,
+  width: 1920,
+  height: 1080,
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  physics: { default: "arcade", arcade: { gravity: { y: 800 }, debug: false } },
+  scene: GameScene
+};
+new Phaser.Game(config);
+</script>
+</body>
+</html>

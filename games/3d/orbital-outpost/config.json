@@ -1,0 +1,90 @@
+{
+    "entry": "Customorbitaloutpost/index.html",
+    "images1": {
+        "meteor": "assets/meteor.png",
+        "spaceship": "assets/spaceship.png",
+        "collectable": "assets/pod.png"
+    },
+    "images2": {
+        "background": "assets/background.png",
+        "winbg": "assets/winbg.png",
+        "htpbg": "assets/htpbg.png",
+        "ovrbg": "assets/ovrbg.png"
+    },
+    "ui": {
+        "solar": "assets/solar.png",
+        "htpbox": "assets/htpbox.png",
+        "playbtn": "assets/playbtn.png",
+        "ovrbox": "assets/ovrbox.png",
+        "scoreback": "assets/scoreback.png",
+        "replay": "assets/replay.png",
+        "lvlbox": "assets/lvlbox.png",
+        "next": "assets/next.png",
+        "lvl_replay": "assets/lvl_replay.png"
+    },
+    "spritesheets": {
+        "station": {
+            "path": "assets/station.png",
+            "frameWidth": 103,
+            "frameHeight": 143,
+            "startFrame": 0,
+            "endFrame": 0
+        }
+    },
+    "audio": {
+        "music": "assets/music.mp3",
+        "alert": "assets/alert.mp3",
+        "hit": "assets/hit.mp3",
+        "collect": "assets/collect.mp3"
+    },
+    "mechanics": {
+        "surviveSeconds": 60,
+        "lives": 5,
+        "targetScore": 50,
+        "meteorScore": 10,
+        "podScore": 5,
+        "laserRange": 110,
+        "oxygenDrainPerSec": 0.4,
+        "energyDrainPerSec": 0.6,
+        "meteorSpawn": {
+            "min": 1.4,
+            "max": 2.4
+        },
+        "podSpawn": {
+            "min": 5.0,
+            "max": 8.0
+        },
+        "meteorSpeed": {
+            "min": 120,
+            "max": 220
+        },
+        "podSpeed": {
+            "min": 42,
+            "max": 68
+        },
+        "meteorDamage": {
+            "hull": 12,
+            "energy": 5
+        },
+        "podBenefits": {
+            "oxygen": 16,
+            "energy": 4
+        }
+    },
+    "texts": {
+        "labels": {
+            "lives": "Shields",
+            "score": "Score",
+            "gameOver": "Game Over",
+            "levelComplete": "MISSION COMPLETE",
+            "youWin": "Level Completed",
+            "play": "START MISSION",
+            "replay": "RETRY",
+            "next": "NEXT SECTOR",
+            "howToPlayTitle": "MISSION BRIEFING"
+        },
+        "howToPlay": [
+            "How to Play"
+        ]
+    }
+}

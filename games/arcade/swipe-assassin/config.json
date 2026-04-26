@@ -1,0 +1,35 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "start_title": "SWIPE ASSASSIN",
+    "how_to_play": "Swipe to move\nKill enemies ONLY from behind\nFacing enemy = instant death",
+    "win_title": "MISSION CLEAR",
+    "win_desc": "All enemies eliminated",
+    "lose_title": "GAME OVER",
+    "lose_desc": "You were spotted",
+    "start_button": "Start",
+    "replay_button": "Replay",
+    "next_button": "Next"
+  },
+  "gameplay": {
+    "virtualWidth": 1080,
+    "virtualHeight": 1920,
+    "grid": 6,
+    "tile": 160,
+    "entitySize": 80,
+    "padding": 40,
+    "enemyCount": 3
+  },
+  "images": {
+    "player": "assets/player.png",
+    "enemy": "assets/enemy.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "swipe": "assets/swipe.mp3",
+    "kill": "assets/kill.mp3"
+  }
+}

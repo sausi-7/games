@@ -1,0 +1,43 @@
+{
+  "entry": "Customdodgemaster/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "images1": {
+    "bomb": "assets/bomb1.png"
+  },
+  "images2": {
+    "background": "assets/bg.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collision": "assets/Collision.mp3"
+  },
+  "spritesheets": {
+    "eve": {
+      "path": "./assets/eve_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 158
+    }
+  },
+  "mechanics": {
+    "spawnInterval": 700,
+    "obstacleSpeed": 350,
+    "speedIncreaseInterval": 5000,
+    "speedIncreaseAmount": 40,
+    "minSpawnInterval": 350,
+    "targetScore": 50
+  }
+}

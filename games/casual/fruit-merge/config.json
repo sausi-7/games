@@ -1,0 +1,72 @@
+{
+  "entry": "Customfruitmerge/index.html",
+
+  "mechanics": {
+    "gameWidth": 1080,
+    "gameHeight": 1920,
+
+    "gravityY": 1.8,
+
+    "boxLeft": 140,
+    "boxRight": 940,
+    "boxBottom": 1740,
+    "dangerY": 440,
+    "dropY": 260,
+
+    "spawnProbability": [0.32, 0.52, 0.67, 0.78, 0.87, 0.93, 0.97, 1.0],
+
+    "restitution": 0.65,
+    "friction": 0.02,
+    "air": 0.004,
+
+    "mergeScaleTime": 160,
+    "loseSpeed": 0.03,
+    "loseOffset": 35
+  },
+
+  "fruits": [
+    { "key": "carrot", "radius": 36, "score": 1 },
+    { "key": "brokli", "radius": 48, "score": 3 },
+    { "key": "tomato", "radius": 60, "score": 6 },
+    { "key": "beetroot", "radius": 72, "score": 10 },
+    { "key": "pumpkin", "radius": 90, "score": 18 },
+    { "key": "potato", "radius": 105, "score": 30 },
+    { "key": "jackfruit", "radius": 120, "score": 50 },
+    { "key": "watermelon", "radius": 140, "score": 80 },
+    { "key": "cabbage", "radius": 165, "score": 140 }
+  ],
+
+  "images1": {},
+
+  "images2": {
+    "bg": "assets/background.png",
+    "carrot": "assets/carrot.png",
+    "brokli": "assets/brokli.png",
+    "tomato": "assets/tomato.png",
+    "beetroot": "assets/beetroot.png",
+    "pumpkin": "assets/pumpkin.png",
+    "potato": "assets/potato.png",
+    "jackfruit": "assets/jackfruit.png",
+    "watermelon": "assets/watermelon.png",
+    "cabbage": "assets/cabbage.png"
+  },
+
+  "ui": {
+  },
+
+  "texts": {
+    "how_to_play_title": "HOW TO PLAY",
+    "how_to_play_desc": "AIM & DROP VEGETABLES\nMERGE MATCHING ONES\nDON’T FILL THE BOX\nMERGE TWO CABBAGES TO WIN",
+    "play": "PLAY",
+    "play_again": "PLAY AGAIN",
+    "win": "LEGENDARY MERGE",
+    "lose": "BOX FULL",
+    "score": "SCORE"
+  },
+
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "drop": "assets/drop.ogg",
+    "merge": "assets/merge.ogg"
+  }
+}

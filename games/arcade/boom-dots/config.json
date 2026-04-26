@@ -1,0 +1,51 @@
+{
+   "entry": "Customboomdots/index.html",
+  "images1": {
+    "player": "assets/player.png",
+    "enemy": "assets/enemy.png"
+  },
+  "images2": {
+    "bg": "assets/bg.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+    
+  },
+  "ui": {
+    "scoreback": "assets/scoreback.png",
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "lvlbox": "assets/lvlbox.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "next": "assets/next.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png"
+  },
+  "mechanics": {
+    "initialScore": 0,
+    "targetScore": 5,
+    "missLimit": 10,
+    "baseFallDuration": 10000,
+    "fallDecrementPerScore": 10,
+    "minFallDuration": 3000,
+    "enemyMinMoveDuration": 800,
+    "enemyExtraMoveDuration": 2000,
+    "shootDuration": 500,
+    "perfectThreshold": 30,
+    "playerScale": 0.05,
+    "enemyScale": 0.05
+  },
+  "text": {
+    "howToPlayTitle": "How To Play",
+    "howToPlayBody": "Tap to launch the player upward.\nHit the moving enemy.\nClose hits give bonus points!\nWin at 3 hits.\nGame over after 5 misses.",
+    "levelCompletedTitle": "Level Completed",
+    "gameOverTitle": "Game Over",
+    "scoreLabel": "Score",
+    "missLabel": "Miss"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3"
+  }
+}

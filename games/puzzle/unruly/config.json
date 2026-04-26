@@ -1,0 +1,187 @@
+{
+  "entry": "Customunruly/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "images2": {
+    "background": "assets/bg.png"
+  },
+  "ui": {
+    "scorebar": "assets/scorebar.png",
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "tileImage": "assets/platformSand.png",
+    "game_over": "assets/game_over.png"
+  },
+  "audio": {
+    "destroy": "./assets/Destroy.mp3",
+    "bgm": "./assets/bgm.mp3",
+    "jump": "./assets/Jump.mp3"
+  },
+  "spritesheets": {
+    "player": {
+      "path": "assets/eve_spritesheet.png",
+      "frameWidth": 102,
+      "frameHeight": 158
+    }
+  },
+  "mechanics": {
+    "statMin": 0,
+    "statMax": 10,
+    "choicesToWin": 20
+  },
+  "events": [
+    {
+      "text": "The Royal Chef turned the treasury into soup! What do you do?",
+      "advisor": "Chef Boris",
+      "choices": [
+        {
+          "text": "Eat the soup, money is overrated.",
+          "effects": {
+            "gold": -2,
+            "popularity": 2,
+            "ego": 1
+          }
+        },
+        {
+          "text": "Punish the chef! Demand your gold back.",
+          "effects": {
+            "gold": 1,
+            "chaos": 2,
+            "popularity": -1
+          }
+        }
+      ]
+    },
+    {
+      "text": "The sheep union demands stylish hats for all sheep.",
+      "advisor": "Shepherdess Flo",
+      "choices": [
+        {
+          "text": "Approve hats! Kingdom needs fashion.",
+          "effects": {
+            "gold": -1,
+            "popularity": 2,
+            "ego": 1
+          }
+        },
+        {
+          "text": "No hats. Ban all sheep unions.",
+          "effects": {
+            "chaos": 2,
+            "popularity": -2,
+            "ego": 1
+          }
+        }
+      ]
+    },
+    {
+      "text": "A wizard duplicated all cows by accident.",
+      "advisor": "Wizard Jeff",
+      "choices": [
+        {
+          "text": "Host a milk festival!",
+          "effects": {
+            "popularity": 2,
+            "gold": 1,
+            "ego": -1
+          }
+        },
+        {
+          "text": "Open a second castle just for cows.",
+          "effects": {
+            "chaos": 2,
+            "gold": -2,
+            "ego": 1
+          }
+        }
+      ]
+    },
+    {
+      "text": "Moat is full of jelly. Locals start swimming competitions.",
+      "advisor": "Builder Pam",
+      "choices": [
+        {
+          "text": "Sponsor jelly races!",
+          "effects": {
+            "popularity": 2,
+            "gold": -1
+          }
+        },
+        {
+          "text": "Replace jelly with water.",
+          "effects": {
+            "gold": -2,
+            "chaos": -1
+          }
+        }
+      ]
+    },
+    {
+      "text": "A dragon ate all the royal shoes.",
+      "advisor": "Footman Rex",
+      "choices": [
+        {
+          "text": "Throw a barefoot festival.",
+          "effects": {
+            "popularity": 2,
+            "chaos": 1
+          }
+        },
+        {
+          "text": "Bribe dragon with gold.",
+          "effects": {
+            "gold": -2,
+            "chaos": -2
+          }
+        }
+      ]
+    },
+    {
+      "text": "Your portrait painter added a moustache to all royal paintings.",
+      "advisor": "Artist Luc",
+      "choices": [
+        {
+          "text": "Declare moustaches royal fashion.",
+          "effects": {
+            "ego": 2,
+            "popularity": 1
+          }
+        },
+        {
+          "text": "Paint over them all night.",
+          "effects": {
+            "gold": -1,
+            "popularity": -1
+          }
+        }
+      ]
+    },
+    {
+      "text": "Royal cats form a rock band. Noise is unbearable.",
+      "advisor": "Maestro Kitty",
+      "choices": [
+        {
+          "text": "Join the band as lead singer.",
+          "effects": {
+            "ego": 2,
+            "chaos": 1
+          }
+        },
+        {
+          "text": "Ban all cat concerts.",
+          "effects": {
+            "chaos": -2,
+            "popularity": -2
+          }
+        }
+      ]
+    }
+  ]
+}

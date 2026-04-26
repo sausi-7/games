@@ -1,0 +1,37 @@
+{
+  "entry": "Custommemorygame/index.html",
+  "gridSize": 5,
+  "patternLength": 4,
+  
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png"
+  },
+   "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "card1": "assets/card1.png",
+    "card2": "assets/card2.png",
+    "card3": "assets/card3.png",
+    "card4": "assets/card4.png",
+    "card5": "assets/card5.png",
+    "card6": "assets/card6.png",
+    "card7": "assets/card7.png",
+    "card8": "assets/card8.png"
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  }
+}

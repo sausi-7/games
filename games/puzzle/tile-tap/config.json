@@ -1,0 +1,31 @@
+{
+  "entry": "Customtile/index.html",
+  "gridSize": 3,
+  "maxTime": 60,
+  "images1": {
+    "object1": "assets/apple.png",
+    "object2": "assets/banana.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "ui": {
+    "playbtn": "assets/playbtn.png",
+    "htpbox": "assets/htpbox.png",
+    "scorebar": "assets/scorebar.png",
+    "lvlbox": "assets/lvlbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "replay": "assets/replay.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3",
+    "merge": "assets/merge.mp3"
+  }
+}

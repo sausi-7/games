@@ -1,0 +1,72 @@
+{
+  "entry": "Customtowershooter/index.html",
+  "font": {
+    "family": "ArcadeClassic",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Climb the collapsing tower! Move left/right and jump to survive. Avoid enemies and spikes. Collect gems for points!",
+    "score_label": "Score: ",
+    "win_title": "You Escaped the Tower!",
+    "game_over_title": "Crushed in the Tower!"
+  },
+  "gameplay": {
+    "timerSeconds": 90,
+    "maxLives": 3,
+    "playerSpeed": 300,
+    "jumpVelocity": -760,
+    "gravity": 1000,
+    "enemySpeed": 110,
+    "floorSpacing": 200,
+    "platformMinWidth": 240,
+    "platformMaxWidth": 520,
+    "enemySpawnChance": 0.2,
+    "spikeSpawnChance": 0.15,
+    "collectibleChance": 0.35,
+    "healthPackChance": 0.1,
+    "scrollSpeedStart": 80,
+    "scrollSpeedMax": 240,
+    "scrollAccel": 3,
+    "maxReachX": 220,
+    "scrollFreezeMs": 1500,
+    "scrollRampMs": 800
+  },
+  "images1": {
+    "health": "assets/health.png",
+    "spike": "assets/spike.png",
+    "gem": "assets/gem.png",
+    "enemy": "assets/enemy.png"
+  },
+  "images2": {
+    "background": "assets/bg_tower.png",
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "action": "assets/jump.png"
+  },
+  "spritesheets": {
+    "player": {
+      "url": "assets/hero.png",
+      "frameWidth": 103,
+      "frameHeight": 143,
+      "frames": 6
+    }
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "collapse": "assets/collapse.mp3"
+  }
+}

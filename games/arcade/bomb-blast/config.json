@@ -1,0 +1,67 @@
+{
+  "entry": "Custombombblast/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Swipe left/right to toss the bomb to adjacent lanes. Make it explode near clusters of enemies. Don’t let it explode while you’re holding it! Collect power-ups for fuse, slow-mo, or a shield. Reach the target score before time runs out.",
+    "score_label": "Points: ",
+    "win_title": "Bomb Master!",
+    "game_over_title": "Kaboom!"
+  },
+  "gameplay": {
+    "lanes": 5,
+    "timerSeconds": 60,
+    "targetScore": 5000,
+    "gravityY": 440,
+    "enemySpeedStart": 3,
+    "enemySpeedMax": 15,
+    "enemySpawnRate": 2000,
+    "enemySpawnRateMin": 1000,
+    "bombFuseSeconds": 2.5,
+    "explosionRadius": 170,
+    "enemyHoldMs": 1250,
+    "slowMoScale": 0.5,
+    "slowMoMs": 2500,
+    "powerupSpeedMin": 1,
+    "powerupSpeedMax": 2
+  },
+  "images1": {
+    "bomb": "assets/obj7.png",
+    "enemyA": "assets/obj11.png",
+    "enemyB": "assets/obj28.png",
+    "power_fuse": "assets/obj20.png",
+    "power_slowmo": "assets/obj18.png",
+    "power_shield": "assets/obj10.png",
+    "collectible": "assets/obj26.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png",
+    "floor": "assets/platform3.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/punch.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "next": "assets/next.png",
+    "lvlbox": "assets/lvlbox.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/Game_Background.mp3",
+    "throw": "assets/Attack.mp3",
+    "explode": "assets/Explosion.mp3",
+    "destroy": "assets/Destroy.mp3",
+    "hit": "assets/Taking_a_Hit.mp3",
+    "collect": "assets/Collection.mp3",
+    "win": "assets/Level_Complete.mp3",
+    "lose": "assets/Game_Over.mp3"
+  }
+}

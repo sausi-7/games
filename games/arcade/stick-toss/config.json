@@ -1,0 +1,58 @@
+{
+  "entry": "Customsticktoss/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "game": {
+    "ringRadius": 150,
+    "stickLength": 140,
+    "stickWidth": 8,
+    "maxSticks": 6,
+    "minAngleGapDeg": 15,
+    "ringRotationSpeedDeg": 60,
+    "throwSpeed": 2500,
+    "ringYOffset": -300
+  },
+  "colors": {
+    "background": "#121212",
+    "win": "#00ff00",
+    "lose": "#ff4444",
+    "score": "#ffffff"
+  },
+  "images1": {
+    "ring": "assets/ring.png",
+    "stick": "assets/stick.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "button_retry": "assets/replay_button.png",
+    "start_overlay": "assets/start_bg.png",
+    "gameover_overlay": "assets/gameover_bg.png",
+    "levelcomplete_overlay": "assets/levelcomplete_bg.png",
+    "button_play": "assets/play_button.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scoreback.png",
+    "replay_level": "assets/replay_level.png"
+  },
+  "texts": {
+    "win": "Level Completed",
+    "lose": "Try Again!",
+    "score": "Target",
+    "retry": "",
+    "ovrtext": "Game Over",
+    "tapToStart": "Tap to toss sticks at the ring.\nDon't hit another stick!",
+    "startBtn": "Start",
+    "playAgain": "Play Again",
+    "htptext": "How to Play"
+  },
+   "audio": {
+    "bgm": "assets/bgm.mp3",
+    "arrow": "assets/arrow.mp3"
+  }
+}

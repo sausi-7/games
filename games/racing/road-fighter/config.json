@@ -1,0 +1,77 @@
+{
+  "entry": "Customroadfighter/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap LEFT/RIGHT to snap to each side of the rope. Tap ACTION to dash through tight gaps. Avoid obstacles, collect points, and survive until the timer ends.",
+    "score_label": "Score:",
+    "win_title": "You Reached the Sky Summit!",
+    "game_over_title": "Fell from the Rope!"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "layout": {
+    "laneOffsetX": 170
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "playerSpeed": 520,
+    "scrollSpeed": 60,
+    "dashCooldownMs": 1200,
+    "dashDurationMs": 180,
+    "dashBoost": 220,
+    "enemySpawnRateMs": 1100,
+    "minEnemySpawnRateMs": 550,
+    "rampEverySec": 15,
+    "rampFactor": 0.92,
+    "birdEveryMs": 2500,
+    "gemEveryMs": 1800,
+    "shieldEveryMs": 12000,
+    "shieldDurationMs": 4000,
+    "nearMissRadius": 32,
+    "lives": 3
+  },
+  "meta": {
+    "autoSceneChange": true,
+    "gameOverKey": "GameOverScene",
+    "winKey": "WinScene"
+  },
+  "images1": {
+    "player_vehicle_topView": "assets/obj1.png",
+    "enemy_vehicle_topView": "assets/obj5.png",
+    "obstacle": "assets/obj12.png",
+    "fuel_vehicle": "assets/obj3.png",
+    "health": "assets/shield.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Attack.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3",
+    "swap": "assets/swap.mp3"
+  }
+}

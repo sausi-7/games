@@ -1,0 +1,166 @@
+{
+	"textures": [
+		{
+			"image": "characters",
+			"format": "RGBA8888",
+			"size": {
+				"w": 900,
+				"h": 1820
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "doodler-left",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 86.6,
+						"h": 133.6
+					},
+					"spriteSourceSize": {
+						"x": 0.5,
+						"y": 166.6,
+						"w": 86.6,
+						"h": 133.6
+					},
+					"frame": {
+						"x": 0.5,
+						"y": 166.6,
+						"w": 86.6,
+						"h": 133.6
+					}
+				},
+				{
+					"filename": "doodler-right",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w":86.6,
+						"h": 133.6
+					},
+					"spriteSourceSize": {
+						"x": 310.2,
+						"y": 166,
+						"w": 86.6,
+						"h": 133.6
+					},
+					"frame": {
+						"x": 310.2,
+						"y": 166,
+						"w": 86.6,
+						"h": 133.6
+					}
+				},
+				{
+					"filename": "doodler",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 42.3,
+						"h":133.6
+					},
+					"spriteSourceSize": {
+						"x": 332.8,
+						"y": 17.6,
+						"w": 42.3,
+						"h": 133.6
+					},
+					"frame": {
+						"x": 332.8,
+						"y": 17.6,
+						"w": 42.3,
+						"h": 133.6
+					}
+				},
+				{
+					"filename": "yellowbird-fall",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 188,
+						"h": 133
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 188,
+						"h": 133
+					},
+					"frame": {
+						"x": 227,
+						"y": 1,
+						"w": 188,
+						"h": 133
+					}
+				},
+				{
+					"filename": "yellowbird-downflap",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 156
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 156
+					},
+					"frame": {
+						"x": 111,
+						"y": 192,
+						"w": 156,
+						"h": 156
+					}
+				},
+				{
+					"filename": "yellowbird-midflap",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 155,
+						"h": 156
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 155,
+						"h": 156
+					},
+					"frame": {
+						"x": 1,
+						"y": 382,
+						"w": 155,
+						"h": 156
+					}
+				},
+				{
+					"filename": "yellowbird-upflap",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 146,
+						"h": 156
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 146,
+						"h": 156
+					},
+					"frame": {
+						"x": 269,
+						"y": 136,
+						"w": 146,
+						"h": 156
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

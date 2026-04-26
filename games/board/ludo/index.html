@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Ludo – You vs 3 AI</title>
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #0b1320;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #game {
+    width: 95vmin;
+    height: 95vmin;
+    background: #111;
+    padding: 1vmin;
+    border-radius: 2vmin;
+    box-shadow: 0 0 20px rgba(0,0,0,0.9);
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    width: 100%;
+    height: 100%;
+    gap: 1px;
+  }
+
+  .cell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: white;
+  }
+
+  /* Perfect classic Ludo colors */
+  .greenZone { background: #00a859; }
+  .yellowZone { background: #f7d842; }
+  .redZone { background: #e84148; }
+  .blueZone { background: #1f4cb9; }
+
+  .route { background: #f5f5f5; }
+  .safe { background: #16a085 !important; }
+
+  .homeGreen { background: #ccffe4; }
+  .homeRed { background: #ffd1d1; }
+  .homeBlue { background: #d1dfff; }
+  .homeYellow { background: #fff7cf; }
+
+  /* Center triangles */
+  .center0 { background: #e84148; }
+  .center1 { background: #00a859; }
+  .center2 { background: #1f4cb9; }
+  .center3 { background: #f7d842; }
+
+  /* Token */
+  .token {
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    border: 3px solid white;
+    top: 20%;
+    left: 20%;
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    cursor: pointer;
+  }
+  .p0 { background: #e84148; }
+  .p1 { background: #00a859; }
+  .p2 { background: #1f4cb9; }
+  .p3 { background: #f7d842; }
+
+  .token-select {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px gold;
+  }
+
+  /* Controls */
+  #ui {
+    position: absolute;
+    bottom: 2%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #dice {
+    background: #222;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 10px;
+    font-size: 24px;
+  }
+
+  #rollBtn {
+    padding: 10px 20px;
+    background: #005eff;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="game">
+  <div class="board" id="board"></div>
+</div>
+
+<div id="ui">
+  <div id="dice">-</div>
+  <button id="rollBtn">Roll Dice</button>
+</div>
+
+<script>
+/************************************************
+   PERFECT 15×15 CLASSIC LUDO BOARD MATRIX
+************************************************/
+
+const board = document.getElementById("board");
+
+// 15×15 grid description exactly like your image
+//
+// Legend:
+// G = green yard, Y = yellow, R = red, B = blue
+// r = route cell, hX = home X row, S = safe
+
+const layout = [
+  // Row 0
+  ["G","G","G","G","G","G","r","r","r","Y","Y","Y","Y","Y","Y"],
+  // Row 1
+  ["G","W","W","W","W","G","r","h1","r","Y","W","W","W","W","Y"],
+  // Row 2
+  ["G","W","G","G","W","G","r","h1","r","Y","W","Y","Y","W","Y"],
+  // Row 3
+  ["G","W","G","G","W","G","r","h1","r","Y","W","Y","Y","W","Y"],
+  // Row 4
+  ["G","W","W","W","W","G","r","h1","r","Y","W","W","W","W","Y"],
+  // Row 5
+  ["G","G","G","G","G","G","r","r","r","Y","Y","Y","Y","Y","Y"],
+
+  // Row 6 (middle horizontal track)
+  ["r","r","r","r","r","r","C","C","C","r","r","r","r","r","r"],
+
+  // Row 7 (center)
+  ["r","h0","h0","h0","h0","h0","C","C","C","h2","h2","h2","h2","h2","r"],
+
+  // Row 8
+  ["r","r","r","r","r","r","C","C","C","r","r","r","r","r","r"],
+
+  // Row 9
+  ["R","R","R","R","R","R","r","r","r","B","B","B","B","B","B"],
+  // Row 10
+  ["R","W","W","W","W","R","r","h3","r","B","W","W","W","W","B"],
+  // Row 11
+  ["R","W","R","R","W","R","r","h3","r","B","W","B","B","W","B"],
+  // Row 12
+  ["R","W","R","R","W","R","r","h3","r","B","W","B","B","W","B"],
+  // Row 13
+  ["R","W","W","W","W","R","r","h3","r","B","W","W","W","W","B"],
+  // Row 14
+  ["R","R","R","R","R","R","r","r","r","B","B","B","B","B","B"],
+];
+
+// Cells considered safe (based on classic ludo)
+const safeCellsIndex = [1, 9, 14, 22, 27, 35, 40, 48];
+
+// Build route array
+const route = [];
+function pushRoute(r,c){ route.push({r,c}); }
+
+// Construct perfect path (clockwise)
+function buildRoute() {
+  // manually walk the board edges like classic ludo path
+  // bottom → left → top → right → bottom
+  // EXACT 52 cells in correct order
+
+  // start 0 - red start (row 13, col 6)
+  const startPositions = [
+    {r:13,c:6}, // red
+    {r:6,c:1},  // green
+    {r:1,c:8},  // yellow
+    {r:8,c:13}, // blue
+  ];
+
+  // Build the full cycle for red start
+  let r = startPositions[0].r;
+  let c = startPositions[0].c;
+
+  const directions = [
+    [ -1, 0, 5 ], // up 5
+    [ 0, -1, 5 ], // left 5
+    [ -1, 0, 1 ],
+    [ 0, -1, 4 ],
+    [ -1, 0, 5 ],
+    [ 0, 1, 5 ],
+    [ -1, 0, 1 ],
+    [ 0, 1, 4 ],
+    [ -1, 0, 5 ],
+    [ 1, 0, 1 ],
+    [ 0,1,4 ],
+    [ 1,0,5 ],
+    [ 0, -1,5 ],
+    [ 1,0,1 ],
+    [ 0,-1,4 ],
+    [ 1,0,5 ],
+  ];
+
+  for (let [dr,dc,count] of directions) {
+    for (let i=0;i<count;i++){
+      route.push({r,c});
+      r+=dr; c+=dc;
+    }
+  }
+}
+buildRoute();
+
+// Build home paths for each color (6 steps each)
+const homePath = [
+  // red goes upward to center
+  [ {r:13,c:7},{r:12,c:7},{r:11,c:7},{r:10,c:7},{r:9,c:7},{r:8,c:7} ],
+  // green goes right to center
+  [ {r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},{r:7,c:6} ],
+  // yellow goes left to center
+  [ {r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},{r:7,c:8} ],
+  // blue goes upward to center
+  [ {r:1,c:7},{r:2,c:7},{r:3,c:7},{r:4,c:7},{r:5,c:7},{r:6,c:7} ],
+];
+
+// Yard positions
+const yard = [
+  [ {r:11,c:1},{r:11,c:3},{r:13,c:1},{r:13,c:3} ],  // Red
+  [ {r:1,c:1},{r:1,c:3},{r:3,c:1},{r:3,c:3} ],      // Green
+  [ {r:1,c:11},{r:1,c:13},{r:3,c:11},{r:3,c:13} ],  // Yellow
+  [ {r:11,c:11},{r:11,c:13},{r:13,c:11},{r:13,c:13}],// Blue
+];
+
+// Entry index (where each player's path starts)
+const entryIndex = [0, 13, 26, 39];
+
+// ============================
+//   BUILD VISUAL BOARD
+// ============================
+function buildBoard() {
+  for (let r=0;r<15;r++){
+    for (let c=0;c<15;c++){
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.r = r;
+      cell.dataset.c = c;
+
+      const type = layout[r][c];
+
+      if (type === "G") cell.classList.add("greenZone");
+      if (type === "Y") cell.classList.add("yellowZone");
+      if (type === "R") cell.classList.add("redZone");
+      if (type === "B") cell.classList.add("blueZone");
+
+      if (type === "r") cell.classList.add("route");
+      if (type === "h0") cell.classList.add("homeRed");
+      if (type === "h1") cell.classList.add("homeGreen");
+      if (type === "h2") cell.classList.add("homeYellow");
+      if (type === "h3") cell.classList.add("homeBlue");
+
+      if (type === "C") cell.classList.add("center0","center1","center2","center3");
+
+      board.appendChild(cell);
+    }
+  }
+}
+buildBoard();
+
+
+// ============= GAME LOGIC (FROM PART 3) =============
+
+const NUM_PLAYERS = 4;
+const TOKENS_PER_PLAYER = 4;
+const FINAL_STEP = 57;
+const MOVE_SPEED = 120;
+
+const players = [
+  { name:"You",isAI:false },
+  { name:"AI 1",isAI:true },
+  { name:"AI 2",isAI:true },
+  { name:"AI 3",isAI:true }
+];
+
+let tokens = [];
+for (let p=0;p<4;p++){
+  tokens[p]=[];
+  for (let t=0;t<4;t++){
+    tokens[p][t]={steps:-1};
+  }
+}
+
+const safeCells = safeCellsIndex.slice();
+let currentPlayer = 0;
+let lastDice = 0;
+let gameOver = false;
+let awaitingHuman = false;
+let selectableTokens = [];
+
+function getCell(r,c){ return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`); }
+
+function getTokenCoord(player, token){
+  const st = tokens[player][token].steps;
+
+  if (st === -1) return yard[player][token];
+  if (st < 52) {
+    const abs = (entryIndex[player] + st) % 52;
+    return route[abs];
+  }
+  if (st <= FINAL_STEP) {
+    return homePath[player][st-52];
+  }
+  return null;
+}
+
+function renderTokens(){
+  document.querySelectorAll(".token").forEach(t=>t.remove());
+
+  for(let p=0;p<4;p++){
+    for(let t=0;t<4;t++){
+      const pos = getTokenCoord(p,t);
+      if (!pos) continue;
+
+      const c = getCell(pos.r,pos.c);
+      if (!c) continue;
+
+      const el = document.createElement("div");
+      el.className = `token p${p}`;
+      el.dataset.p = p;
+      el.dataset.t = t;
+
+      if (!players[p].isAI && awaitingHuman) {
+        if (selectableTokens.some(s=>s.p===p && s.t===t)){
+          el.classList.add("token-select");
+          el.onclick = ()=>humanChoose(p,t);
+        }
+      }
+      c.appendChild(el);
+    }
+  }
+}
+
+function simulateMove(p,t,d){
+  const st = tokens[p][t].steps;
+
+  if (st === -1){
+    if (d!==6) return null;
+    return { newSteps:0, abs:entryIndex[p] };
+  }
+
+  const ns = st + d;
+  if (ns > FINAL_STEP) return null;
+
+  if (ns < 52){
+    const abs = (entryIndex[p] + ns) % 52;
+    return { newSteps:ns, abs };
+  }
+
+  return { newSteps:ns, abs:null };
+}
+
+function getMoves(p,d){
+  const arr = [];
+  for (let t=0;t<4;t++){
+    const sim = simulateMove(p,t,d);
+    if (sim) arr.push({p,t,sim});
+  }
+  return arr;
+}
+
+function stepAnim(p,t,newSteps){
+  return new Promise(res=>{
+    tokens[p][t].steps = newSteps;
+    renderTokens();
+    setTimeout(res, MOVE_SPEED);
+  });
+}
+
+async function animateMove(p,t,d){
+  let st = tokens[p][t].steps;
+  let stepsToMove = (st===-1)?1:d;
+
+  for(let i=1;i<=stepsToMove;i++){
+    let target = (st===-1)?0:(st+i);
+    await stepAnim(p,t,target);
+  }
+}
+
+async function performMove(p,t,d){
+  const sim = simulateMove(p,t,d);
+  if (!sim) return false;
+
+  await animateMove(p,t,d);
+  const ns = tokens[p][t].steps;
+
+  if (ns<52 && !safeCells.includes(sim.abs)){
+    for(let op=0;op<4;op++){
+      if(op===p)continue;
+      for(let ot=0;ot<4;ot++){
+        let ost = tokens[op][ot].steps;
+        if(ost>=0 && ost<52){
+          let abs = (entryIndex[op]+ost)%52;
+          if(abs===sim.abs){
+            tokens[op][ot].steps=-1;
+          }
+        }
+      }
+    }
+  }
+
+  renderTokens();
+  return true;
+}
+
+function rollDice(){
+  const n = Math.floor(Math.random()*6)+1;
+  lastDice=n;
+  document.getElementById("dice").textContent=n;
+  return n;
+}
+
+async function turn(){
+  if (gameOver)return;
+
+  const p = currentPlayer;
+  const d = rollDice();
+  const moves = getMoves(p,d);
+
+  if (moves.length===0){
+    await new Promise(r=>setTimeout(r,600));
+    return endTurn();
+  }
+
+  if (players[p].isAI){
+    const m = moves[0];
+    await performMove(p,m.t,d);
+    if (d===6) return turn();
+    else return endTurn();
+  }
+
+  awaitingHuman=true;
+  selectableTokens=moves;
+  renderTokens();
+}
+
+function humanChoose(p,t){
+  awaitingHuman=false;
+  performMove(p,t,lastDice).then(()=>{
+    if (lastDice===6) turn();
+    else endTurn();
+  });
+}
+
+function endTurn(){
+  currentPlayer=(currentPlayer+1)%4;
+  turn();
+}
+
+renderTokens();
+turn();
+</script>
+
+</body>
+</html>

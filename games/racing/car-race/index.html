@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Car Runner 3D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(#0f172a, #020617);
+      touch-action: none;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    #hud {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e5e7eb;
+      font-size: 22px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 6px 18px;
+      border-radius: 14px;
+      min-width: 180px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.85);
+      z-index: 20;
+    }
+
+    .panel {
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 22px;
+      padding: 28px;
+      max-width: 340px;
+      text-align: center;
+      color: #e5e7eb;
+    }
+
+    .panel button {
+      margin-top: 18px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #22d3ee, #6366f1);
+      color: #020617;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="hud"></div>
+
+  <div id="howto" class="overlay">
+    <div class="panel">
+      <h1 id="titleText"></h1>
+      <p id="howText"></p>
+      <button onclick="startGame()">Start</button>
+    </div>
+  </div>
+
+  <div id="result" class="overlay" style="display:none">
+    <div class="panel">
+      <h1 id="resultTitle"></h1>
+      <p id="resultText"></p>
+      <button onclick="location.reload()">Play Again</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+
+  <script>
+    /* ======================================================
+       CONFIG LOAD + FLATTEN (ONLY PLACE JSON IS TOUCHED)
+    ====================================================== */
+    let CFG = {};
+
+    fetch("config.json")
+      .then(r => r.json())
+      .then(raw => {
+        CFG = {
+          // mechanics
+          targetScore: raw.mechanics.target,
+          speedStart: raw.mechanics.speedStart,
+          speedAcceleration: raw.mechanics.speedAcceleration,
+          speedMax: raw.mechanics.speedMax,
+
+          // lanes
+          laneLeft: raw.lanes.left,
+          laneCenter: raw.lanes.center,
+          laneRight: raw.lanes.right,
+
+          // audio
+          audioBgm: raw.audio.bgm,
+          audioCollect: raw.audio.collect,
+          audioHit: raw.audio.hit,
+
+          // text
+          textTitle: raw.text.title,
+          textHowToPlay: raw.text.howToPlay,
+          textWinTitle: raw.text.winTitle,
+          textWinMessage: raw.text.winMessage,
+          textLoseTitle: raw.text.loseTitle,
+          textLoseMessage: raw.text.loseMessage,
+
+          // track / camera
+          trackTileCount: raw.track.tileCount,
+          trackTileLength: raw.track.tileLength,
+          trackTileWidth: raw.track.tileWidth,
+          trackRecycleOffset: raw.track.recycleOffset,
+
+          cameraFov: raw.camera.fov,
+          cameraHeight: raw.camera.height,
+          cameraDistance: raw.camera.distance,
+          cameraFollowLerp: raw.camera.followLerp,
+
+          coinSpawnIntervalMs: raw.spawn.coinMs,
+          trafficSpawnIntervalMs: raw.spawn.trafficMs,
+          coinZOffset: raw.spawn.coinZ,
+          trafficZOffset: raw.spawn.trafficZ
+        };
+
+        initGame();
+      })
+      .catch(err => console.error("Config load failed", err));
+
+    /* ======================================================
+       GAME
+    ====================================================== */
+    function initGame() {
+
+      /* ---------- UI ---------- */
+      const hud = document.getElementById("hud");
+      document.getElementById("titleText").textContent = CFG.textTitle;
+      document.getElementById("howText").innerText = CFG.textHowToPlay;
+
+      let coinsCollected = 0;
+      function updateHUD() {
+        hud.textContent = `Coins: ${coinsCollected} / ${CFG.targetScore}`;
+      }
+      updateHUD();
+
+      /* ---------- AUDIO ---------- */
+      const bgm = new Audio(CFG.audioBgm);
+      bgm.loop = true;
+      bgm.volume = 0.6;
+
+      const sfxCollect = new Audio(CFG.audioCollect);
+      const sfxHit = new Audio(CFG.audioHit);
+
+      /* ---------- SCENE ---------- */
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x020617);
+      scene.fog = new THREE.Fog(0x020617, 12, 200);
+
+      const camera = new THREE.PerspectiveCamera(
+        CFG.cameraFov, innerWidth / innerHeight, 0.1, 400
+      );
+      camera.position.set(0, CFG.cameraHeight, CFG.cameraDistance);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(innerWidth, innerHeight);
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      document.body.appendChild(renderer.domElement);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      const sun = new THREE.DirectionalLight(0xffffff, 1);
+      sun.position.set(5, 10, 5);
+      scene.add(sun);
+
+      /* ---------- STATE ---------- */
+      const LANES = [CFG.laneLeft, CFG.laneCenter, CFG.laneRight];
+      let lane = 1;
+      let speed = CFG.speedStart;
+      let elapsed = 0;
+      let running = false;
+      let lastTime = performance.now();
+
+      let crashed = false;
+      let crashTime = 0;
+
+      /* ---------- CAR ---------- */
+      function createCar(color) {
+        const g = new THREE.Group();
+        const bodyMat = new THREE.MeshStandardMaterial({ color });
+        const darkMat = new THREE.MeshStandardMaterial({ color: 0x020617 });
+
+        const body = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.5, 3), bodyMat);
+        body.position.y = 0.6;
+
+        const roof = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.4, 1.4), bodyMat);
+        roof.position.y = 1;
+
+        const wheelGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.3, 16);
+        wheelGeo.rotateZ(Math.PI / 2);
+
+        function wheel(x, z) {
+          const w = new THREE.Mesh(wheelGeo, darkMat);
+          w.position.set(x, 0.25, z);
+          return w;
+        }
+
+        g.add(
+          body, roof,
+          wheel(-0.7, 1.2), wheel(0.7, 1.2),
+          wheel(-0.7, -1.2), wheel(0.7, -1.2)
+        );
+        return g;
+      }
+
+      const playerCar = createCar(0x22d3ee);
+      scene.add(playerCar);
+
+      /* ---------- TRACK ---------- */
+      const tiles = [];
+      for (let i = 0; i < CFG.trackTileCount; i++) {
+        const t = new THREE.Mesh(
+          new THREE.BoxGeometry(CFG.trackTileWidth, 0.2, CFG.trackTileLength),
+          new THREE.MeshStandardMaterial({ color: 0x0ea5e9 })
+        );
+        t.position.z = -i * CFG.trackTileLength;
+        scene.add(t);
+        tiles.push(t);
+      }
+
+      function recycleTrack() {
+        tiles.forEach(t => {
+          if (t.position.z > playerCar.position.z + 10) {
+            t.position.z -= CFG.trackRecycleOffset;
+          }
+        });
+      }
+
+      /* ---------- COINS ---------- */
+      const coins = [];
+      function spawnCoin() {
+        const c = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.35, 0.35, 0.1, 20),
+          new THREE.MeshStandardMaterial({
+            color: 0xfacc15,
+            emissive: 0xfacc15,
+            emissiveIntensity: 0.7
+          })
+        );
+        c.rotation.z = Math.PI / 2;
+        c.position.set(
+          LANES[Math.floor(Math.random() * 3)],
+          1.2,
+          playerCar.position.z - CFG.coinZOffset
+        );
+        scene.add(c);
+        coins.push(c);
+      }
+
+      /* ---------- TRAFFIC ---------- */
+      const traffic = [];
+      function spawnTraffic() {
+        const colors = [0xef4444, 0x22c55e, 0xeab308, 0xa855f7];
+        const car = createCar(colors[Math.floor(Math.random() * colors.length)]);
+        car.position.set(
+          LANES[Math.floor(Math.random() * 3)],
+          0,
+          playerCar.position.z - CFG.trafficZOffset
+        );
+        scene.add(car);
+        traffic.push(car);
+      }
+
+      setInterval(() => running && spawnCoin(), CFG.coinSpawnIntervalMs);
+      setInterval(() => running && spawnTraffic(), CFG.trafficSpawnIntervalMs);
+
+      /* ---------- INPUT ---------- */
+      let sx = 0;
+      addEventListener("touchstart", e => sx = e.touches[0].clientX);
+      addEventListener("touchend", e => {
+        const dx = e.changedTouches[0].clientX - sx;
+        if (dx > 40) lane = Math.min(2, lane + 1);
+        if (dx < -40) lane = Math.max(0, lane - 1);
+      });
+
+      addEventListener("keydown", e => {
+        if (e.key === "ArrowLeft" || e.key === "a") lane = Math.max(0, lane - 1);
+        if (e.key === "ArrowRight" || e.key === "d") lane = Math.min(2, lane + 1);
+      });
+
+      /* ---------- UI ---------- */
+      window.startGame = () => {
+        document.getElementById("howto").style.display = "none";
+        running = true;
+        lastTime = performance.now();
+
+        if (bgm.paused) {
+          bgm.currentTime = 0;
+          bgm.play().catch(() => { });
+        }
+      };
+
+      function endGame(win) {
+        running = false;
+        document.getElementById("result").style.display = "flex";
+        document.getElementById("resultTitle").textContent =
+          win ? CFG.textWinTitle : CFG.textLoseTitle;
+        document.getElementById("resultText").textContent =
+          win ? CFG.textWinMessage : CFG.textLoseMessage;
+      }
+
+      /* ---------- ANIMATIONS ---------- */
+
+      // Coin collect pop animation
+      function animateCoinCollect(coin) {
+        let t = 0;
+        const startY = coin.position.y;
+
+        function pop() {
+          t += 0.08;
+
+          coin.scale.setScalar(1 + t * 0.6);
+          coin.position.y = startY + t * 0.5;
+
+          coin.material.transparent = true;
+          coin.material.opacity = Math.max(0, 1 - t);
+
+          if (t < 1) requestAnimationFrame(pop);
+        }
+        pop();
+      }
+
+      // Crash camera shake animation
+      function animateCrash(delta) {
+        crashTime += delta;
+
+        camera.position.x += Math.sin(crashTime * 40) * 0.15;
+        playerCar.rotation.y = Math.sin(crashTime * 25) * 0.35;
+      }
+
+
+
+      /* ---------- LOOP ---------- */
+      function animate() {
+        requestAnimationFrame(animate);
+        if (!running) return;
+
+        const now = performance.now();
+        const delta = (now - lastTime) / 16.666;
+        lastTime = now;
+
+        elapsed += delta * 0.016;
+        speed = Math.min(CFG.speedMax, CFG.speedStart + elapsed * CFG.speedAcceleration);
+
+        playerCar.position.z -= speed * delta;
+        camera.position.z = playerCar.position.z + CFG.cameraDistance;
+        camera.position.x += (playerCar.position.x - camera.position.x) * CFG.cameraFollowLerp;
+
+        const tx = LANES[lane];
+        playerCar.position.x += (tx - playerCar.position.x) * 0.25;
+        playerCar.rotation.z = (tx - playerCar.position.x) * -0.1;
+
+        coins.forEach((c, i) => {
+          c.position.z += speed * delta;
+          c.rotation.y += 0.12 * delta;
+
+          if (Math.abs(c.position.z - playerCar.position.z) < 1 &&
+            Math.abs(c.position.x - playerCar.position.x) < 1) {
+
+            // remove from logic so it can't be collected twice
+            coins.splice(i, 1);
+
+            // 🎉 play coin animation
+            animateCoinCollect(c);
+
+            // remove mesh AFTER animation
+            setTimeout(() => {
+              scene.remove(c);
+            }, 250);
+
+            // 🔊 coin sound
+            sfxCollect.currentTime = 0;
+            sfxCollect.play();
+
+
+            coinsCollected++;
+            updateHUD();
+
+            if (coinsCollected >= CFG.targetScore) endGame(true);
+          }
+        });
+
+        traffic.forEach(car => {
+          car.position.z += speed * delta;
+          if (Math.abs(car.position.z - playerCar.position.z) < 1.1 &&
+            Math.abs(car.position.x - playerCar.position.x) < 1.1) {
+
+            // 💥 crash animation
+            if (!crashed) {
+              crashed = true;
+              crashTime = 0;
+
+              sfxHit.currentTime = 0;
+              sfxHit.play();
+            }
+
+
+          }
+        });
+
+        if (crashed) {
+          animateCrash(delta);
+
+          if (crashTime > 0.35) {
+            endGame(false);
+          }
+
+          renderer.render(scene, camera);
+          return;
+        }
+
+
+        recycleTrack();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    }
+  </script>
+
+</body>
+
+</html>

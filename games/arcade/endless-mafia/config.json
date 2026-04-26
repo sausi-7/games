@@ -1,0 +1,58 @@
+{
+  "entry": "Customendlessmafia/index.html",
+  "images1": {
+    "mafia": "assets/enemy.png",
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "platform": "assets/platform.png",
+    "flyingplatform": "assets/flyingplatform.png"
+  },
+  "ui": {
+    "bullet": "assets/bullet.png",
+    "scoreback": "assets/scoreback.png",
+    "heart": "assets/hearts.png",
+    "money": "assets/money.png",
+    "dialog_bg_start": "assets/dialog_bg_start.png",
+    "button": "assets/button.png",
+    "portal": "assets/portal.png",
+    "game_over": "assets/game_over.png",
+    "level_complete": "assets/level_complete.png",
+    "next_button": "assets/next_button.png",
+    "replay_button": "assets/replay_button.png",
+    "replay_button_big": "assets/replay_button_big.png",
+    "joystick_bg": "assets/joystick_bg.png",
+    "joystick_knob": "assets/joystick_knob.png",
+    "shoot_button": "assets/shoot_button.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "audio": {
+    "bg_music": "assets/bgm.mp3",
+    "coins": "assets/coins.mp3",
+    "knife": "assets/knife.mp3",
+    "shoot": "assets/shoot.mp3"
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "mechanics": {
+    "mafiaSpeed": 50,
+    "lives": 3,
+    "heroBulletSpeed": 800,
+    "mafiaSpawnInterval": 5000,
+    "shootAllowedInitially": false,
+    "targetKills": 3
+  }
+}

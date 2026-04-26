@@ -1,0 +1,80 @@
+{
+  "entry": "Customspaceman/index.html",
+  "spawn": {
+    "x": 540,
+    "y": 1552
+  },
+  "images1": {
+    "player": "./assets/player.png",
+    "alien": "./assets/Alien1.png",
+    "alien2": "./assets/Alien2.png",
+    "part1": "./assets/Part1.png"
+  },
+  "images2": {
+    "space_background": "./assets/background.png",
+    "htpbg": "./assets/htpbg.png",
+    "winbg": "./assets/winbg.png",
+    "ovrbg": "./assets/ovrbg.png"
+  },
+  "ui": {
+    "black-background": "./assets/blackbackground.png",
+    "stars": "./assets/Stars.png",
+    "scoreback": "./assets/scoreback.png",
+    "moon-glow": "./assets/MoonGlow.png",
+    "moon-mask": "./assets/MoonMask.png",
+    "tex-box": "./assets/textbox.png",
+    "how-to-play": "./assets/htp.png",
+    "replay": "./assets/replay.png",
+    "play_game": "./assets/play_game.png",
+    "restart": "./assets/replay_level.png",
+    "next": "./assets/next.png",
+    "cross": "./assets/cross.png",
+    "tick": "./assets/tick.png",
+    "completed": "./assets/completed.png",
+    "game_over": "./assets/game_over.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "texts": {
+    "htp": "How to Play",
+    "htpMessage": "Control:",
+    "clueLabel": "Parts:",
+    "levelComplete": "Level Completed",
+    "leveltxt": "Game Over",
+    "partsCollected": "Parts Collected",
+    "winMessage": "",
+    "obstacleCollisionMessage": "",
+    "missedPartMessage": "",
+    "healthZeroMessage":""
+  },
+  "mechanics": {
+    "maxMisses": 5,
+    "maxHealth": 10,
+    "obstacleSpeed": 320,
+    "glideVelocity": 320,
+    "playerSpeed": 450,
+    "totalParts": 3,
+    "obstacleSpawnDelay": 1500,
+    "partSpawnDelay": 5000,
+    "maxActiveObjects": 20,
+    "minObjectDistance": 280,
+    "minPlayerYRatio": 0.6,
+    "partSpeedAdjustment": -50
+  },
+  "sheets": {
+    "spaceman": {
+      "url": "./assets/hero.png",
+      "frameWidth": 100,
+      "frameHeight": 158
+    }
+  },
+  "audio": {
+    "jump": "./assets/pothole-striked.mp3",
+    "collect": "./assets/parts-collected.mp3",
+    "crash": "./assets/pothole-striked.mp3",
+    "bgm": "./assets/bgm.mp3"
+  }
+}

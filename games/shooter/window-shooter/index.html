@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Window Shooter Game</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #24292f;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+    }
+
+    #gameContainer {
+      width: 100vw;
+      height: 100vh;
+      touch-action: none;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gameContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+  <script>
+    function notifyParent(type, data) {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type, ...data }, "*");
+      }
+    }
+
+    const GAME_WIDTH = 1920;
+    const GAME_HEIGHT = 1080;
+    const WIN_KILLS = 10;
+    const WINDOW_COUNT = 3;
+    const CHARACTER_SHOW_MIN = 900; // ms
+    const CHARACTER_SHOW_MAX = 1800; // ms
+
+    // Basic stick figure drawing
+    function drawStickFigure(graphics, x, y, color, type) {
+      graphics.lineStyle(4, 0x111111);
+      graphics.fillStyle(color, 1);
+      graphics.fillCircle(x, y - 36, 22);
+      graphics.strokeCircle(x, y - 36, 22);
+      graphics.lineStyle(8, 0x333333);
+      graphics.beginPath();
+      graphics.moveTo(x, y - 14);
+      graphics.lineTo(x, y + 36);
+      graphics.strokePath();
+      graphics.lineStyle(8, 0x333333);
+      graphics.beginPath();
+      graphics.moveTo(x - 28, y + 2);
+      graphics.lineTo(x + 28, y + 2);
+      graphics.strokePath();
+      graphics.lineStyle(8, 0x333333);
+      graphics.beginPath();
+      graphics.moveTo(x, y + 36);
+      graphics.lineTo(x - 18, y + 70);
+      graphics.moveTo(x, y + 36);
+      graphics.lineTo(x + 18, y + 70);
+      graphics.strokePath();
+      graphics.lineStyle();
+      graphics.fillStyle(0xffffff, 1);
+      graphics.setFontSize?.(24);
+      let label = (type === 'terrorist') ? 'T' : 'H';
+      graphics.fillRect(x - 14, y - 64, 28, 28);
+      graphics.fillStyle(type === 'terrorist' ? 0xff5555 : 0x71c7ec, 1);
+      graphics.fillRect(x - 13, y - 63, 26, 26);
+      graphics.fillStyle(0xffffff, 1);
+      graphics.setFontSize?.(20);
+      graphics.scene.add.text(x, y - 50, label, {
+        fontFamily: 'Arial', fontSize: 22, color: '#111',
+        fontStyle: 'bold'
+      }).setOrigin(0.5).setDepth(10);
+    }
+
+    function getWindowRects(scene) {
+      const marginY = 200, windowW = 220, windowH = 320;
+      const space = (GAME_WIDTH - (WINDOW_COUNT * windowW)) / (WINDOW_COUNT + 1);
+      let rects = [];
+      for (let i = 0; i < WINDOW_COUNT; ++i) {
+        const x = space + i * (windowW + space) + windowW / 2;
+        const y = marginY + windowH / 2;
+        rects.push({ x, y, width: windowW, height: windowH });
+      }
+      return rects;
+    }
+
+    class MainMenu extends Phaser.Scene {
+      constructor() { super('MainMenu'); }
+      create() {
+        this.cameras.main.setBackgroundColor('#353b48');
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 120, 'Window Shooter', {
+          fontFamily: 'Arial', fontSize: 72, color: '#fff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2,
+          'Tap anywhere to start!\nShoot the terrorists, don\'t hit the hostages.', {
+          fontFamily: 'Arial', fontSize: 38, color: '#f5f6fa', align: 'center'
+        }).setOrigin(0.5);
+        this.input.once('pointerdown', () => this.scene.start('GameScene'));
+      }
+    }
+
+    class GameOver extends Phaser.Scene {
+      constructor() { super('GameOver'); }
+      init(data) { this.kills = data.kills || 0; }
+      create() {
+        this.cameras.main.setBackgroundColor('#963333');
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, 'Game Over!', {
+          fontFamily: 'Arial', fontSize: 68, color: '#fff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10,
+          `Terrorists killed: ${this.kills}\n\nTap to restart`, {
+          fontFamily: 'Arial', fontSize: 38, color: '#fff', align: 'center'
+        }).setOrigin(0.5);
+        notifyParent('sceneComplete', { result: 'fail', kills: this.kills });
+        this.input.once('pointerdown', () => this.scene.start('GameScene'));
+      }
+    }
+
+    class LevelComplete extends Phaser.Scene {
+      constructor() { super('LevelComplete'); }
+      create() {
+        this.cameras.main.setBackgroundColor('#36b36e');
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 100, 'Level Complete!', {
+          fontFamily: 'Arial', fontSize: 64, color: '#fff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10,
+          'You defeated all the terrorists!\n\nTap to play again', {
+          fontFamily: 'Arial', fontSize: 38, color: '#fff', align: 'center'
+        }).setOrigin(0.5);
+        notifyParent('sceneComplete', { result: 'win' });
+        this.input.once('pointerdown', () => this.scene.start('GameScene'));
+      }
+    }
+
+    class GameScene extends Phaser.Scene {
+      constructor() {
+        super('GameScene');
+        this.windowRects = [];
+        this.currentChars = [null, null, null];
+        this.kills = 0;
+        this.isActive = false;
+        this.activeCharIdx = -1;
+        this.activeTimer = null;
+        this.charSprites = [];
+      }
+      create() {
+        this.cameras.main.setBackgroundColor('#24292f');
+        this.windowRects = getWindowRects(this);
+        this.windowGraphics = [];
+        for (let i = 0; i < WINDOW_COUNT; ++i) {
+          let rect = this.windowRects[i];
+          let g = this.add.graphics();
+          g.lineStyle(10, 0x1a1a1a, 1);
+          g.fillStyle(0xededed, 1);
+          g.strokeRect(rect.x - rect.width / 2, rect.y - rect.height / 2, rect.width, rect.height);
+          g.fillRect(rect.x - rect.width / 2, rect.y - rect.height / 2, rect.width, rect.height);
+          this.windowGraphics.push(g);
+        }
+        this.killText = this.add.text(GAME_WIDTH / 2, 100, `Terrorists killed: 0/${WIN_KILLS}`, {
+          fontFamily: 'Arial', fontSize: 44, color: '#fff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+        this.input.on('pointerdown', pointer => this.handleTap(pointer));
+        this.kills = 0;
+        this.isActive = true;
+        this.charSprites = [];
+        this.nextCharacter();
+      }
+
+      nextCharacter() {
+        this.charSprites.forEach(obj => obj?.destroy?.());
+        this.charSprites = [];
+        this.activeCharIdx = Phaser.Math.Between(0, WINDOW_COUNT - 1);
+        let charType = Phaser.Math.Between(0, 4) === 0 ? 'hostage' : 'terrorist';
+        this.currentCharType = charType;
+        let rect = this.windowRects[this.activeCharIdx];
+        let g = this.add.graphics();
+        let color = (charType === 'terrorist') ? 0xd7263d : 0x228be6;
+        drawStickFigure(g, rect.x, rect.y + 48, color, charType);
+        this.charSprites.push(g);
+        let label = this.add.text(rect.x, rect.y - 50,
+          (charType === 'terrorist') ? 'T' : 'H',
+          {
+            fontFamily: 'Arial',
+            fontSize: 32,
+            fontStyle: 'bold',
+            color: (charType === 'terrorist') ? '#fff' : '#fff',
+            backgroundColor: (charType === 'terrorist') ? '#d7263d' : '#228be6',
+            padding: { left: 10, right: 10, top: 2, bottom: 2 }
+          }
+        ).setOrigin(0.5).setDepth(100);
+        this.charSprites.push(label);
+        let showTime = Phaser.Math.Between(CHARACTER_SHOW_MIN, CHARACTER_SHOW_MAX);
+        this.activeTimer = this.time.delayedCall(showTime, () => {
+          this.nextCharacter();
+        });
+      }
+
+      handleTap(pointer) {
+        if (!this.isActive) return;
+        let x = pointer.x * GAME_WIDTH / this.sys.game.canvas.width;
+        let y = pointer.y * GAME_HEIGHT / this.sys.game.canvas.height;
+        let idx = -1;
+        for (let i = 0; i < this.windowRects.length; ++i) {
+          let rect = this.windowRects[i];
+          if (
+            x > rect.x - rect.width / 2 && x < rect.x + rect.width / 2 &&
+            y > rect.y - rect.height / 2 && y < rect.y + rect.height / 2
+          ) {
+            idx = i; break;
+          }
+        }
+        if (idx !== this.activeCharIdx) return;
+        if (this.activeTimer) this.activeTimer.remove();
+        if (this.currentCharType === 'hostage') {
+          this.isActive = false;
+          this.cameras.main.shake(300, 0.02);
+          this.time.delayedCall(350, () => {
+            this.scene.start('GameOver', { kills: this.kills });
+          });
+        } else {
+          this.kills += 1;
+          this.killText.setText(`Terrorists killed: ${this.kills}/${WIN_KILLS}`);
+          if (this.kills >= WIN_KILLS) {
+            this.isActive = false;
+            this.cameras.main.flash(350, 50, 220, 80);
+            this.time.delayedCall(350, () => {
+              this.scene.start('LevelComplete');
+            });
+          } else {
+            this.time.delayedCall(120, () => this.nextCharacter());
+          }
+        }
+      }
+
+      shutdown() {
+        this.charSprites.forEach(obj => obj?.destroy?.());
+        this.charSprites = [];
+        if (this.activeTimer) this.activeTimer.remove();
+      }
+      destroy() { this.shutdown(); }
+      stop() { this.shutdown(); }
+    }
+
+    const config = {
+      type: Phaser.AUTO,
+      parent: 'gameContainer',
+      backgroundColor: '#24292f',
+      width: GAME_WIDTH,
+      height: GAME_HEIGHT,
+      scene: [MainMenu, GameScene, LevelComplete, GameOver],
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: GAME_WIDTH,
+        height: GAME_HEIGHT
+      }
+    };
+
+    new Phaser.Game(config);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{
+  "entry": "Custompacman/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Use arrow keys or on-screen left/right to steer through the maze. Collect all dots to clear the level. Power pellets let you eat frightened ghosts for extra points.",
+    "score_label": "Score: ",
+    "win_title": "Stage Clear!",
+    "game_over_title": "Game Over"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "playerSpeed": 200,
+    "enemySpawnRate": 0,
+    "ghostCount": 5
+  },
+  "images1": {
+    "player": "assets/obj2.png",
+    "ghost1": "assets/obj5.png",
+    "collectible": "assets/obj12.png",
+    "powerpellet": "assets/obj13.png",
+    "platform": "assets/platform1.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "power": "assets/collect.mp3",
+    "destroy": "assets/Collision.mp3",
+    "levelwin": "assets/win.mp3"
+  }
+}

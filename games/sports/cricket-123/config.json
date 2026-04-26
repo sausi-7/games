@@ -1,0 +1,57 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Accelerate with Right ▶, brake with Left ◀. On mobile use the on-screen buttons. Approach stations slowly, press Action to open doors and dwell until completion. Stop at RED signals or you lose.",
+    "score_label": "Stations",
+    "win_title": "Line Complete!",
+    "game_over_title": "Service Failed"
+  },
+  "gameplay": {
+    "timerSeconds": 120,
+    "targetStations": 5,
+    "maxSpeed": 360,
+    "accel": 180,
+    "brake": 260,
+    "friction": 40,
+    "stationDwellSec": 3,
+    "stopSpeed": 6,
+    "spawnSpacingMin": 1600,
+    "spawnSpacingMax": 2600,
+    "obstacleChance": 0.35,
+    "redEveryN": 4,
+    "hp": 3
+  },
+  "images": {
+    "background": "assets/background.png",
+    "train": "assets/train.png",
+    "station": "assets/station.png",
+    "signal": "assets/signal.png",
+    "obstacle": "assets/obstacle.png",
+    "platform": "assets/platform2.png",
+  
+
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/hit.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "gameover": "assets/lose.mp3",
+    "win": "assets/win.mp3"
+  }
+}

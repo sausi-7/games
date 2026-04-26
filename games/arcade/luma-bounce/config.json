@@ -1,0 +1,42 @@
+{
+    "images": {
+        "background": "assets/images/background.png",
+        "player": "assets/images/player.png",
+        "platform": "assets/images/platform.png",
+        "hazard": "assets/images/hazard.png",
+        "light_fragment": "assets/images/light_fragment.png",
+        "goal_crystal": "assets/images/goal_crystal.png",
+        "htpbox": "assets/images/htpbox.png",
+        "playbtn": "assets/images/playbtn.png",
+        "ovrbox": "assets/images/ovrbox.png",
+        "replay": "assets/images/replay.png",
+        "lvlbox": "assets/images/lvlbox.png",
+        "next": "assets/images/next.png",
+        "lvl_replay": "assets/images/lvl_replay.png",
+        "left": "assets/images/left.png",
+        "right": "assets/images/right.png",
+        "jump": "assets/images/jump.png"
+    },
+    "audio": {
+        "ambient_music": "assets/audio/ambient_music.mp3",
+        "bounce_sound": "assets/audio/bounce.mp3",
+        "collect_sound": "assets/audio/collect.mp3",
+        "damage_sound": "assets/audio/damage.mp3",
+        "win_sound": "assets/audio/win.mp3"
+    },
+    "mechanics": {
+        "gravityY": 800,
+        "moveSpeed": 220,
+        "jumpChargeMin": 500,
+        "jumpChargeRate": 5,
+        "jumpChargeMax": 100,
+        "lightDrainPerTick": 0.05,
+        "lightPickup": 15,
+        "lightDamage": 25
+    },
+    "text": {
+        "htp": "Tap left/right to move. Hold JUMP or press SPACE to charge, release to bounce!",
+        "win": "Level Complete!",
+        "lose": "Faded Away"
+    }
+}

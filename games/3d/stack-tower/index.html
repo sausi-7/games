@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Stack Tower 3D – Neon</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      touch-action: none;
+      font-family: system-ui, sans-serif;
+      background: radial-gradient(circle at top, #0ea5e9 0%, #020617 55%);
+    }
+
+    #ui {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e5e7eb;
+      font-size: 20px;
+      background: rgba(15, 23, 42, 0.55);
+      padding: 8px 22px;
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+      z-index: 10;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #020617, #000);
+      z-index: 20;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 32px 36px;
+      text-align: center;
+      color: #fff;
+      max-width: 320px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.35);
+    }
+
+    .panel h1 {
+      margin: 0 0 14px;
+      font-size: 34px
+    }
+
+    .panel p {
+      font-size: 16px;
+      opacity: 0.9
+    }
+
+    .btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 24px
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      color: #020617;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.6);
+    }
+
+    button.secondary {
+      background: linear-gradient(135deg, #64748b, #475569);
+      color: #fff;
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="ui">Score: <span id="score">0</span> / 20</div>
+
+  <!-- START -->
+  <div id="startOverlay" class="overlay">
+    <div class="panel">
+      <h1>STACK TOWER</h1>
+      <p>
+        Tap to drop the block<br>
+        Perfect alignment gives glow<br>
+        Reach 20 to win
+      </p>
+      <div class="btns">
+        <button onclick="startGame()">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIN -->
+  <div id="winOverlay" class="overlay" style="display:none">
+    <div class="panel">
+      <h1>🎉 YOU WIN</h1>
+      <p>Neon perfection!</p>
+      <div class="btns">
+        <button onclick="restart()">Replay</button>
+        <button class="secondary" onclick="nextLevel()">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOSE -->
+  <div id="loseOverlay" class="overlay" style="display:none">
+    <div class="panel">
+      <h1>GAME OVER</h1>
+      <p>Try again</p>
+      <div class="btns">
+        <button onclick="restart()">Replay</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+  <script>
+
+    let GAME_CONFIG = null;
+
+    async function loadConfig() {
+      const res = await fetch("config.json");
+      GAME_CONFIG = await res.json();
+    }
+
+    function applyConfig() {
+      const { mechanics, audio, text } = GAME_CONFIG;
+
+      /* mechanics */
+      TARGET_SCORE = mechanics.target;
+      PERFECT_THRESHOLD = mechanics.perfectThreshold;
+      LEVEL_STEP = mechanics.levelStep;
+      speed = mechanics.baseSpeed;
+
+      /* audio */
+      bgm.src = audio.bgm;
+      dropSound.src = audio.drop;
+
+      /* text */
+      document.title = text.title;
+      document.querySelector("#winOverlay h1").textContent = text.winTitle;
+      document.querySelector("#winOverlay p").textContent = text.winDesc;
+      document.querySelector("#loseOverlay h1").textContent = text.loseTitle;
+      document.querySelector("#loseOverlay p").textContent = text.loseDesc;
+
+      /* UI */
+      document.getElementById("ui").innerHTML =
+        `Score: <span id="score">0</span> / ${TARGET_SCORE}`;
+    }
+
+
+    /* ================= AUDIO ================= */
+    const bgm = new Audio("assets/bgm.mp3");
+    bgm.loop = true;
+    bgm.volume = 0.35;
+
+    const dropSound = new Audio("assets/drop.mp3");
+    dropSound.volume = 0.6;
+
+    function startBGM() {
+      bgm.currentTime = 0;
+      bgm.play().catch(() => { });
+    }
+
+    function playDrop() {
+      dropSound.currentTime = 0;
+      dropSound.play().catch(() => { });
+    }
+
+    /* ========= Parent Notify ========= */
+    function notifyParent(type, data) {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type, ...data }, "*");
+      }
+    }
+
+    /* ========= THREE ========= */
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x020617, 8, 38);
+
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(0, 6, 12);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+    document.body.appendChild(renderer.domElement);
+
+    /* Lights */
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const dl = new THREE.DirectionalLight(0x38bdf8, 0.9);
+    dl.position.set(5, 12, 5);
+    scene.add(dl);
+
+    /* ========= Neon Particles ========= */
+    const stars = [];
+    const starGeo = new THREE.SphereGeometry(0.04, 6, 6);
+    const starMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+
+    for (let i = 0; i < 80; i++) {
+      const s = new THREE.Mesh(starGeo, starMat);
+      s.position.set(
+        (Math.random() - 0.5) * 12,
+        Math.random() * 40,
+        (Math.random() - 0.5) * 12
+      );
+      scene.add(s);
+      stars.push(s);
+    }
+
+    /* ========= GAME ========= */
+    const BLOCK_H = 1;
+    let TARGET_SCORE = 20;
+    let PERFECT_THRESHOLD = 0.08;
+    let LEVEL_STEP = 6;
+    let speed = 0.085;
+
+    let score = 0;
+    let playing = false;
+    let dir = 1;
+
+
+    let blocks = [], current = null, falling = [];
+
+
+    /* ========= BLOCK ========= */
+    function createBlock(w, y) {
+      const g = new THREE.BoxGeometry(w, BLOCK_H, w);
+      const m = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(`hsl(${score * 18 % 360},90%,60%)`),
+        emissive: new THREE.Color(0x020617)
+      });
+      const mesh = new THREE.Mesh(g, m);
+      mesh.position.set(0, y, 0);
+      scene.add(mesh);
+      return mesh;
+    }
+
+    /* ========= PERFECT FX ========= */
+    function perfectHitFX() {
+      const baseX = camera.position.x;
+      let shakes = 6;
+      (function shake() {
+        camera.position.x = baseX + (Math.random() - 0.5) * 0.15;
+        if (--shakes > 0) requestAnimationFrame(shake);
+        else camera.position.x = baseX;
+      })();
+      const oldSpeed = speed;
+      speed *= 0.35;
+      setTimeout(() => speed = oldSpeed, 150);
+    }
+
+    function perfectHitEffect(b) {
+      b.material.emissive = new THREE.Color(0x38bdf8);
+      b.material.emissiveIntensity = 2.2;
+      let t = 0;
+      (function pulse() {
+        t += 0.2;
+        const s = 1 + Math.sin(t) * 0.12;
+        b.scale.set(s, 1, s);
+        if (t < Math.PI) requestAnimationFrame(pulse);
+        else {
+          b.scale.set(1, 1, 1);
+          b.material.emissiveIntensity = 0;
+        }
+      })();
+      perfectHitFX();
+    }
+
+    /* ========= FALLING ========= */
+    function spawnFalling(x, y, w) {
+      const g = new THREE.BoxGeometry(w, BLOCK_H, w);
+      const m = new THREE.MeshStandardMaterial({ color: 0xef4444 });
+      const p = new THREE.Mesh(g, m);
+      p.position.set(x, y, 0);
+      p.userData = { vy: 0, vr: (Math.random() - 0.5) * 0.25 };
+      scene.add(p);
+      falling.push(p);
+    }
+
+    /* ========= FLOW ========= */
+    function reset() {
+      blocks.forEach(b => scene.remove(b));
+      falling.forEach(f => scene.remove(f));
+      blocks = []; falling = [];
+      if (current) { scene.remove(current); current = null; }
+      score = 0;
+      dir = 1;
+
+      document.getElementById("score").textContent = score;
+      blocks.push(createBlock(4, 0));
+      current = createBlock(4, BLOCK_H);
+    }
+
+    function startGame() {
+      startBGM();
+      document.getElementById("startOverlay").style.display = "none";
+      reset(); playing = true;
+    }
+
+    window.addEventListener("pointerdown", () => {
+      if (playing) {
+        playDrop();
+        drop();
+      }
+    });
+
+    function drop() {
+      const prev = blocks.at(-1);
+      const dx = current.position.x - prev.position.x;
+      const abs = Math.abs(dx);
+      const full = prev.scale.x * prev.geometry.parameters.width;
+      let overlap = full - abs;
+
+      if (overlap <= 0.2) { lose(); return; }
+
+      if (abs < PERFECT_THRESHOLD) {
+        current.position.x = prev.position.x;
+        overlap = full;
+        perfectHitEffect(current);
+      } else {
+        spawnFalling(
+          dx > 0 ? current.position.x + overlap / 2 : current.position.x - overlap / 2,
+          current.position.y,
+          full - overlap
+        );
+        current.position.x -= dx / 2;
+      }
+
+      current.scale.x = overlap / current.geometry.parameters.width;
+      blocks.push(current);
+
+      score++;
+      document.getElementById("score").textContent = score;
+      if (score % LEVEL_STEP === 0) speed += 0.03;
+      if (score >= TARGET_SCORE) { win(); return; }
+
+      current = createBlock(overlap, blocks.length * BLOCK_H);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (current && playing) {
+        current.position.x += speed * dir;
+        if (current.position.x > 3.5 || current.position.x < -3.5) dir *= -1;
+      }
+
+      falling.forEach((f, i) => {
+        f.userData.vy -= 0.02;
+        f.position.y += f.userData.vy;
+        f.rotation.y += f.userData.vr;
+        if (f.position.y < -12) { scene.remove(f); falling.splice(i, 1); }
+      });
+
+      stars.forEach(s => {
+        s.position.y -= 0.05;
+        if (s.position.y < camera.position.y - 10) {
+          s.position.y = camera.position.y + 30;
+        }
+      });
+
+      camera.position.y += (blocks.length * BLOCK_H + 4 - camera.position.y) * 0.05;
+      camera.lookAt(0, camera.position.y - 3, 0);
+
+      renderer.render(scene, camera);
+
+    }
+
+    (async function boot() {
+      await loadConfig();
+      applyConfig();
+    })();
+    animate();
+
+    function win() {
+      playing = false;
+      document.getElementById("winOverlay").style.display = "flex";
+    }
+    function lose() {
+      playing = false;
+      document.getElementById("loseOverlay").style.display = "flex";
+    }
+    function restart() {
+      startBGM();   // restart bgm on replay
+      document.getElementById("winOverlay").style.display = "none";
+      document.getElementById("loseOverlay").style.display = "none";
+      reset(); playing = true;
+    }
+    function nextLevel() {
+      notifyParent("sceneComplete", { result: "win" });
+    }
+
+    addEventListener("resize", () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+  </script>
+
+</body>
+
+</html>

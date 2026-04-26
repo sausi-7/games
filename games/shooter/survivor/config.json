@@ -1,0 +1,71 @@
+{
+  "entry": "Customsurvivor/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "How to Play",
+    "score_label": "Score:",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over"
+  },
+  "gameplay": {
+    "timerSeconds": 30,
+    "playerSpeed": 360,
+    "playerHealth": 100,
+    "startAmmo": 3000,
+    "bulletSpeed": 900,
+    "targetScore": 50,
+    "fireRateMs": 180,
+    "enemySpawnRate": 1600,
+    "enemySpawnMinRate": 600,
+    "enemySpawnDecay": 100,
+    "zombieSpeed": 140,
+    "maxZombies": 18,
+    "pickupSpawnRate": 4500,
+    "maxPickups": 4,
+    "maxAmmo": 20,
+    "ammoPickupAmount": 15,
+    "healthPickupAmount": 25
+  },
+  "images1": {
+    "player": "assets/player.png",
+    "enemy": "assets/obj5.png",
+    "round_bullet": "assets/obj1.png",
+    "ammo": "assets/collect.png",
+    "medkit": "assets/obj7.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "winbg": "assets/winbg.png",
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "scoreback": "assets/scoreback.png",
+    "action": "assets/action.png",
+    "jump": "assets/jump.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Attack.mp3",
+    "collect": "assets/collect.mp3",
+    "jump": "assets/collect.mp3",
+    "destroy": "assets/Destroy.mp3",
+    "hit": "assets/hit.mp3",
+    "level_complete": "assets/win.mp3",
+    "game_over": "assets/lose.mp3"
+  }
+}

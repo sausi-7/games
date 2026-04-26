@@ -1,0 +1,41 @@
+{
+  "entry": "Customcurvesnake/index.html",
+  "pointsPerFood": 1,
+  "mechanics": {
+    "speed": 260,
+    "targetScore": 10,
+    "turnRate": 3.14159,
+    "headRadius": 22,
+    "trailStep": 14,
+    "selfHitRadius": 40,
+    "safeSegments": 14,
+    "initialSegments": 36,
+    "growthPerFood": 10,
+    "foodBaseRadius": 32,
+    "foodMargin": 120
+  },
+  "images1": {
+    "food": "assets/food.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "ui": {},
+  "texts": {
+    "hudScorePrefix": "Score",
+    "hudStateIdle": "Tap / Click / Space to toggle turn",
+    "title": "CURVY SNAKE",
+    "subtitle": "Reach <b>{{target}}</b> points to win.<br />Avoid your own tail. The world wraps around.",
+    "hint": "Tap / Click / press Space anywhere to toggle your turn direction.<br />Eat glowing orbs to grow and score. Don't crash into your own trail.",
+    "winTitle": "YOU WIN!",
+    "loseTitle": "GAME OVER",
+    "winCta": "",
+    "loseCta": ""
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "food": "assets/food.mp3",
+    "move": "assets/move.mp3",
+    "gameover": "assets/gameover.mp3"
+  }
+}

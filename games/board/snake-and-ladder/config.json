@@ -1,0 +1,102 @@
+{
+  "entry": "Customsnakeladder/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Roll the dice to move.\nReach tile 100 to win!",
+    "score_label": "Position: ",
+    "win_title": "Level Completed",
+    "turn_player": "Your Turn",
+    "turn_ai": "AI Turn",
+    "ai_dice_prefix": "AI:",
+    "ladder_text": "LADDER!",
+    "snake_text": "SNAKE!",
+    "game_over_title": "Game Over! You didn’t reach tile 100."
+  },
+  "gameplay": {
+    "tileSize": 107,
+    "playerSize": 90,
+    "boardOffsetX": 2,
+    "boardOffsetY": 400,
+    "stepDuration": 220,
+    "snakes": [
+      {
+        "from": 17,
+        "to": 7
+      },
+      {
+        "from": 54,
+        "to": 34
+      },
+      {
+        "from": 62,
+        "to": 19
+      },
+      {
+        "from": 87,
+        "to": 24
+      },
+      {
+        "from": 98,
+        "to": 79
+      }
+    ],
+    "ladders": [
+      {
+        "from": 3,
+        "to": 22
+      },
+      {
+        "from": 8,
+        "to": 30
+      },
+      {
+        "from": 28,
+        "to": 55
+      },
+      {
+        "from": 36,
+        "to": 57
+      },
+      {
+        "from": 63,
+        "to": 91
+      }
+    ]
+  },
+  "images1": {
+    "player": "assets/obj5.png",
+    "dice": "assets/dice.png",
+    "enemy": "assets/enemy.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "snake": "assets/snake.png",
+    "ladder": "assets/ladder.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "scoreback": "assets/scoreback.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "roll": "assets/dice.mp3",
+    "snake": "assets/snake.mp3",
+    "ladder": "assets/ladder.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3"
+  }
+}

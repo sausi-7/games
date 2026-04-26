@@ -1,0 +1,81 @@
+{
+  "entry": "Customflymonkey/index.html",
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "images1": {
+    "shield": "./assets/shield.png",
+    "enemy": "./assets/enemy.png",
+    "wand": "./assets/wand.png",
+    "out_portal": "./assets/out_portal.png",
+    "lock": "./assets/lock.png"
+  },
+  "images2": {
+    "sky": "./assets/bg.png",
+    "platform": "./assets/platform.png"
+  },
+  "ui": {
+    "bullet": "./assets/bullet.png",
+    "bullet_icon": "./assets/bullet_icon.png",
+    "bullet_text_bg": "./assets/bullet_text_bg.png",
+    "joystick_bg": "./assets/joystick_bg.png",
+    "joystick_knob": "./assets/joystick_knob.png",
+    "shoot_joystick_bg": "./assets/shoot_joystick_bg.png",
+    "shoot_joystick_knob": "./assets/shoot_joystick_knob.png",
+    "reload_button": "./assets/bullet_reload.png",
+    "gate_close": "./assets/gate_close.png",
+    "gate_open": "./assets/gate_open.png",
+    "enemy_bullet": "./assets/bullet_enemy.png",
+    "healthbar_bg": "./assets/healthbar_bg.png",
+    "dialog_bg_start": "./assets/dialog_bg_start.png",
+    "button": "./assets/play_button.png",
+    "game_over": "./assets/game_over.png",
+    "replay_button_big": "./assets/replay_button_big.png",
+    "level_complete": "./assets/level_complete.png",
+    "next_button": "./assets/next_button.png",
+    "replay_button": "./assets/replay_button.png",
+    "portal": "./assets/portal.png"
+  },
+  "spritesheets": {
+    "hero": {
+      "url": "./assets/dude.png",
+      "frameWidth": 103,
+      "frameHeight": 142
+    }
+  },
+  "audio": {
+    "bgmusic": "./assets/bgmusic.mp3",
+    "candle_off": "./assets/candle_off.mp3",
+    "enemy_death": "./assets/enemy_death.mp3",
+    "door_lock": "./assets/door-lock-82542.mp3",
+    "jump": "./assets/up.mp3",
+    "lazer_gun": "./assets/lazer_gun.mp3",
+    "portal_entry": "./assets/portal_entry.mp3",
+    "portal_reentry": "./assets/portal_reentry.mp3",
+    "reload": "./assets/reload.mp3"
+  },
+  "tiles": {},
+  "fonts": [],
+  "texts": {
+    "title": "How to Play",
+    "instructions": "Take aim, shoot the mafia,\nand collect their loot."
+  },
+  "spawn": {
+    "x": 300,
+    "y": 160
+  },
+  "mechanics": {
+    "totalBullets": 60,
+    "bulletsInGun": 20,
+    "reloadTime": 1000,
+    "bulletCooldown": 300,
+    "heroMaxHealth": 100,
+    "enemyHitPoints": 3,
+    "enemySpawnDelay": 4000,
+    "enemyFireRate": 2000,
+    "enemyStopDistanceX": 100,
+    "enemyBulletDamage": 10
+  }
+}

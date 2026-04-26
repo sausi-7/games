@@ -1,0 +1,67 @@
+{
+    "entry": "Custombubbleshooter/index.html",
+    "images1": {
+        "spherical": "./assets/red_bubble.png",
+        "spherical1": "./assets/blue_bubble.png",
+        "spherical2": "./assets/purple_bubble.png",
+        "spherical3": "./assets/orange_bubble.png",
+        "spherical4": "./assets/transparent_bubble.png"
+    },
+    "images2": {
+        "background": "./assets/background.png",
+        "htpbg": "./assets/htpbg.png",
+        "winbg": "./assets/winbg.png",
+        "ovrbg": "./assets/ovrbg.png",
+        "platform": "./assets/platform.png",
+        "cannon": "./assets/cannon.png"
+    },
+    "ui": {
+        "completed": "./assets/completed.png",
+        "game_over": "./assets/game_over.png",
+        "next": "./assets/next.png",
+        "replay_level": "./assets/replay_level.png",
+        "replay": "./assets/replay.png",
+        "htpBox": "./assets/htpbox.png",
+        "http": "./assets/http.png",
+        "playbtn": "./assets/playbtn.png",
+        "play_game": "./assets/play_game.png",
+        "textbox": "./assets/textbox.png"
+    },
+    "spritesheets": {
+        "eve": {
+            "path": "./assets/eve_spritesheet.png",
+            "frameWidth": 100,
+            "frameHeight": 158
+        }
+    },
+    "audio": {
+        "pop_sound": "./assets/pop_sound.mp3",
+        "unlock_sound": "./assets/unlock_sound.mp3",
+        "key_collect": "./assets/key_collect.mp3",
+        "up": "./assets/up.mp3",
+        "bgm": "./assets/bgm.mp3"
+    },
+    "texts": {
+        "timer_label": "Time",
+        "score_label": "Score",
+        "target_label": "Target",
+        "how_to_play_title": "How to Play",
+        "how_to_play_desc": "Swipe to aim, tap to shoot.\n\nMatch 3+:",
+        "game_over_title": "Game Over",
+        "win_title": "Level Completed"
+    },
+    "orientation": {
+        "frame": "portrait",
+        "width": 1080,
+        "height": 1920
+    },
+    "mechanics": {
+        "targetScore": 8,
+        "bubbleSpeed": 1500,
+        "timerSeconds": 60,
+        "gravity": {
+            "x": 0,
+            "y": 0
+        }
+    }
+}

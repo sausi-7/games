@@ -1,0 +1,80 @@
+{
+    "entry": "Customhungryplayer/index.html",
+    "images1": {
+        "obstacle": "assets/bubble.png",
+        "object1": "assets/fish1.png",
+        "object2": "assets/fish2.png",
+        "object3": "assets/fish3.png",
+        "object4": "assets/fish4.png",
+        "object5": "assets/fish5.png",
+        "object6": "assets/fish6.png",
+        "object7": "assets/fish7.png",
+        "player": "assets/player.png",
+        "chemical_drum": "assets/chemical_drum.png"
+    },
+    "images2": {
+        "background": "assets/background_sea.png",
+        "level_completed_background": "assets/background1.png",
+        "level_lost_background": "assets/background2.png"
+    },
+    "ui": {
+        "gameovrbg": "assets/gameovrbg.png",
+        "restart1": "assets/restart1.png",
+        "restart": "assets/restart.png",
+        "nextbtn": "assets/nextbtn.png",
+        "lvlbox": "assets/lvlbox.png",
+        "playbtn": "assets/playbtn.png",
+        "htpbox": "assets/htpbox.png",
+        "hpbox": "assets/hpbox.png",
+        "scorebox": "assets/scorebox.png",
+        "pointbox": "assets/pointbox.png",
+        "timebox": "assets/timebox.png"
+    },
+    "spritesheets": {
+        "shark": {
+            "path": "assets/shark.png",
+            "frameWidth": 103,
+            "frameHeight": 143
+        }
+    },
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "mechanics": {
+        "initialHP": 45,
+        "gameTime": 60,
+        "targetFishCount": 10,
+        "fishSpeed": 80,
+        "drumSpeed": 800,
+        "lives": 5
+    },
+    "audio": {
+        "eat": "assets/eat.mp3",
+        "bgm": "assets/bgm.mp3",
+        "bomb": "assets/bomb.mp3"
+    },
+    "labels": {
+        "howToPlayTitle": "How to Play",
+        "controlLabel": "Control:",
+        "collectLabel": "Collect:",
+        "avoidLabel": "Avoid:",
+        "livesTemplate": "Lives: {lives}",
+        "pointsTemplate": "Points: {got}/{target}",
+        "timeLabel": "Time:",
+        "winText": "Level Completed!",
+        "gameOverText": "Game Over"
+    },
+    "textStyles": {
+        "htpHeading": {
+            "fontSize": "70px",
+            "fontFamily": "outfit",
+            "color": "#ffffff"
+        },
+        "uiNumbers": {
+            "font": "bold 50px outfit",
+            "fill": "#000000"
+        }
+    }
+}

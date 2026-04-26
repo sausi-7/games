@@ -1,0 +1,85 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Hold an ingredient to pour into the glass. Release to stop. Swipe down on the glass to serve. Match each drink’s recipe ratios. Aim for perfect mixes for higher scores!",
+    "score_label": "Score:",
+    "win_title": "Service Master!",
+    "game_over_title": "Bar Closed!",
+    "ingredient_names": {
+      "yogurt": "Yogurt",
+      "water": "Water",
+      "salt": "Salt",
+      "cumin": "Cumin",
+      "lemon": "Lemon",
+      "soda": "Soda",
+      "sugar": "Sugar",
+      "ice": "Ice"
+    }
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "glassCapacity": 100,
+    "targetScore": 300,
+    "tolerancePerfect": 0.10,
+    "toleranceSoft": 0.25,
+    "pourRates": {
+      "yogurt": 55,
+      "water": 70,
+      "salt": 18,
+      "cumin": 18,
+      "lemon": 40,
+      "soda": 85,
+      "sugar": 25
+    },
+    "recipes": [
+      {
+        "name": "Lassi (Buttermilk)",
+        "targets": { "yogurt": 45, "water": 45, "salt": 5, "cumin": 5 }
+      },
+      {
+        "name": "Lemon Soda", 
+        "targets": { "lemon": 30, "soda": 60, "sugar": 5, "salt": 5 }
+      },
+      {
+        "name": "Sweet Buttermilk",
+        "targets": { "yogurt": 50, "water": 40, "sugar": 10 }
+      }
+    ]
+  },
+  "images1": {
+    "glass": "assets/obj1.png",
+    "yogurt": "assets/obj3.png",
+    "water": "assets/obj4.png",
+    "salt": "assets/obj6.png",
+    "cumin": "assets/obj7.png",
+    "lemon": "assets/obj8.png",
+    "soda": "assets/obj9.png",
+    "sugar": "assets/obj10.png",
+    "ice": "assets/obj12.png"
+  },
+    "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform.png",
+    "platform2": "assets/platform2.png"
+  },
+    "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "pour": "assets/bgm.mp3",
+    "collect": "assets/bgm.mp3",
+    "hit": "assets/bgm.mp3",
+    "level_complete": "assets/win.mp3",
+    "game_over": "assets/lose.mp3"
+  }
+}

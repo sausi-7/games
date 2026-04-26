@@ -1,0 +1,1803 @@
+{
+  "version": 1,
+  "generated_from": "scripts/restructure.py",
+  "categories": [
+    {
+      "id": "puzzle",
+      "label": "Puzzle",
+      "emoji": "🧩",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "arcade",
+      "label": "Arcade",
+      "emoji": "🕹️",
+      "color": "#ec4899"
+    },
+    {
+      "id": "shooter",
+      "label": "Shooter",
+      "emoji": "🎯",
+      "color": "#ef4444"
+    },
+    {
+      "id": "racing",
+      "label": "Racing",
+      "emoji": "🏎️",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "sports",
+      "label": "Sports",
+      "emoji": "⚽",
+      "color": "#10b981"
+    },
+    {
+      "id": "platformer",
+      "label": "Platformer",
+      "emoji": "🏃",
+      "color": "#06b6d4"
+    },
+    {
+      "id": "casual",
+      "label": "Casual",
+      "emoji": "🎈",
+      "color": "#f472b6"
+    },
+    {
+      "id": "board",
+      "label": "Board",
+      "emoji": "♟️",
+      "color": "#64748b"
+    },
+    {
+      "id": "word-quiz",
+      "label": "Word & Quiz",
+      "emoji": "📝",
+      "color": "#3b82f6"
+    },
+    {
+      "id": "3d",
+      "label": "3D",
+      "emoji": "🌐",
+      "color": "#8b5cf6"
+    }
+  ],
+  "games": [
+    {
+      "slug": "2048",
+      "name": "2048",
+      "category": "puzzle",
+      "path": "games/puzzle/2048/index.html",
+      "tech": "phaser",
+      "tags": [
+        "merge",
+        "numbers",
+        "classic"
+      ],
+      "description": "Slide tiles. Merge matching numbers. Reach 2048."
+    },
+    {
+      "slug": "6oct",
+      "name": "6 Octagons",
+      "category": "puzzle",
+      "path": "games/puzzle/6oct/index.html",
+      "tech": "phaser",
+      "tags": [
+        "tiles",
+        "minimal"
+      ],
+      "description": "Octagon-tile sliding puzzle."
+    },
+    {
+      "slug": "rock-paper-scissors",
+      "name": "Rock Paper Scissors",
+      "category": "board",
+      "path": "games/board/rock-paper-scissors/index.html",
+      "tech": "phaser",
+      "tags": [
+        "classic",
+        "quick"
+      ],
+      "description": "The timeless hand game vs the AI."
+    },
+    {
+      "slug": "sudoku",
+      "name": "Sudoku",
+      "category": "puzzle",
+      "path": "games/puzzle/sudoku/index.html",
+      "tech": "html",
+      "tags": [
+        "logic",
+        "numbers",
+        "classic"
+      ],
+      "description": "Classic 9x9 number logic puzzle."
+    },
+    {
+      "slug": "abhita",
+      "name": "Abhita",
+      "category": "arcade",
+      "path": "games/arcade/abhita/index.html",
+      "tech": "phaser",
+      "tags": [
+        "reflex",
+        "dodge"
+      ],
+      "description": "Reflex-driven dodge mini-game."
+    },
+    {
+      "slug": "alien-battle",
+      "name": "Alien Battle",
+      "category": "shooter",
+      "path": "games/shooter/alien-battle/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aliens",
+        "top-down",
+        "survival"
+      ],
+      "description": "Top-down alien shooter. Survive the swarm."
+    },
+    {
+      "slug": "antigravity",
+      "name": "Anti-Gravity",
+      "category": "platformer",
+      "path": "games/platformer/antigravity/index.html",
+      "tech": "phaser",
+      "tags": [
+        "physics",
+        "gravity"
+      ],
+      "description": "Flip gravity to navigate hazards."
+    },
+    {
+      "slug": "archer",
+      "name": "Archer",
+      "category": "sports",
+      "path": "games/sports/archer/index.html",
+      "tech": "html",
+      "tags": [
+        "bow",
+        "aim",
+        "precision"
+      ],
+      "description": "Aim, draw, and release. Hit your target."
+    },
+    {
+      "slug": "balance-stack",
+      "name": "Balance Stack",
+      "category": "arcade",
+      "path": "games/arcade/balance-stack/index.html",
+      "tech": "phaser",
+      "tags": [
+        "stacking",
+        "balance"
+      ],
+      "description": "Stack blocks without toppling the tower."
+    },
+    {
+      "slug": "basketball",
+      "name": "Basketball",
+      "category": "sports",
+      "path": "games/sports/basketball/index.html",
+      "tech": "phaser",
+      "tags": [
+        "hoops",
+        "arcade-sports"
+      ],
+      "description": "Arc the ball through the hoop."
+    },
+    {
+      "slug": "bird-shooter",
+      "name": "Bird Shooter",
+      "category": "shooter",
+      "path": "games/shooter/bird-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aim",
+        "reflex"
+      ],
+      "description": "Track and shoot flying birds."
+    },
+    {
+      "slug": "bomb-blast",
+      "name": "Bomb Blast",
+      "category": "arcade",
+      "path": "games/arcade/bomb-blast/index.html",
+      "tech": "phaser",
+      "tags": [
+        "explosions",
+        "timing"
+      ],
+      "description": "Time the blast to chain destruction."
+    },
+    {
+      "slug": "boom-dots",
+      "name": "Boom Dots",
+      "category": "arcade",
+      "path": "games/arcade/boom-dots/index.html",
+      "tech": "phaser",
+      "tags": [
+        "chain",
+        "reflex"
+      ],
+      "description": "Tap to detonate dots and clear the screen."
+    },
+    {
+      "slug": "bowling",
+      "name": "Bowling",
+      "category": "sports",
+      "path": "games/sports/bowling/index.html",
+      "tech": "phaser",
+      "tags": [
+        "pins",
+        "aim",
+        "sport"
+      ],
+      "description": "Knock down all the pins."
+    },
+    {
+      "slug": "breakoid",
+      "name": "Breakoid",
+      "category": "arcade",
+      "path": "games/arcade/breakoid/index.html",
+      "tech": "phaser",
+      "tags": [
+        "brick",
+        "paddle",
+        "classic"
+      ],
+      "description": "Breakout-style brick smashing."
+    },
+    {
+      "slug": "bubble-pop",
+      "name": "Bubble Pop",
+      "category": "casual",
+      "path": "games/casual/bubble-pop/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match",
+        "bubbles",
+        "relaxing"
+      ],
+      "description": "Pop matching bubbles to score."
+    },
+    {
+      "slug": "bubble-shooter",
+      "name": "Bubble Shooter",
+      "category": "casual",
+      "path": "games/casual/bubble-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match-3",
+        "shooter",
+        "classic"
+      ],
+      "description": "Shoot bubbles into matching color clusters."
+    },
+    {
+      "slug": "bug-smasher",
+      "name": "Bug Smasher",
+      "category": "arcade",
+      "path": "games/arcade/bug-smasher/index.html",
+      "tech": "phaser",
+      "tags": [
+        "whack",
+        "reflex"
+      ],
+      "description": "Squash bugs before they reach the goal."
+    },
+    {
+      "slug": "buttermilk",
+      "name": "Buttermilk",
+      "category": "casual",
+      "path": "games/casual/buttermilk/index.html",
+      "tech": "phaser",
+      "tags": [
+        "idle",
+        "pour",
+        "cute"
+      ],
+      "description": "Cute pour-and-mix idle game."
+    },
+    {
+      "slug": "candy-crush",
+      "name": "Candy Crush",
+      "category": "casual",
+      "path": "games/casual/candy-crush/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match-3",
+        "candy",
+        "classic"
+      ],
+      "description": "Match-3 candy puzzle."
+    },
+    {
+      "slug": "candy-crusher",
+      "name": "Candy Crusher",
+      "category": "casual",
+      "path": "games/casual/candy-crusher/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match",
+        "crush"
+      ],
+      "description": "Smash candy patterns for points."
+    },
+    {
+      "slug": "cannon-blaster",
+      "name": "Cannon Blaster",
+      "category": "shooter",
+      "path": "games/shooter/cannon-blaster/index.html",
+      "tech": "phaser",
+      "tags": [
+        "cannon",
+        "physics",
+        "aim"
+      ],
+      "description": "Aim and fire cannonballs at targets."
+    },
+    {
+      "slug": "cargo-stack",
+      "name": "Cargo Stack",
+      "category": "puzzle",
+      "path": "games/puzzle/cargo-stack/index.html",
+      "tech": "phaser",
+      "tags": [
+        "stacking",
+        "logistics"
+      ],
+      "description": "Pack cargo crates without overflow."
+    },
+    {
+      "slug": "car-race",
+      "name": "Car Race",
+      "category": "racing",
+      "path": "games/racing/car-race/index.html",
+      "tech": "three",
+      "tags": [
+        "3d",
+        "cars",
+        "traffic"
+      ],
+      "description": "3D car-racing run with traffic dodging."
+    },
+    {
+      "slug": "carrom",
+      "name": "Carrom",
+      "category": "board",
+      "path": "games/board/carrom/index.html",
+      "tech": "phaser",
+      "tags": [
+        "table",
+        "aim",
+        "classic"
+      ],
+      "description": "Pocket the carrom pieces with skill."
+    },
+    {
+      "slug": "chess",
+      "name": "Chess",
+      "category": "board",
+      "path": "games/board/chess/index.html",
+      "tech": "phaser",
+      "tags": [
+        "strategy",
+        "classic"
+      ],
+      "description": "Classic chess vs the computer."
+    },
+    {
+      "slug": "circle-path",
+      "name": "Circle Path",
+      "category": "arcade",
+      "path": "games/arcade/circle-path/index.html",
+      "tech": "phaser",
+      "tags": [
+        "timing",
+        "ring"
+      ],
+      "description": "Trace the rotating circle without slipping."
+    },
+    {
+      "slug": "circuit-bulb",
+      "name": "Circuit Bulb",
+      "category": "puzzle",
+      "path": "games/puzzle/circuit-bulb/index.html",
+      "tech": "phaser",
+      "tags": [
+        "logic",
+        "wires"
+      ],
+      "description": "Wire circuits to light the bulb."
+    },
+    {
+      "slug": "catch-me-if-you-can",
+      "name": "Catch Me If You Can",
+      "category": "arcade",
+      "path": "games/arcade/catch-me-if-you-can/index.html",
+      "tech": "phaser",
+      "tags": [
+        "chase",
+        "stealth"
+      ],
+      "description": "Outrun the chasers in a wide arena."
+    },
+    {
+      "slug": "collector",
+      "name": "Collector",
+      "category": "arcade",
+      "path": "games/arcade/collector/index.html",
+      "tech": "phaser",
+      "tags": [
+        "coins",
+        "time-attack"
+      ],
+      "description": "Sweep up coins before time runs out."
+    },
+    {
+      "slug": "color-dash",
+      "name": "Color Dash",
+      "category": "arcade",
+      "path": "games/arcade/color-dash/index.html",
+      "tech": "phaser",
+      "tags": [
+        "color-match",
+        "reflex"
+      ],
+      "description": "Match the player's color to pass each gate."
+    },
+    {
+      "slug": "colour-pour",
+      "name": "Colour Pour",
+      "category": "puzzle",
+      "path": "games/puzzle/colour-pour/index.html",
+      "tech": "phaser",
+      "tags": [
+        "sort",
+        "liquid",
+        "relax"
+      ],
+      "description": "Sort liquids into single-color tubes."
+    },
+    {
+      "slug": "connected",
+      "name": "Connected",
+      "category": "puzzle",
+      "path": "games/puzzle/connected/index.html",
+      "tech": "phaser",
+      "tags": [
+        "graph",
+        "logic"
+      ],
+      "description": "Link nodes without crossing lines."
+    },
+    {
+      "slug": "cooking",
+      "name": "Cooking",
+      "category": "casual",
+      "path": "games/casual/cooking/index.html",
+      "tech": "phaser",
+      "tags": [
+        "timer",
+        "kitchen"
+      ],
+      "description": "Plate orders before the timer hits zero."
+    },
+    {
+      "slug": "cool-platformer",
+      "name": "Cool Platformer",
+      "category": "platformer",
+      "path": "games/platformer/cool-platformer/index.html",
+      "tech": "phaser",
+      "tags": [
+        "jump",
+        "run",
+        "platform"
+      ],
+      "description": "Run, jump, and dash through hazards."
+    },
+    {
+      "slug": "cosmic-cleaner",
+      "name": "Cosmic Cleaner",
+      "category": "3d",
+      "path": "games/3d/cosmic-cleaner/index.html",
+      "tech": "phaser",
+      "tags": [
+        "3d",
+        "space"
+      ],
+      "description": "3D space-junk vacuum-up game."
+    },
+    {
+      "slug": "cricket-123",
+      "name": "Cricket 1-2-3",
+      "category": "sports",
+      "path": "games/sports/cricket-123/index.html",
+      "tech": "phaser",
+      "tags": [
+        "cricket",
+        "reflex"
+      ],
+      "description": "Bat through fast deliveries."
+    },
+    {
+      "slug": "crossy-road",
+      "name": "Crossy Road",
+      "category": "arcade",
+      "path": "games/arcade/crossy-road/index.html",
+      "tech": "three",
+      "tags": [
+        "frogger",
+        "endless"
+      ],
+      "description": "Hop across roads, rivers, and rails."
+    },
+    {
+      "slug": "crowd-control",
+      "name": "Crowd Control",
+      "category": "arcade",
+      "path": "games/arcade/crowd-control/index.html",
+      "tech": "phaser",
+      "tags": [
+        "growing",
+        "io-style"
+      ],
+      "description": "Steer your growing crowd through obstacles."
+    },
+    {
+      "slug": "curve-snake",
+      "name": "Curve Snake",
+      "category": "arcade",
+      "path": "games/arcade/curve-snake/index.html",
+      "tech": "html",
+      "tags": [
+        "snake",
+        "trail"
+      ],
+      "description": "Snake-style game with smooth curve trails."
+    },
+    {
+      "slug": "cut-rope",
+      "name": "Cut the Rope",
+      "category": "puzzle",
+      "path": "games/puzzle/cut-rope/index.html",
+      "tech": "phaser",
+      "tags": [
+        "physics",
+        "slice"
+      ],
+      "description": "Slice ropes to land the candy in the goal."
+    },
+    {
+      "slug": "demon",
+      "name": "Demon",
+      "category": "arcade",
+      "path": "games/arcade/demon/index.html",
+      "tech": "phaser",
+      "tags": [
+        "survival",
+        "dark"
+      ],
+      "description": "Survive a horde of demonic enemies."
+    },
+    {
+      "slug": "devil-king",
+      "name": "Devil King",
+      "category": "platformer",
+      "path": "games/platformer/devil-king/index.html",
+      "tech": "phaser",
+      "tags": [
+        "challenge",
+        "jump"
+      ],
+      "description": "Hop hazards in a devilish trial run."
+    },
+    {
+      "slug": "dodge-enemy",
+      "name": "Dodge Enemy",
+      "category": "arcade",
+      "path": "games/arcade/dodge-enemy/index.html",
+      "tech": "phaser",
+      "tags": [
+        "dodge",
+        "reflex"
+      ],
+      "description": "Slip past charging enemies."
+    },
+    {
+      "slug": "dodge-master",
+      "name": "Dodge Master",
+      "category": "arcade",
+      "path": "games/arcade/dodge-master/index.html",
+      "tech": "phaser",
+      "tags": [
+        "endless",
+        "dodge"
+      ],
+      "description": "Endless dodging at increasing speed."
+    },
+    {
+      "slug": "doodle-jump",
+      "name": "Doodle Jump",
+      "category": "platformer",
+      "path": "games/platformer/doodle-jump/index.html",
+      "tech": "phaser",
+      "tags": [
+        "vertical",
+        "jump",
+        "classic"
+      ],
+      "description": "Jump from platform to platform — go higher."
+    },
+    {
+      "slug": "dream-weaver",
+      "name": "Dream Weaver",
+      "category": "arcade",
+      "path": "games/arcade/dream-weaver/index.html",
+      "tech": "phaser",
+      "tags": [
+        "chill",
+        "trail"
+      ],
+      "description": "Weave glowing trails through a dreamscape."
+    },
+    {
+      "slug": "ellars",
+      "name": "Ellars",
+      "category": "arcade",
+      "path": "games/arcade/ellars/index.html",
+      "tech": "phaser",
+      "tags": [
+        "abstract",
+        "dodge"
+      ],
+      "description": "Surreal arcade dodger."
+    },
+    {
+      "slug": "endless-mafia",
+      "name": "Endless Mafia",
+      "category": "arcade",
+      "path": "games/arcade/endless-mafia/index.html",
+      "tech": "phaser",
+      "tags": [
+        "brawler",
+        "endless"
+      ],
+      "description": "Brawl through endless waves of mafia thugs."
+    },
+    {
+      "slug": "endless-runner",
+      "name": "Endless Runner",
+      "category": "racing",
+      "path": "games/racing/endless-runner/index.html",
+      "tech": "phaser",
+      "tags": [
+        "runner",
+        "endless"
+      ],
+      "description": "Run forever. Dodge everything."
+    },
+    {
+      "slug": "fighter-fury",
+      "name": "Fighter Fury",
+      "category": "shooter",
+      "path": "games/shooter/fighter-fury/index.html",
+      "tech": "phaser",
+      "tags": [
+        "jet",
+        "side-scroll"
+      ],
+      "description": "Side-scrolling jet shooter."
+    },
+    {
+      "slug": "fighter-jet",
+      "name": "Fighter Jet",
+      "category": "shooter",
+      "path": "games/shooter/fighter-jet/index.html",
+      "tech": "phaser",
+      "tags": [
+        "jet",
+        "top-down"
+      ],
+      "description": "Top-down jet combat."
+    },
+    {
+      "slug": "flappy",
+      "name": "Flappy",
+      "category": "arcade",
+      "path": "games/arcade/flappy/index.html",
+      "tech": "phaser",
+      "tags": [
+        "tap",
+        "one-button",
+        "classic"
+      ],
+      "description": "Tap to flap. Don't hit the pipes."
+    },
+    {
+      "slug": "flip-jump",
+      "name": "Flip Jump",
+      "category": "platformer",
+      "path": "games/platformer/flip-jump/index.html",
+      "tech": "phaser",
+      "tags": [
+        "gravity",
+        "flip"
+      ],
+      "description": "Flip the world to land safely."
+    },
+    {
+      "slug": "fly-monkey",
+      "name": "Fly Monkey",
+      "category": "arcade",
+      "path": "games/arcade/fly-monkey/index.html",
+      "tech": "phaser",
+      "tags": [
+        "swing",
+        "jungle"
+      ],
+      "description": "Swing the monkey through the canopy."
+    },
+    {
+      "slug": "football",
+      "name": "Football",
+      "category": "sports",
+      "path": "games/sports/football/index.html",
+      "tech": "html",
+      "tags": [
+        "soccer",
+        "goals"
+      ],
+      "description": "Score goals in a fast-paced footy match."
+    },
+    {
+      "slug": "forest-runner",
+      "name": "Forest Runner",
+      "category": "racing",
+      "path": "games/racing/forest-runner/index.html",
+      "tech": "phaser",
+      "tags": [
+        "runner",
+        "forest"
+      ],
+      "description": "Sprint through a forest — dodge logs and gaps."
+    },
+    {
+      "slug": "four-dots",
+      "name": "Four Dots",
+      "category": "puzzle",
+      "path": "games/puzzle/four-dots/index.html",
+      "tech": "phaser",
+      "tags": [
+        "pattern",
+        "tap"
+      ],
+      "description": "Tap dots in the right pattern."
+    },
+    {
+      "slug": "fruit-basket",
+      "name": "Fruit Basket",
+      "category": "casual",
+      "path": "games/casual/fruit-basket/index.html",
+      "tech": "phaser",
+      "tags": [
+        "catch",
+        "fruits",
+        "cute"
+      ],
+      "description": "Catch falling fruits in your basket."
+    },
+    {
+      "slug": "fruit-cosmics",
+      "name": "Fruit Cosmics",
+      "category": "casual",
+      "path": "games/casual/fruit-cosmics/index.html",
+      "tech": "phaser",
+      "tags": [
+        "fruits",
+        "slash"
+      ],
+      "description": "Cosmic-themed fruit smasher."
+    },
+    {
+      "slug": "fruit-merge",
+      "name": "Fruit Merge",
+      "category": "casual",
+      "path": "games/casual/fruit-merge/index.html",
+      "tech": "html",
+      "tags": [
+        "merge",
+        "suika",
+        "drop"
+      ],
+      "description": "Drop fruits — merge same kinds to evolve."
+    },
+    {
+      "slug": "luma-bounce",
+      "name": "LumaBounce",
+      "category": "arcade",
+      "path": "games/arcade/luma-bounce/index.html",
+      "tech": "phaser",
+      "tags": [
+        "bounce",
+        "reflex"
+      ],
+      "description": "Bouncy reflex arcade game."
+    },
+    {
+      "slug": "glass-step",
+      "name": "Glass Step",
+      "category": "arcade",
+      "path": "games/arcade/glass-step/index.html",
+      "tech": "phaser",
+      "tags": [
+        "squid-game",
+        "pick"
+      ],
+      "description": "Pick the safe glass tile. Don't fall."
+    },
+    {
+      "slug": "gunman",
+      "name": "Gunman",
+      "category": "shooter",
+      "path": "games/shooter/gunman/index.html",
+      "tech": "phaser",
+      "tags": [
+        "western",
+        "quickdraw"
+      ],
+      "description": "Quick-draw gunfight game."
+    },
+    {
+      "slug": "gun-run",
+      "name": "Gun Run",
+      "category": "shooter",
+      "path": "games/shooter/gun-run/index.html",
+      "tech": "phaser",
+      "tags": [
+        "run-gun",
+        "side-scroll"
+      ],
+      "description": "Run-and-gun side-scroller."
+    },
+    {
+      "slug": "hex-puzzle",
+      "name": "Hex Puzzle",
+      "category": "puzzle",
+      "path": "games/puzzle/hex-puzzle/index.html",
+      "tech": "html",
+      "tags": [
+        "hex",
+        "blocks"
+      ],
+      "description": "Place hex blocks to clear the board."
+    },
+    {
+      "slug": "hungry-player",
+      "name": "Hungry Player",
+      "category": "arcade",
+      "path": "games/arcade/hungry-player/index.html",
+      "tech": "phaser",
+      "tags": [
+        "eat",
+        "grow"
+      ],
+      "description": "Gobble food, dodge hazards, grow."
+    },
+    {
+      "slug": "jump-dot",
+      "name": "Jump Dot",
+      "category": "arcade",
+      "path": "games/arcade/jump-dot/index.html",
+      "tech": "phaser",
+      "tags": [
+        "one-button",
+        "timing"
+      ],
+      "description": "Tap to jump the dot over rotating hazards."
+    },
+    {
+      "slug": "kaiju-krush",
+      "name": "Kaiju Krush",
+      "category": "arcade",
+      "path": "games/arcade/kaiju-krush/index.html",
+      "tech": "phaser",
+      "tags": [
+        "destruction",
+        "kaiju"
+      ],
+      "description": "Smash through the city as a giant kaiju."
+    },
+    {
+      "slug": "laser-bounce",
+      "name": "Laser Bounce",
+      "category": "puzzle",
+      "path": "games/puzzle/laser-bounce/index.html",
+      "tech": "phaser",
+      "tags": [
+        "lasers",
+        "reflect",
+        "logic"
+      ],
+      "description": "Reflect lasers to hit all targets."
+    },
+    {
+      "slug": "link",
+      "name": "Link",
+      "category": "puzzle",
+      "path": "games/puzzle/link/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match",
+        "mahjong"
+      ],
+      "description": "Link matching tiles by shortest path."
+    },
+    {
+      "slug": "ludo",
+      "name": "Ludo",
+      "category": "board",
+      "path": "games/board/ludo/index.html",
+      "tech": "html",
+      "tags": [
+        "dice",
+        "classic",
+        "family"
+      ],
+      "description": "Classic Ludo — you vs 3 AI opponents."
+    },
+    {
+      "slug": "mario",
+      "name": "Mario-Like",
+      "category": "platformer",
+      "path": "games/platformer/mario/index.html",
+      "tech": "phaser",
+      "tags": [
+        "platformer",
+        "retro"
+      ],
+      "description": "Side-scrolling platformer adventure."
+    },
+    {
+      "slug": "math-quest",
+      "name": "Math Quest",
+      "category": "word-quiz",
+      "path": "games/word-quiz/math-quest/index.html",
+      "tech": "phaser",
+      "tags": [
+        "math",
+        "education",
+        "quick"
+      ],
+      "description": "Speed math challenge."
+    },
+    {
+      "slug": "memory",
+      "name": "Memory",
+      "category": "puzzle",
+      "path": "games/puzzle/memory/index.html",
+      "tech": "phaser",
+      "tags": [
+        "memory",
+        "cards",
+        "classic"
+      ],
+      "description": "Flip cards. Find pairs."
+    },
+    {
+      "slug": "memory-cards",
+      "name": "Memory Cards",
+      "category": "puzzle",
+      "path": "games/puzzle/memory-cards/index.html",
+      "tech": "phaser",
+      "tags": [
+        "memory",
+        "cards"
+      ],
+      "description": "Card-matching memory test."
+    },
+    {
+      "slug": "number-merge",
+      "name": "Number Merge",
+      "category": "puzzle",
+      "path": "games/puzzle/number-merge/index.html",
+      "tech": "phaser",
+      "tags": [
+        "merge",
+        "numbers"
+      ],
+      "description": "Merge same numbers, climb the score."
+    },
+    {
+      "slug": "one-car",
+      "name": "One Car",
+      "category": "racing",
+      "path": "games/racing/one-car/index.html",
+      "tech": "phaser",
+      "tags": [
+        "traffic",
+        "reflex"
+      ],
+      "description": "Steer one car through dense traffic."
+    },
+    {
+      "slug": "orbital-outpost",
+      "name": "Orbital Outpost",
+      "category": "3d",
+      "path": "games/3d/orbital-outpost/index.html",
+      "tech": "phaser",
+      "tags": [
+        "3d",
+        "space",
+        "defense"
+      ],
+      "description": "3D space-station defense."
+    },
+    {
+      "slug": "pacman",
+      "name": "Pac-Man",
+      "category": "arcade",
+      "path": "games/arcade/pacman/index.html",
+      "tech": "phaser",
+      "tags": [
+        "maze",
+        "classic"
+      ],
+      "description": "Eat dots. Avoid ghosts."
+    },
+    {
+      "slug": "pairing",
+      "name": "Pairing",
+      "category": "puzzle",
+      "path": "games/puzzle/pairing/index.html",
+      "tech": "phaser",
+      "tags": [
+        "match",
+        "quick"
+      ],
+      "description": "Pair up matching items quickly."
+    },
+    {
+      "slug": "parkour",
+      "name": "Parkour",
+      "category": "platformer",
+      "path": "games/platformer/parkour/index.html",
+      "tech": "phaser",
+      "tags": [
+        "parkour",
+        "run"
+      ],
+      "description": "Wall-run, slide, and vault forward."
+    },
+    {
+      "slug": "pathfinder",
+      "name": "Pathfinder",
+      "category": "puzzle",
+      "path": "games/puzzle/pathfinder/index.html",
+      "tech": "phaser",
+      "tags": [
+        "maze",
+        "path"
+      ],
+      "description": "Solve maze paths under time pressure."
+    },
+    {
+      "slug": "perfect-square",
+      "name": "Perfect Square",
+      "category": "puzzle",
+      "path": "games/puzzle/perfect-square/index.html",
+      "tech": "phaser",
+      "tags": [
+        "timing",
+        "precision"
+      ],
+      "description": "Tap when the square aligns perfectly."
+    },
+    {
+      "slug": "pirates",
+      "name": "Pirates",
+      "category": "arcade",
+      "path": "games/arcade/pirates/index.html",
+      "tech": "phaser",
+      "tags": [
+        "pirates",
+        "ships"
+      ],
+      "description": "Sail and battle on the high seas."
+    },
+    {
+      "slug": "planet-visitor",
+      "name": "Planet Visitor",
+      "category": "3d",
+      "path": "games/3d/planet-visitor/index.html",
+      "tech": "phaser",
+      "tags": [
+        "3d",
+        "space",
+        "explore"
+      ],
+      "description": "Land on alien planets in 3D."
+    },
+    {
+      "slug": "planet-war",
+      "name": "Planet War",
+      "category": "3d",
+      "path": "games/3d/planet-war/index.html",
+      "tech": "phaser",
+      "tags": [
+        "3d",
+        "space",
+        "defense"
+      ],
+      "description": "Defend your planet from cosmic invaders."
+    },
+    {
+      "slug": "projectile-enemy",
+      "name": "Projectile Enemy",
+      "category": "shooter",
+      "path": "games/shooter/projectile-enemy/index.html",
+      "tech": "phaser",
+      "tags": [
+        "bullet-hell",
+        "reflex"
+      ],
+      "description": "Dodge and counter ranged enemies."
+    },
+    {
+      "slug": "quiz",
+      "name": "Quiz",
+      "category": "word-quiz",
+      "path": "games/word-quiz/quiz/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trivia",
+        "education"
+      ],
+      "description": "Test your knowledge across categories."
+    },
+    {
+      "slug": "red-light-green-light",
+      "name": "Red Light, Green Light",
+      "category": "arcade",
+      "path": "games/arcade/red-light-green-light/index.html",
+      "tech": "phaser",
+      "tags": [
+        "squid-game",
+        "reflex"
+      ],
+      "description": "Move on green. Freeze on red."
+    },
+    {
+      "slug": "road-cross",
+      "name": "Road Cross",
+      "category": "arcade",
+      "path": "games/arcade/road-cross/index.html",
+      "tech": "phaser",
+      "tags": [
+        "frogger",
+        "timing"
+      ],
+      "description": "Cross busy roads safely."
+    },
+    {
+      "slug": "road-fighter",
+      "name": "Road Fighter",
+      "category": "racing",
+      "path": "games/racing/road-fighter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "traffic",
+        "race",
+        "retro"
+      ],
+      "description": "Top-down race weaving through traffic."
+    },
+    {
+      "slug": "robot-destruction",
+      "name": "Robot Destruction",
+      "category": "shooter",
+      "path": "games/shooter/robot-destruction/index.html",
+      "tech": "phaser",
+      "tags": [
+        "robots",
+        "blaster"
+      ],
+      "description": "Blast incoming robots to scrap."
+    },
+    {
+      "slug": "screw-master",
+      "name": "Screw Master",
+      "category": "puzzle",
+      "path": "games/puzzle/screw-master/index.html",
+      "tech": "phaser",
+      "tags": [
+        "sort",
+        "mechanical"
+      ],
+      "description": "Unscrew and sort the metal pieces."
+    },
+    {
+      "slug": "shadow-runner",
+      "name": "Shadow Runner",
+      "category": "racing",
+      "path": "games/racing/shadow-runner/index.html",
+      "tech": "phaser",
+      "tags": [
+        "runner",
+        "dark"
+      ],
+      "description": "Sprint through a shadow world."
+    },
+    {
+      "slug": "shadow-shooter",
+      "name": "Shadow Shooter",
+      "category": "shooter",
+      "path": "games/shooter/shadow-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "stealth",
+        "shooter"
+      ],
+      "description": "Pick off shadow enemies from cover."
+    },
+    {
+      "slug": "shape-collector",
+      "name": "Shape Collector",
+      "category": "arcade",
+      "path": "games/arcade/shape-collector/index.html",
+      "tech": "phaser",
+      "tags": [
+        "shapes",
+        "match"
+      ],
+      "description": "Catch only the matching shapes."
+    },
+    {
+      "slug": "shape-fitter",
+      "name": "Shape Fitter",
+      "category": "puzzle",
+      "path": "games/puzzle/shape-fitter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "shapes",
+        "kids"
+      ],
+      "description": "Fit shapes into the right slots."
+    },
+    {
+      "slug": "shoot-enemy",
+      "name": "Shoot Enemy",
+      "category": "shooter",
+      "path": "games/shooter/shoot-enemy/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aim",
+        "reflex"
+      ],
+      "description": "Pick off enemies before they reach you."
+    },
+    {
+      "slug": "shooter",
+      "name": "Shooter",
+      "category": "shooter",
+      "path": "games/shooter/shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "arena",
+        "top-down"
+      ],
+      "description": "Top-down arena shooter."
+    },
+    {
+      "slug": "signal-circuit",
+      "name": "Signal Circuit",
+      "category": "puzzle",
+      "path": "games/puzzle/signal-circuit/index.html",
+      "tech": "phaser",
+      "tags": [
+        "logic",
+        "circuit"
+      ],
+      "description": "Route signals through circuit gates."
+    },
+    {
+      "slug": "sky-high",
+      "name": "Sky High",
+      "category": "arcade",
+      "path": "games/arcade/sky-high/index.html",
+      "tech": "phaser",
+      "tags": [
+        "climb",
+        "endless"
+      ],
+      "description": "Climb endlessly into the sky."
+    },
+    {
+      "slug": "slide-puzzle",
+      "name": "Slide Puzzle",
+      "category": "puzzle",
+      "path": "games/puzzle/slide-puzzle/index.html",
+      "tech": "phaser",
+      "tags": [
+        "sliding",
+        "classic"
+      ],
+      "description": "Reassemble the image by sliding tiles."
+    },
+    {
+      "slug": "snake",
+      "name": "Snake",
+      "category": "arcade",
+      "path": "games/arcade/snake/index.html",
+      "tech": "phaser",
+      "tags": [
+        "snake",
+        "classic"
+      ],
+      "description": "Eat. Grow. Don't hit yourself."
+    },
+    {
+      "slug": "snake-and-ladder",
+      "name": "Snake & Ladder",
+      "category": "board",
+      "path": "games/board/snake-and-ladder/index.html",
+      "tech": "phaser",
+      "tags": [
+        "dice",
+        "family",
+        "classic"
+      ],
+      "description": "Roll the dice. Climb. Slide. Win."
+    },
+    {
+      "slug": "sniper",
+      "name": "Sniper",
+      "category": "shooter",
+      "path": "games/shooter/sniper/index.html",
+      "tech": "phaser",
+      "tags": [
+        "scope",
+        "precision"
+      ],
+      "description": "Steady your scope. One shot, one kill."
+    },
+    {
+      "slug": "space-fighter",
+      "name": "Space Fighter",
+      "category": "shooter",
+      "path": "games/shooter/space-fighter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "space",
+        "dogfight"
+      ],
+      "description": "Dogfight through asteroid fields."
+    },
+    {
+      "slug": "spaceman",
+      "name": "Spaceman",
+      "category": "arcade",
+      "path": "games/arcade/spaceman/index.html",
+      "tech": "phaser",
+      "tags": [
+        "space",
+        "float"
+      ],
+      "description": "Float and survive in zero gravity."
+    },
+    {
+      "slug": "space-waves",
+      "name": "Space Waves",
+      "category": "arcade",
+      "path": "games/arcade/space-waves/index.html",
+      "tech": "phaser",
+      "tags": [
+        "space",
+        "wave"
+      ],
+      "description": "Surf waves of space debris."
+    },
+    {
+      "slug": "square-one",
+      "name": "Square One",
+      "category": "puzzle",
+      "path": "games/puzzle/square-one/index.html",
+      "tech": "phaser",
+      "tags": [
+        "sliding",
+        "minimal"
+      ],
+      "description": "Slide squares to clear the board."
+    },
+    {
+      "slug": "stack-tower",
+      "name": "Stack Tower",
+      "category": "3d",
+      "path": "games/3d/stack-tower/index.html",
+      "tech": "three",
+      "tags": [
+        "3d",
+        "stack",
+        "timing"
+      ],
+      "description": "Stack 3D blocks for the highest tower."
+    },
+    {
+      "slug": "stick-game",
+      "name": "Stick Game",
+      "category": "arcade",
+      "path": "games/arcade/stick-game/index.html",
+      "tech": "phaser",
+      "tags": [
+        "stick",
+        "draw"
+      ],
+      "description": "Draw sticks to bridge gaps."
+    },
+    {
+      "slug": "stick-toss",
+      "name": "Stick Toss",
+      "category": "arcade",
+      "path": "games/arcade/stick-toss/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aim",
+        "spin"
+      ],
+      "description": "Toss sticks at the spinning target."
+    },
+    {
+      "slug": "straight-rush",
+      "name": "Straight Rush",
+      "category": "racing",
+      "path": "games/racing/straight-rush/index.html",
+      "tech": "phaser",
+      "tags": [
+        "sprint",
+        "reflex"
+      ],
+      "description": "Sprint forward — react to oncoming hazards."
+    },
+    {
+      "slug": "survival-run",
+      "name": "Survival Run",
+      "category": "racing",
+      "path": "games/racing/survival-run/index.html",
+      "tech": "phaser",
+      "tags": [
+        "survival",
+        "runner"
+      ],
+      "description": "Outrun the danger as long as you can."
+    },
+    {
+      "slug": "survivor",
+      "name": "Survivor",
+      "category": "shooter",
+      "path": "games/shooter/survivor/index.html",
+      "tech": "phaser",
+      "tags": [
+        "horde",
+        "survival",
+        "auto"
+      ],
+      "description": "Vampire-survivors-style horde survival."
+    },
+    {
+      "slug": "table-tennis",
+      "name": "Table Tennis",
+      "category": "sports",
+      "path": "games/sports/table-tennis/index.html",
+      "tech": "phaser",
+      "tags": [
+        "pong",
+        "sport"
+      ],
+      "description": "Volley the ping-pong ball."
+    },
+    {
+      "slug": "tap-target",
+      "name": "Tap Target",
+      "category": "arcade",
+      "path": "games/arcade/tap-target/index.html",
+      "tech": "phaser",
+      "tags": [
+        "tap",
+        "reflex"
+      ],
+      "description": "Tap targets before they vanish."
+    },
+    {
+      "slug": "tee-shooter",
+      "name": "Tee Shooter",
+      "category": "shooter",
+      "path": "games/shooter/tee-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aim",
+        "tee"
+      ],
+      "description": "Tee-up trick-shot shooter."
+    },
+    {
+      "slug": "tetris",
+      "name": "Tetris",
+      "category": "puzzle",
+      "path": "games/puzzle/tetris/index.html",
+      "tech": "html",
+      "tags": [
+        "blocks",
+        "classic"
+      ],
+      "description": "The classic falling-block puzzle."
+    },
+    {
+      "slug": "that-level-again-1",
+      "name": "That Level Again — 1",
+      "category": "platformer",
+      "path": "games/platformer/that-level-again-1/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trick-platformer level 1."
+    },
+    {
+      "slug": "that-level-again-2",
+      "name": "That Level Again — 2",
+      "category": "platformer",
+      "path": "games/platformer/that-level-again-2/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trick-platformer level 2."
+    },
+    {
+      "slug": "that-level-again-3",
+      "name": "That Level Again — 3",
+      "category": "platformer",
+      "path": "games/platformer/that-level-again-3/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trick-platformer level 3."
+    },
+    {
+      "slug": "that-level-again-4",
+      "name": "That Level Again — 4",
+      "category": "platformer",
+      "path": "games/platformer/that-level-again-4/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trick-platformer level 4."
+    },
+    {
+      "slug": "that-level-again-5",
+      "name": "That Level Again — 5",
+      "category": "platformer",
+      "path": "games/platformer/that-level-again-5/index.html",
+      "tech": "phaser",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trick-platformer level 5."
+    },
+    {
+      "slug": "thunder-god",
+      "name": "Thunder God",
+      "category": "shooter",
+      "path": "games/shooter/thunder-god/index.html",
+      "tech": "phaser",
+      "tags": [
+        "thunder",
+        "power"
+      ],
+      "description": "Smite enemies with lightning."
+    },
+    {
+      "slug": "tic-tac-toe",
+      "name": "Tic-Tac-Toe",
+      "category": "board",
+      "path": "games/board/tic-tac-toe/index.html",
+      "tech": "phaser",
+      "tags": [
+        "classic",
+        "quick"
+      ],
+      "description": "X's and O's. Three in a row wins."
+    },
+    {
+      "slug": "tile-tap",
+      "name": "Tile Tap",
+      "category": "puzzle",
+      "path": "games/puzzle/tile-tap/index.html",
+      "tech": "phaser",
+      "tags": [
+        "tap",
+        "tile",
+        "classic"
+      ],
+      "description": "Tap only the dark tiles. Don't miss."
+    },
+    {
+      "slug": "tower-shooter",
+      "name": "Tower Shooter",
+      "category": "shooter",
+      "path": "games/shooter/tower-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "defense",
+        "tower"
+      ],
+      "description": "Defend your tower from waves of enemies."
+    },
+    {
+      "slug": "trench-defence",
+      "name": "Trench Defence",
+      "category": "shooter",
+      "path": "games/shooter/trench-defence/index.html",
+      "tech": "phaser",
+      "tags": [
+        "defense",
+        "war"
+      ],
+      "description": "Hold the trench against the assault."
+    },
+    {
+      "slug": "two-cars",
+      "name": "Two Cars",
+      "category": "racing",
+      "path": "games/racing/two-cars/index.html",
+      "tech": "phaser",
+      "tags": [
+        "dual",
+        "reflex"
+      ],
+      "description": "Steer two cars at once. Catch & dodge."
+    },
+    {
+      "slug": "two-cars-ai",
+      "name": "Two Cars AI",
+      "category": "racing",
+      "path": "games/racing/two-cars-ai/index.html",
+      "tech": "phaser",
+      "tags": [
+        "dual",
+        "ai"
+      ],
+      "description": "AI-twist on the two-cars classic."
+    },
+    {
+      "slug": "unruly",
+      "name": "Unruly",
+      "category": "puzzle",
+      "path": "games/puzzle/unruly/index.html",
+      "tech": "phaser",
+      "tags": [
+        "logic",
+        "binary"
+      ],
+      "description": "Place tiles by no-three-in-a-row rules."
+    },
+    {
+      "slug": "vaccine-shooter",
+      "name": "Vaccine Shooter",
+      "category": "shooter",
+      "path": "games/shooter/vaccine-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "health",
+        "shooter"
+      ],
+      "description": "Shoot viruses with your vaccine gun."
+    },
+    {
+      "slug": "whack-a-bug",
+      "name": "Whack-a-Bug",
+      "category": "arcade",
+      "path": "games/arcade/whack-a-bug/index.html",
+      "tech": "phaser",
+      "tags": [
+        "whack",
+        "reflex"
+      ],
+      "description": "Bonk the bugs as they pop up."
+    },
+    {
+      "slug": "wordle",
+      "name": "Wordlee",
+      "category": "word-quiz",
+      "path": "games/word-quiz/wordle/index.html",
+      "tech": "phaser",
+      "tags": [
+        "wordle",
+        "letters"
+      ],
+      "description": "Guess the 5-letter word in 6 tries."
+    },
+    {
+      "slug": "words-of-wonder",
+      "name": "Words of Wonder",
+      "category": "word-quiz",
+      "path": "games/word-quiz/words-of-wonder/index.html",
+      "tech": "phaser",
+      "tags": [
+        "letters",
+        "spelling"
+      ],
+      "description": "Build words from a wheel of letters."
+    },
+    {
+      "slug": "penalty",
+      "name": "Penalty Shootout",
+      "category": "sports",
+      "path": "games/sports/penalty/index.html",
+      "tech": "phaser",
+      "tags": [
+        "soccer",
+        "quick"
+      ],
+      "description": "One-on-one penalty kicks vs the keeper."
+    },
+    {
+      "slug": "swipe-assassin",
+      "name": "Swipe Assassin",
+      "category": "arcade",
+      "path": "games/arcade/swipe-assassin/index.html",
+      "tech": "html",
+      "tags": [
+        "swipe",
+        "slash"
+      ],
+      "description": "Swipe to slice incoming threats."
+    },
+    {
+      "slug": "level-devil",
+      "name": "Level Devil",
+      "category": "platformer",
+      "path": "games/platformer/level-devil/index.html",
+      "tech": "three",
+      "tags": [
+        "trick",
+        "platformer"
+      ],
+      "description": "Trickster platformer that hates you."
+    },
+    {
+      "slug": "line-trap",
+      "name": "Line Trap",
+      "category": "puzzle",
+      "path": "games/puzzle/line-trap/index.html",
+      "tech": "html",
+      "tags": [
+        "draw",
+        "minimal"
+      ],
+      "description": "Trap the dot inside your line."
+    },
+    {
+      "slug": "window-shooter",
+      "name": "Window Shooter",
+      "category": "shooter",
+      "path": "games/shooter/window-shooter/index.html",
+      "tech": "phaser",
+      "tags": [
+        "aim",
+        "reflex"
+      ],
+      "description": "Pick off enemies through the window."
+    }
+  ]
+}

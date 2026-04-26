@@ -1,0 +1,20 @@
+{
+  "entry": "Customstacktower/index.html",
+  "mechanics": {
+    "target": 10,
+    "perfectThreshold": 0.08,
+    "levelStep": 6,
+    "baseSpeed": 0.085
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "drop": "assets/drop.mp3"
+  },
+  "text": {
+    "title": "Stack Tower 3D – Neon",
+    "winTitle": "🎉 YOU WIN",
+    "winDesc": "Neon perfection!",
+    "loseTitle": "GAME OVER",
+    "loseDesc": "Try again"
+  }
+}

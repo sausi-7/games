@@ -1,0 +1,30 @@
+{
+    "entry": "Custommemory/index.html",
+    "mechanics": {
+        "target": 300,
+        "timeLimit": 60,
+        "scorePerBlock": 1,
+        "scorePerLine": 10
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "collect": "assets/clear.mp3"
+    },
+    "text": {
+        "title": "Hex Puzzle",
+        "hudScore": "Score",
+        "hudTime": "Time",
+        "hudTarget": "Target",
+        "howTitle": "How to Play",
+        "howDesc": "Drag a shape from the tray and drop it on the board. Fill any full line to clear it and earn points.",
+        "howChipTime": "60 seconds",
+        "howChipTarget": "Score 100",
+        "howChipClear": "Clear lines",
+        "startButton": "Start Game",
+        "winTitle": "🎉 You Win!",
+        "winText": "Target reached in time!",
+        "loseTitle": "💀 You Lose",
+        "loseText": "Target not reached.",
+        "replayButton": "Play Again"
+    }
+}

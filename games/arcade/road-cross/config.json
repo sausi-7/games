@@ -1,0 +1,99 @@
+{
+  "entry": "Customroadcross/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "game": {
+    "tileSize": 128,
+    "roadRows": 5,
+    "carSpeeds": [
+      220,
+      260,
+      280,
+      300,
+      330
+    ],
+    "levelTime": 25,
+    "goalHeight": 128,
+    "laneHeight": 128,
+    "sidewalkHeight": 128
+  },
+  "spritesheets": {
+    "player": {
+      "path": "assets/player.png",
+      "frameWidth": 103,
+      "frameHeight": 158
+    }
+  },
+  "images1": {
+    "car_red": "assets/car1.png",
+    "car_blue": "assets/car2.png",
+    "car_green": "assets/car3.png",
+    "car_yellow": "assets/car4.png"
+  },
+  "images2": {
+    "road": "assets/sidewalk.png",
+    "background": "assets/road.png"
+  },
+  "ui": {
+    "bg_goal": "assets/goal.png",
+    "left": "assets/left.png",
+    "htp": "assets/htp.png",
+    "down": "assets/down.png",
+    "up": "assets/up.png",
+    "right": "assets/right.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png",
+    "replay_level": "assets/replay_level.png",
+    "player": "assets/player.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "hit": "assets/hit.mp3"
+  },
+  "cars": [
+    {
+      "key": "car_red",
+      "width": 140,
+      "height": 90
+    },
+    {
+      "key": "car_blue",
+      "width": 140,
+      "height": 90
+    },
+    {
+      "key": "car_green",
+      "width": 140,
+      "height": 90
+    },
+    {
+      "key": "car_yellow",
+      "width": 140,
+      "height": 90
+    }
+  ],
+  "player": {
+    "key": "player",
+    "width": 110,
+    "height": 110
+  },
+  "texts": {
+    "level": "Level",
+    "score": "Score:",
+    "playAgain": "Play Again!",
+    "levelComplete": "Level Complete!",
+    "gameOver": "Try Again!"
+  },
+  "colors": {
+    "laneLine": "#ffffff",
+    "levelComplete": "#3ec461",
+    "gameOver": "#ee3333"
+  }
+}

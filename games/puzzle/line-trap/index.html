@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Line Trap</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #020617;
+      font-family: system-ui, sans-serif;
+    }
+
+    canvas {
+      display: block
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #020617, #000);
+      z-index: 10;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .08);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      color: #fff;
+      max-width: 320px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, .35);
+    }
+
+    button {
+      margin-top: 18px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+    }
+
+    #ui {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, .55);
+      padding: 8px 22px;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="ui">Enemies: <span id="count">0</span></div>
+
+  <div id="start" class="overlay">
+    <div class="panel">
+      <h1>LINE TRAP</h1>
+      <p>Draw lines to block enemies<br>Protect the core</p>
+      <button onclick="startGame()">Start</button>
+    </div>
+  </div>
+
+  <div id="win" class="overlay" style="display:none">
+    <div class="panel">
+      <h1>YOU WIN</h1>
+      <button onclick="restart()">Replay</button>
+    </div>
+  </div>
+
+  <div id="lose" class="overlay" style="display:none">
+    <div class="panel">
+      <h1>GAME OVER</h1>
+      <button onclick="restart()">Retry</button>
+    </div>
+  </div>
+
+  <canvas id="c"></canvas>
+
+ <script>
+/* ========= GLOBALS ========= */
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+let w = 0, h = 0;
+let playing = false;
+let enemies = [];
+let lines = [];
+
+let drawing = false;
+let startX = 0, startY = 0;
+let currX = 0, currY = 0;
+
+/* ========= CONFIG ========= */
+const LINE_LIFE = 2000;
+const ENEMY_COUNT = 8;
+const CORE_RADIUS = 18;
+
+/* ========= CORE ========= */
+const core = { x: 0, y: 0 };
+
+/* ========= RESIZE ========= */
+function resize() {
+  const dpr = devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+
+  w = rect.width;
+  h = rect.height;
+
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  core.x = w / 2;
+  core.y = h / 2;
+}
+resize();
+addEventListener("resize", resize);
+
+/* ========= COORD CONVERSION ========= */
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  return {
+    x: e.clientX - r.left,
+    y: e.clientY - r.top
+  };
+}
+
+/* ========= UTILS ========= */
+function dist(x1, y1, x2, y2) {
+  return Math.hypot(x2 - x1, y2 - y1);
+}
+
+/* ========= LINE–CIRCLE COLLISION ========= */
+function lineCircle(l, e) {
+  const ax = l.x1, ay = l.y1, bx = l.x2, by = l.y2;
+  const cx = e.x, cy = e.y, r = e.r;
+
+  const lab = dist(ax, ay, bx, by);
+  if (lab < 0.01) return false;
+
+  const dx = (bx - ax) / lab;
+  const dy = (by - ay) / lab;
+  const t = dx * (cx - ax) + dy * (cy - ay);
+  const ex = t < 0 ? ax : t > lab ? bx : ax + dx * t;
+  const ey = t < 0 ? ay : t > lab ? by : ay + dy * t;
+
+  return dist(ex, ey, cx, cy) <= r;
+}
+
+/* ========= ENEMY ========= */
+function spawnEnemy() {
+  const edge = Math.floor(Math.random() * 4);
+  let x, y;
+
+  if (edge === 0) { x = Math.random() * w; y = -20; }
+  if (edge === 1) { x = w + 20; y = Math.random() * h; }
+  if (edge === 2) { x = Math.random() * w; y = h + 20; }
+  if (edge === 3) { x = -20; y = Math.random() * h; }
+
+  enemies.push({ x, y, r: 10, speed: 0.6 + Math.random() * 0.4 });
+}
+
+/* ========= INPUT (FIXED) ========= */
+canvas.addEventListener("pointerdown", e => {
+  if (!playing) return;
+  e.preventDefault();
+  const p = getPos(e);
+  drawing = true;
+  startX = currX = p.x;
+  startY = currY = p.y;
+});
+
+canvas.addEventListener("pointermove", e => {
+  if (!drawing) return;
+  e.preventDefault();
+  const p = getPos(e);
+  currX = p.x;
+  currY = p.y;
+});
+
+function endLine(e) {
+  if (!drawing) return;
+  e.preventDefault();
+  drawing = false;
+
+  if (dist(startX, startY, currX, currY) > 10) {
+    lines.push({
+      x1: startX, y1: startY,
+      x2: currX, y2: currY,
+      t: Date.now()
+    });
+  }
+}
+
+canvas.addEventListener("pointerup", endLine);
+canvas.addEventListener("pointercancel", endLine);
+
+/* ========= GAME FLOW ========= */
+function startGame() {
+  document.getElementById("start").style.display = "none";
+  enemies = [];
+  lines = [];
+  for (let i = 0; i < ENEMY_COUNT; i++) spawnEnemy();
+  document.getElementById("count").textContent = enemies.length;
+  playing = true;
+}
+
+function win() {
+  playing = false;
+  document.getElementById("win").style.display = "flex";
+}
+function lose() {
+  playing = false;
+  document.getElementById("lose").style.display = "flex";
+}
+function restart() {
+  location.reload();
+}
+
+/* ========= UPDATE ========= */
+function update() {
+  const now = Date.now();
+  lines = lines.filter(l => now - l.t < LINE_LIFE);
+
+  enemies.forEach((e, i) => {
+    const dx = core.x - e.x;
+    const dy = core.y - e.y;
+    const d = Math.hypot(dx, dy);
+
+    e.x += dx / d * e.speed;
+    e.y += dy / d * e.speed;
+
+    if (d < CORE_RADIUS) lose();
+
+    lines.forEach(l => {
+      if (lineCircle(l, e)) {
+        enemies.splice(i, 1);
+      }
+    });
+  });
+
+  document.getElementById("count").textContent = enemies.length;
+  if (enemies.length === 0 && playing) win();
+}
+
+/* ========= DRAW ========= */
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+
+  // core
+  ctx.beginPath();
+  ctx.arc(core.x, core.y, CORE_RADIUS, 0, Math.PI * 2);
+  ctx.fillStyle = "#38bdf8";
+  ctx.shadowColor = "#38bdf8";
+  ctx.shadowBlur = 20;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // lines
+  ctx.strokeStyle = "#a5f3fc";
+  ctx.lineWidth = 4;
+  lines.forEach(l => {
+    ctx.beginPath();
+    ctx.moveTo(l.x1, l.y1);
+    ctx.lineTo(l.x2, l.y2);
+    ctx.stroke();
+  });
+
+  // live preview
+  if (drawing) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(currX, currY);
+    ctx.stroke();
+  }
+
+  // enemies
+  enemies.forEach(e => {
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#ef4444";
+    ctx.fill();
+  });
+}
+
+/* ========= LOOP ========= */
+function loop() {
+  requestAnimationFrame(loop);
+  if (playing) update();
+  draw();
+}
+loop();
+</script>
+
+
+
+</body>
+
+</html>

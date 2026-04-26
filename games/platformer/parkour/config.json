@@ -1,0 +1,48 @@
+{ "entry": "Customparkour/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Reach the glowing exit at the top before the timer ends. Move left/right and jump across platforms. Avoid bouncing fireballs—they deal 1 damage. You have 3 hearts.",
+    "score_label": "Time",
+    "win_title": "Dungeon Escape — You Reached the Exit!",
+    "game_over_title": "Dungeon Escape — Try Again!"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "playerSpeed": 330,
+    "fireballSpawnRate": 3500
+  },
+  "images": {
+    "background": "assets/images/background.png",
+    "player": "assets/images/obj1.png",
+    "enemy": "assets/images/obj5.png",
+    "fireball": "assets/images/obj6.png",
+    "collectible": "assets/images/obj12.png",
+    "platform": "assets/images/platform1.png",
+    "exit": "assets/images/obj8.png",
+    "heart": "assets/images/obj3.png",
+
+    "left": "assets/images/left.png",
+    "right": "assets/images/right.png",
+    "action": "assets/images/right.png",
+
+    "htpbox": "assets/images/htpbox.png",
+    "ovrbox": "assets/images/ovrbox.png",
+    "replay": "assets/images/replay.png",
+    "lvl_replay": "assets/images/lvl_replay.png",
+    "lvlbox": "assets/images/lvlbox.png",
+    "next": "assets/images/next.png",
+    "playbtn": "assets/images/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/audio/Game_Background.mp3",
+    "jump": "assets/audio/Jump.mp3",
+    "hit": "assets/audio/Taking_a_Hit.mp3",
+    "collision": "assets/audio/Collision.mp3",
+    "levelComplete": "assets/audio/Level_Complete.mp3",
+    "gameOver": "assets/audio/Game_Over.mp3"
+  }
+}

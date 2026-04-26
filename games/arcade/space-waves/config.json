@@ -1,0 +1,61 @@
+{
+    "entry": "Customspacewaves/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "How to Play",
+    "score_label": "Score: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over",
+    "target_label": "Target: "
+  },
+  "gameplay": {
+    "speed": 320,
+    "targetScore": 10,
+    "speedRampTo": 400,
+    "gravityY": 900,
+    "thrust": 900,
+    "maxVy": 520,
+    "levelLength": 9000,
+    "gapHeight": 680,
+    "minGapHeight": 280,
+    "starEveryN": 7,
+    "spikeSize": 88,
+    "levelSeconds": 45,
+    "playerSize": {
+      "w": 72,
+      "h": 48
+    }
+  },
+  "images1": {
+    "player": "assets/obj6.png",
+    "enemy": "assets/obj7.png",
+    "collectible": "assets/obj12.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "ovrbg": "assets/ovrbg.png",
+    "winbg": "assets/winbg.png",
+    "htpbg": "assets/htpbg.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "scorebar": "assets/scoreback.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "win": "assets/win.mp3"
+  }
+}

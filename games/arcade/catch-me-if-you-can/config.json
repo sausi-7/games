@@ -1,0 +1,44 @@
+{
+  "entry": "Customcmiyc/index.html",
+  "images1": {
+    "enemy": "assets/obj1.png",
+    "obstacle": "assets/obj2.png",
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png",
+    "joystick_base": "assets/joystick_base.png",
+    "joystick_thumb": "assets/joystick_thumb.png"
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3",
+    "hit": "assets/hit.mp3"
+  },
+  "settings": {
+    "playerSpeed": 300,
+    "enemySpeed": 220,
+    "obstacleSpeed": 320,
+    "maxHits": 10,
+    "obstacleSpawnDelay": 2000
+  },
+  "spritesheets": {
+    "player": {
+      "path": "assets/spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 158
+    }
+  }
+}

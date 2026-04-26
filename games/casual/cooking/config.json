@@ -1,0 +1,91 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Drag the correct ingredients from the table onto the plate in the right order before time runs out. Avoid mistakes!",
+    "score_label": "Score: ",
+    "make_label": "Make: ",
+    "win_title": "Delicious! Order Complete!",
+    "game_over_title": "Order Failed! Try Again"
+  },
+  "gameplay": {
+    "orientation": "landscape",
+    "timerSeconds": 30,
+    "mistakeLimit": 3,
+    "ingredientSize": 150,
+    "previewSize": 130,
+    "tableCols": 3,
+    "tableGapX": 200,
+    "tableGapY": 180,
+    "plateSize": { "width": 400, "height": 300 },
+    "dropZone": { "x": 1240, "y": 620, "width": 360, "height": 150 },
+    "bgmVolume": 0.45,
+    "startLevel": 0,
+    "randomRecipe": true,
+    "recipes": [
+      {
+        "name": "Cake",
+        "sequence": ["obj1", "obj3", "obj7", "obj9"],
+        "decoys": ["obj4", "obj6", "obj8"]
+      },
+      {
+        "name": "Burger",
+        "sequence": ["obj2", "obj5", "obj4", "obj6"],
+        "decoys": ["obj1", "obj10", "obj11"]
+      },
+      {
+        "name": "Pizza",
+        "sequence": ["obj10", "obj11", "obj12", "obj13"],
+        "decoys": ["obj2", "obj3", "obj7"]
+      }
+    ]
+  },
+  "images": {
+    "background": "assets/bg.png",
+    "player": "assets/obj1.png",
+    "enemy": "assets/obj5.png",
+    "collectible": "assets/obj12.png",
+    "platform": "assets/pan.png",
+
+    "obj1": "assets/obj1.png",
+    "obj2": "assets/obj2.png",
+    "obj3": "assets/obj3.png",
+    "obj4": "assets/obj4.png",
+    "obj5": "assets/obj5.png",
+    "obj6": "assets/obj6.png",
+    "obj7": "assets/obj7.png",
+    "obj8": "assets/obj8.png",
+    "obj9": "assets/obj9.png",
+    "obj10": "assets/obj10.png",
+    "obj11": "assets/obj11.png",
+    "obj12": "assets/obj12.png",
+    "obj13": "assets/obj13.png",
+    "platform1": "assets/platform1.png",
+    "platform2": "assets/platform2.png",
+    "platform3": "assets/platform3.png",
+    "platform4": "assets/platform4.png"
+  },
+  "ui":{
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  }
+  ,
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "attack": "assets/Attack.mp3",
+    "Level_Complete": "assets/win.mp3",
+    "Game_Over": "assets/lose.mp3",
+    "Taking_a_Hit": "assets/hit.mp3"
+  }
+}

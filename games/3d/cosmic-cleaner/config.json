@@ -1,0 +1,43 @@
+{
+  "entry": "Customcosmiccleaner/index.html",
+  "images1": {
+    "junk1": "assets/junk1.png",
+    "junk2": "assets/junk2.png",
+    "asteroid": "assets/asteroid.png",
+    "object": "assets/satellite.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "ui": {
+    "zibbo": "assets/zibbo.png",
+    "joystick_base": "assets/joystick_base.png",
+    "joystick_thumb": "assets/joystick_thumb.png",
+    "playbtn": "assets/button.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 160
+    }
+  },
+  "audio": {
+    "vacuum": "assets/vacuum.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "background_music": "assets/background_music.mp3"
+  }
+}

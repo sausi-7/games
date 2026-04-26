@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rise Up – Pure JS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #020617;
+      touch-action: none;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    canvas {
+      display: block;
+      background: #020617;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    // Screen size
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    // GAME STATE / WORLD VARS (declare BEFORE resize/recalcWorldParams)
+    let obstacles = [];
+    let balloonWorldY = 0;   // how far the balloon has climbed in world units
+    let climbSpeed = 120;    // px/sec (will be recalculated)
+    let nextSpawnAt = 0;     // next world height where we spawn a pattern
+    let SPAWN_GAP_MIN = 260;
+    let SPAWN_GAP_MAX = 420;
+
+    let running = true;
+    let lastTime = 0;
+    let score = 0;
+    let gameOver = false;
+
+    // Background scroll offsets (parallax)
+    let bgOffset1 = 0;
+    let bgOffset2 = 0;
+    let bgOffset3 = 0;
+
+    // Balloon & shield defined as functions using width/height
+    const balloon = {
+      // 🔥 ZIG-ZAG LEFT–RIGHT + MORE WILD AS YOU GO UP
+      x: () => {
+        const base = Math.min(width, height);
+        const margin = base * 0.12; // keep some padding from edges
+
+        // progress 0..1 based on how high we've climbed
+        const progress = Math.min(balloonWorldY / (base * 15), 1);
+
+        // max amplitude (how far from center)
+        const maxAmp = width * 0.5 - margin;
+        const amp = maxAmp * (0.3 + 0.7 * progress); // starts small, then big
+
+        // phase controls frequency of zig-zag
+        const phase = balloonWorldY / (base * 0.9);
+
+        return width * 0.5 + Math.sin(phase) * amp;
+      },
+      y: () => {
+        // Screen Y depends on how high we've climbed
+        const baseY = height * 0.8;   // start near bottom
+        const topY  = height * 0.35;  // max height on screen
+        const base = Math.min(width, height);
+
+        // how much world distance before we reach topY
+        const maxRiseWorld = base * 10; // tweak for how fast balloon visually rises
+        const t = Math.min(balloonWorldY / maxRiseWorld, 1); // 0 → 1
+
+        return baseY - (baseY - topY) * t;
+      },
+      radius: () => Math.min(width, height) * 0.04
+    };
+
+    const shield = {
+      x: width * 0.5,
+      y: height * 0.55,
+      radius: () => Math.min(width, height) * 0.085,
+      active: false
+    };
+
+    function recalcWorldParams() {
+      const base = Math.min(width, height);
+      climbSpeed = base * 0.11;         // ~110 px/sec
+      // smaller gaps between obstacle patterns (denser)
+      SPAWN_GAP_MIN = base * 0.35;
+      SPAWN_GAP_MAX = base * 0.6;
+    }
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      recalcWorldParams();
+    }
+
+    window.addEventListener("resize", resize);
+    resize(); // initial
+
+    // ------------ INPUT (MOUSE + TOUCH) ------------
+    function setShieldPosition(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      shield.x = clientX - rect.left;
+      shield.y = clientY - rect.top;
+      shield.active = true;
+    }
+
+    canvas.addEventListener("mousemove", (e) => setShieldPosition(e.clientX, e.clientY));
+    canvas.addEventListener("mousedown", (e) => setShieldPosition(e.clientX, e.clientY));
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      setShieldPosition(t.clientX, t.clientY);
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      setShieldPosition(t.clientX, t.clientY);
+    }, { passive: false });
+
+    canvas.addEventListener("touchend", () => {
+      shield.active = false;
+    });
+
+    // Restart on click/tap after game over
+    canvas.addEventListener("click", () => {
+      if (gameOver) resetGame();
+    });
+    canvas.addEventListener("touchend", () => {
+      if (gameOver) resetGame();
+    });
+
+    // ------------ UTILITIES ------------
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function rectCircleColliding(circle, rect) {
+      const distX = Math.abs(circle.x - rect.x - rect.w / 2);
+      const distY = Math.abs(circle.y - rect.y - rect.h / 2);
+
+      if (distX > (rect.w / 2 + circle.r)) return false;
+      if (distY > (rect.h / 2 + circle.r)) return false;
+
+      if (distX <= (rect.w / 2)) return true;
+      if (distY <= (rect.h / 2)) return true;
+
+      const dx = distX - rect.w / 2;
+      const dy = distY - rect.h / 2;
+      return (dx * dx + dy * dy <= circle.r * circle.r);
+    }
+
+    // Map obstacle worldY → screenY relative to balloon
+    function getObstacleScreenRect(o) {
+      const balloonScreenY = balloon.y();
+      const dyWorld = o.worldY - balloonWorldY;     // >0 = above balloon in world
+      const screenY = balloonScreenY - dyWorld;
+      return { x: o.x, y: screenY, w: o.w, h: o.h };
+    }
+
+    // ------------ BACKGROUND (PARALLAX SCROLL) ------------
+    function drawBackground(dtSec) {
+      const base = Math.min(width, height);
+
+      // Parallax movement based on climb speed
+      const speed1 = climbSpeed * 0.05;  // far background (slow)
+      const speed2 = climbSpeed * 0.12;  // mid clouds (medium)
+      const speed3 = climbSpeed * 0.22;  // near mist (fast)
+
+      bgOffset1 += speed1 * dtSec;
+      bgOffset2 += speed2 * dtSec;
+      bgOffset3 += speed3 * dtSec;
+
+      bgOffset1 %= height;
+      bgOffset2 %= height;
+      bgOffset3 %= height;
+
+      // Layer 1: Deep sky
+      const g1 = ctx.createLinearGradient(0, 0, 0, height);
+      g1.addColorStop(0, "#020617");
+      g1.addColorStop(1, "#1d4ed8");
+      ctx.fillStyle = g1;
+      ctx.fillRect(0, -bgOffset1, width, height);
+      ctx.fillRect(0, -bgOffset1 + height, width, height);
+
+      // Layer 2: Soft clouds
+      const g2 = ctx.createLinearGradient(0, 0, 0, height);
+      g2.addColorStop(0, "rgba(255,255,255,0.02)");
+      g2.addColorStop(1, "rgba(255,255,255,0.15)");
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, -bgOffset2, width, height);
+      ctx.fillRect(0, -bgOffset2 + height, width, height);
+
+      // Layer 3: Light mist / haze
+      const g3 = ctx.createLinearGradient(0, 0, 0, height);
+      g3.addColorStop(0, "rgba(255,255,255,0.02)");
+      g3.addColorStop(1, "rgba(255,255,255,0.10)");
+      ctx.fillStyle = g3;
+      ctx.fillRect(0, -bgOffset3, width, height);
+      ctx.fillRect(0, -bgOffset3 + height, width, height);
+    }
+
+    // ------------ SPAWNING PATTERNS ------------
+    function spawnPattern(worldY) {
+      const base = Math.min(width, height);
+      const patternType = Math.floor(rand(0, 5)); // 0..4
+
+      if (patternType === 0) {
+        // Single medium block
+        const w = base * 0.18;
+        const h = base * 0.06;
+        const x = rand(base * 0.05, width - w - base * 0.05);
+        obstacles.push({ x, worldY, w, h, vx: 0 });
+
+      } else if (patternType === 1) {
+        // Horizontal wall with center gap
+        const wallH = base * 0.045;
+        const gapW = base * 0.2;
+        const margin = base * 0.04;
+        const total = width - margin * 2;
+        const leftW = (total - gapW) / 2;
+
+        obstacles.push({ x: margin, worldY, w: leftW, h: wallH, vx: 0 });
+        obstacles.push({
+          x: margin + leftW + gapW,
+          worldY,
+          w: leftW,
+          h: wallH,
+          vx: 0
+        });
+
+      } else if (patternType === 2) {
+        // Two vertical columns leaving a side gap
+        const colW = base * 0.09;
+        const h = base * 0.28;
+        const midX = width * 0.5;
+
+        if (Math.random() < 0.5) {
+          obstacles.push({ x: midX, worldY, w: colW, h, vx: 0 });
+        } else {
+          obstacles.push({ x: midX - colW, worldY, w: colW, h, vx: 0 });
+        }
+
+      } else if (patternType === 3) {
+        // Cluster of 3 small blocks around center
+        const w = base * 0.1;
+        const h = base * 0.05;
+        const c = width * 0.5;
+
+        obstacles.push({ x: c - w * 1.5, worldY, w, h, vx: 0 });
+        obstacles.push({ x: c + w * 0.5, worldY, w, h, vx: 0 });
+        obstacles.push({ x: c - w * 0.5, worldY: worldY + base * 0.07, w, h, vx: 0 });
+
+      } else {
+        // Diagonal staircase
+        const w = base * 0.12;
+        const h = base * 0.045;
+        const startX = rand(base * 0.1, width - w * 3 - base * 0.1);
+        const step = w * 0.75;
+
+        obstacles.push({ x: startX, worldY, w, h, vx: 0 });
+        obstacles.push({ x: startX + step, worldY: worldY + base * 0.06, w, h, vx: 0 });
+        obstacles.push({ x: startX + step * 2, worldY: worldY + base * 0.12, w, h, vx: 0 });
+      }
+    }
+
+    // ------------ GAME FLOW ------------
+    function resetGame() {
+      obstacles = [];
+      running = true;
+      score = 0;
+      gameOver = false;
+      lastTime = performance.now();
+      shield.active = false;
+      balloonWorldY = 0;
+      recalcWorldParams();
+
+      const base = Math.min(width, height);
+      // first wave appears sooner
+      nextSpawnAt = base * 0.3;
+    }
+
+    function update(dt) {
+      if (!running) return;
+
+      const dtSec = dt / 1000;
+      const base = Math.min(width, height);
+
+      // Balloon rise (world camera)
+      balloonWorldY += climbSpeed * dtSec;
+
+      // Score = height climbed
+      score = balloonWorldY * 0.4;
+
+      // Spawn patterns ahead – with dynamic difficulty (higher = denser)
+      const spawnAhead = base * 1.3;
+      while (balloonWorldY + spawnAhead >= nextSpawnAt) {
+        spawnPattern(nextSpawnAt);
+
+        // progress 0..1 as you climb
+        const progress = Math.min(balloonWorldY / (base * 25), 1);
+        const factor = 1 - 0.4 * progress; // from 1 down to 0.6
+        const gapMin = SPAWN_GAP_MIN * factor;
+        const gapMax = SPAWN_GAP_MAX * factor;
+
+        nextSpawnAt += rand(gapMin, gapMax);
+      }
+
+      const balloonObj = { x: balloon.x(), y: balloon.y(), r: balloon.radius() };
+      const shieldObj = { x: shield.x, y: shield.y, r: shield.radius() };
+
+      const newObstacles = [];
+
+      for (let o of obstacles) {
+        // Horizontal velocity (shield push inertia)
+        o.x += o.vx * dtSec;
+        o.vx *= 0.96; // friction
+
+        const rect = getObstacleScreenRect(o);
+
+        // --------- PHYSICAL-STYLE PUSH ----------
+        if (shield.active && rectCircleColliding(shieldObj, rect)) {
+          // Center of block in screen space
+          let cx = rect.x + rect.w / 2;
+          let cy = rect.y + rect.h / 2;
+
+          // Vector from shield to block
+          let dx = cx - shieldObj.x;
+          let dy = cy - shieldObj.y;
+          let dist = Math.sqrt(dx * dx + dy * dy) || 0.0001;
+
+          const blockRadius = Math.min(rect.w, rect.h) * 0.5;
+          const desiredDist = shieldObj.r + blockRadius;
+
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          const overlap = desiredDist - dist;
+
+          if (overlap > 0) {
+            const pushFactor = 1.1;
+            const moveOut = overlap * pushFactor;
+
+            const newCx = cx + nx * moveOut;
+            const newCy = cy + ny * moveOut;
+
+            const newScreenX = newCx - rect.w / 2;
+
+            const balloonScreenY = balloon.y();
+            const newWorldCenterY = balloonWorldY + (balloonScreenY - newCy);
+
+            o.x = newScreenX;
+            o.worldY = newWorldCenterY - rect.h / 2;
+
+            const impulse = base * 2.0;
+            o.vx += nx * impulse;
+          }
+        }
+        // ----------------------------------------
+
+        // Balloon collision → game over
+        if (rectCircleColliding(balloonObj, rect)) {
+          running = false;
+          gameOver = true;
+        }
+
+        // Keep only if near view
+        if (rect.y > -base * 0.8 && rect.y < height + base * 0.8 &&
+            rect.x + rect.w > -base && rect.x < width + base) {
+          newObstacles.push(o);
+        }
+      }
+
+      obstacles = newObstacles;
+    }
+
+    // ------------ RENDERING ------------
+    function drawBalloon() {
+      const x = balloon.x();
+      const y = balloon.y();
+      const r = balloon.radius();
+
+      // String
+      ctx.strokeStyle = "rgba(248, 250, 252, 0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x, y + r);
+      ctx.lineTo(x, y + r + r * 1.5);
+      ctx.stroke();
+
+      // Body
+      const gradient = ctx.createRadialGradient(x - r * 0.4, y - r * 0.6, r * 0.2, x, y, r);
+      gradient.addColorStop(0, "#f97316");
+      gradient.addColorStop(1, "#b91c1c");
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.ellipse(x, y, r * 0.85, r, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Highlight
+      ctx.fillStyle = "rgba(254, 243, 199, 0.9)";
+      ctx.beginPath();
+      ctx.ellipse(x - r * 0.3, y - r * 0.5, r * 0.2, r * 0.35, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawShield() {
+      if (!shield.active || gameOver) return;
+
+      const r = shield.radius();
+
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+
+      const grad = ctx.createRadialGradient(shield.x, shield.y, r * 0.2, shield.x, shield.y, r);
+      grad.addColorStop(0, "rgba(56, 189, 248, 0.9)");
+      grad.addColorStop(1, "rgba(37, 99, 235, 0.0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(shield.x, shield.y, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      ctx.strokeStyle = "rgba(191, 219, 254, 0.95)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(shield.x, shield.y, r * 0.72, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    function drawObstacles() {
+      const base = Math.min(width, height);
+
+      for (let o of obstacles) {
+        const rect = getObstacleScreenRect(o);
+        const gradient = ctx.createLinearGradient(rect.x, rect.y, rect.x, rect.y + rect.h);
+        gradient.addColorStop(0, "#e5e7eb");
+        gradient.addColorStop(1, "#6b7280");
+        ctx.fillStyle = gradient;
+
+        const radius = Math.max(4, base * 0.01);
+        ctx.beginPath();
+        ctx.roundRect(rect.x, rect.y, rect.w, rect.h, radius);
+        ctx.fill();
+      }
+    }
+
+    function drawHUD() {
+      ctx.fillStyle = "rgba(15, 23, 42, 0.35)";
+      ctx.fillRect(0, 0, width, 48);
+
+      ctx.fillStyle = "#e5e7eb";
+      ctx.font = "16px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      ctx.textBaseline = "middle";
+
+      ctx.fillText("Score: " + Math.floor(score), 16, 24);
+
+      ctx.textAlign = "right";
+      ctx.fillText("Move mouse / finger to protect the balloon", width - 16, 24);
+      ctx.textAlign = "left";
+    }
+
+    function drawGameOver() {
+      if (!gameOver) return;
+
+      ctx.fillStyle = "rgba(15, 23, 42, 0.75)";
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = "#f9fafb";
+      const base = Math.min(width, height);
+      const titleSize = Math.max(24, base * 0.04);
+      const subSize = Math.max(16, base * 0.025);
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      ctx.font = `bold ${titleSize}px system-ui`;
+      ctx.fillText("Game Over", width / 2, height / 2 - base * 0.08);
+
+      ctx.font = `${subSize}px system-ui`;
+      ctx.fillText("Final Score: " + Math.floor(score), width / 2, height / 2);
+
+      ctx.font = `${subSize * 0.9}px system-ui`;
+      ctx.fillText("Tap / Click to play again", width / 2, height / 2 + base * 0.08);
+    }
+
+    // Polyfill for roundRect
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        const radius = typeof r === "number" ? { tl: r, tr: r, br: r, bl: r } : r;
+        this.moveTo(x + radius.tl, y);
+        this.lineTo(x + w - radius.tr, y);
+        this.quadraticCurveTo(x + w, y, x + w, y + radius.tr);
+        this.lineTo(x + w, y + h - radius.br);
+        this.quadraticCurveTo(x + w, y + h, x + w - radius.br, y + h);
+        this.lineTo(x + radius.bl, y + h);
+        this.quadraticCurveTo(x, y + h, x, y + h - radius.bl);
+        this.lineTo(x, y + radius.tl);
+        this.quadraticCurveTo(x, y, x + radius.tl, y);
+        this.closePath();
+        return this;
+      };
+    }
+
+    // ------------ MAIN LOOP ------------
+    function loop(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = Math.min(timestamp - lastTime, 40);
+      lastTime = timestamp;
+
+      update(dt);
+
+      const dtSec = dt / 1000;
+
+      // Draw
+      ctx.clearRect(0, 0, width, height);
+
+      drawBackground(dtSec);   // parallax bg
+      drawObstacles();
+      drawBalloon();
+      drawShield();
+      drawHUD();
+      drawGameOver();
+
+      requestAnimationFrame(loop);
+    }
+
+    resetGame();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

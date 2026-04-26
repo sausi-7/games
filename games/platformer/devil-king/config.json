@@ -1,0 +1,69 @@
+{
+    "entry": "Customdevilking/index.html",
+    "mechanics": {
+        "playerSpeed": 400,
+        "jumpVelocity": -1000,
+        "bulletSpeed": 800,
+        "enemySpeed": 200,
+        "cactusDamage": 10,
+        "enemyDamage": 20,
+        "playerHealth": 100,
+        "playerBullets": 5
+    },
+    "texts": {
+        "startScreen": {
+            "title": "How to Play",
+            "description": "Guide King David across dimensions and battle thieves and other obstacles.",
+            "startButton": "Start"
+        },
+        "gameOverScreen": {
+            "title": "Game Over",
+            "replayButton": "Replay"
+        },
+        "levelCompleteScreen": {
+            "title": "Level Complete",
+            "replayButton": "Replay"
+        }
+    },
+    "spritesheets": {
+        "hero": {
+            "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/sprites/posed_12_spritesheet.png",
+            "frameWidth": 103,
+            "frameHeight": 142
+        }
+    },
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "images1": {
+        "obstacle": "assets/cactus.png",
+        "enemy": "assets/enemy.png"
+    },
+    "images2": {
+        "background": "assets/background.png",
+        "platform": "assets/platform.png"
+    },
+    "ui": {
+        "portalframe": "assets/portalframe.png",
+        "portalrotation": "assets/portalrotation.png",
+        "heart": "assets/heart.png",
+        "dialog_bg_start": "assets/dialog_bg_start.png",
+        "button": "assets/button.png",
+        "game_over": "assets/game_over.png",
+        "replay_button_big": "assets/replay_button_big.png",
+        "level_complete": "assets/level_complete.png",
+        "replay_button": "assets/replay_button.png",
+        "bullet": "assets/bullet.png",
+        "fog": "assets/fog.png",
+        "joystick_bg": "assets/joystick_bg.png",
+        "joystick_knob": "assets/joystick_knob.png",
+        "nextbtn": "assets/nextbtn.png"
+    },
+    "audio": {
+        "bgm": "assets/bgm.wav",
+        "laser": "assets/laser.wav",
+        "ouch": "assets/ouch.mp3"
+    }
+}

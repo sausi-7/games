@@ -1,0 +1,48 @@
+{
+  "entry": "Custombugsmasher/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap the crawling bugs to squash them. Letting too many escape ends the game. Survive until the timer hits 0 to win.",
+    "score_label": "Score: ",
+    "win_title": "All Clear! You Survived!",
+    "game_over_title": "Too Many Escaped!"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "escapeLimit": 10,
+    "spawnMs": 900,
+    "minSpawnMs": 350,
+    "accelEveryMs": 7000,
+    "accelByMs": 80
+  },
+  "images1": {
+    "bugA": "assets/obj3.png",
+    "bugB": "assets/obj7.png",
+    "bugGold": "assets/obj12.png"
+  },
+  "images2": {
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    "left": "assets/obj21.png",
+    "right": "assets/obj22.png",
+    "action": "assets/obj23.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collect": "assets/collect.mp3",
+    "game_over": "assets/lose.mp3",
+    "level_complete": "assets/win.mp3"
+  }
+}

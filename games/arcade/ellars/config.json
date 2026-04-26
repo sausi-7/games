@@ -1,0 +1,69 @@
+{
+  "entry": "Customellars/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "gridRows": 6,
+  "gridCols": 6,
+  "tileSize": 160,
+  "tileScale": 0.8,
+  "moveLimit": 20,
+  "shuffleChances": 3,
+  "gearsRequired": 10,
+  "tileTypes": [
+    "tree1",
+    "tree2",
+    "tree3",
+    "tree4"
+  ],
+  "gearTypes": [
+    "gear1",
+    "gear2",
+    "gear3"
+  ],
+  "foodTypes": [
+    "food"
+  ],
+  "images1": {
+    "tree1": "assets/tree1.png",
+    "tree2": "assets/tree2.png",
+    "tree3": "assets/tree3.png",
+    "tree4": "assets/tree4.png",
+    "gear1": "assets/gear1.png",
+    "gear2": "assets/gear2.png",
+    "gear3": "assets/gear3.png",
+    "food": "assets/food.png"
+  },
+  "images2": {
+    "jungle_background": "assets/jungle_bg.png",
+    "grid_background": "assets/grid_bg.png",
+    "middle_background": "assets/middle_bg.png"
+  },
+  "ui": {
+    "path": "assets/path.png",
+    "texts_bg": "assets/texts_bg.png",
+    "gear_icon": "assets/gear_icon.png",
+    "stopwatch_icon": "assets/stopwatch_icon.png",
+    "shuffle_icon": "assets/shuffle_icon.png",
+    "foodbar_bg": "assets/foodbar_bg.png",
+    "game_info": "assets/Game_Info.png",
+    "game_over": "assets/game_over.png",
+    "level_complete": "assets/level_complete.png",
+    "ellara": "assets/ellara.png",
+    "dino": "assets/dino.png",
+    "time_machine": "assets/time_machine.png"
+  },
+  "audio": {
+    "bg_music": "assets/bg_music.mp3",
+    "low_time_warning": "assets/low_time_warning.mp3",
+    "correct_swap": "assets/correct_swap.mp3",
+    "wrong_swap": "assets/wrong_swap.mp3",
+    "shuffle_sound": "assets/shuffle_sound.mp3",
+    "low_food_warning": "assets/low_food_warning.mp3",
+    "gear_collected": "assets/gear_collected.mp3",
+    "food_collected": "assets/food_collected.mp3",
+    "game_over": "assets/game_over.mp3"
+  }
+}

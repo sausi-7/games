@@ -1,0 +1,73 @@
+{
+  "entry": "Custombubblepop/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "game": {
+    "bubbleRadiusMin": 24,
+    "bubbleRadiusMax": 42,
+    "bubbleSpeedMin": 200,
+    "bubbleSpeedMax": 250,
+    "spawnInterval": 550,
+    "startLives": 3,
+    "winPopCount": 10,
+    "gameTime": 60
+  },
+  "colors": {
+    "background": "#e1f5fe",
+    "score": "black",
+    "lives": "black",
+    "timer": "black"
+  },
+  "texts": {
+    "title": "",
+    "subtitle": "Pop:",
+    "tapToStart": "",
+    "score": "Score: {score}",
+    "lives": "Lives: {lives}",
+    "timer": "Time: {timer}",
+    "levelComplete": "Level Completed",
+    "playAgain": "",
+    "gameOver": "Game Over",
+    "tryAgain": ""
+  },
+  "images1": {
+    "bubble": "assets/bubble.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "next": "assets/next.png",
+    "start_overlay": "assets/htp.png",
+    "gameover_overlay": "assets/game_over.png",
+    "levelcomplete_overlay": "assets/level_complete.png",
+    "button_play": "assets/play_game.png",
+    "replay": "assets/replay.png",
+    "replay_level": "assets/replay_level.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "hit": "assets/hit.mp3"
+  },
+  "overlayPositions": {
+  "start": {
+    "playButton": { "x": 540, "y": 1500 },
+    "playLabel":  { "x": 540, "y": 1420 }
+  },
+  "win": {
+    "nextButton":   { "x": 780, "y": 1400 },
+    "replayButton": { "x": 300, "y": 1400 }
+  },
+  "gameover": {
+    "replayButton": { "x": 540, "y": 1350 },
+    "replayLabel":  { "x": 540, "y": 1360 }
+  }
+}
+
+}

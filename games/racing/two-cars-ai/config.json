@@ -1,0 +1,61 @@
+{
+    "entry": "Customtwocarsai/index.html",
+    "mechanics": {
+        "targetScore":50,
+        "timeLimit": 60,
+        "initialLives": 3,
+        "initialScore": 0,
+        "obstacleSpeed": 900,
+        "obstacleDelay": 1400
+    },
+    "text": {
+        "livesLabel": "Lives",
+        "scoreLabel": "Score",
+        "timeLabel": "Time",
+        "howToPlayTitle": "How To Play",
+        "controlLabel": "Control",
+        "avoidLabel": "Avoid",
+        "collectLabel": "Collect",
+        "levelCompletedTitle": "Level Completed",
+        "gameOverTitle": "Game Over",
+        "gameOverScorePrefix": "Score: "
+    },
+    "images1": {
+        "top_view_fullvehicle": "assets/car.png",
+        "top_view_fullvehicle2": "assets/car2.png",
+        "traffic_cone_topview": "assets/obstacle.png",
+        "fuel": "assets/target.png"
+    },
+    "images2": {
+        "htpbg": "assets/htpbg.png",
+        "winbg": "assets/winbg.png",
+        "ovrbg": "assets/ovrbg.png"
+    },
+    "ui": {
+        "track": "assets/road.png",
+        "htpbox": "assets/htpbox.png",
+        "ovrbox": "assets/ovrbox.png",
+        "lvlbox": "assets/lvlbox.png",
+        "next": "assets/next.png",
+        "replay": "assets/replay.png",
+        "replay_level": "assets/replay_level.png",
+        "playbtn": "assets/playbtn.png",
+        "scoreback": "assets/scoreback.png"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "hit": "assets/hit.mp3",
+        "drift": "assets/drift.mp3",
+        "collect": "assets/collect.mp3"
+    },
+    "audioSettings": {
+        "bgmKey": "bgm",
+        "bgmVolume": 0.5,
+        "driftKey": "drift"
+    },
+    "keys": {
+        "roadKey": "track",
+        "car1Key": "top_view_fullvehicle",
+        "car2Key": "top_view_fullvehicle2"
+    }
+}

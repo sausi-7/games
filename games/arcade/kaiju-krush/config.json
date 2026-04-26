@@ -1,0 +1,52 @@
+{
+  "font": { "family": "Outfit", "url": "assets/outfit.ttf" },
+
+  "texts": {
+    "how_to_play": "SURVIVE 60 SECONDS.\n\n• Hold Left/Right buttons to move\n• Tap Punch to attack\n\nDestroy buildings and enemy units to score points. Avoid projectiles; your health is limited. If health drops to zero, it's game over.",
+    "score_label": "Score: ",
+    "win_title": "Score: ",
+    "game_over_title": "Final Score: "
+  },
+
+  "gameplay": {
+    "timerSeconds": 60
+  },
+
+  "images": {
+    "background_sky": "assets/images/background_sky.png",
+    "ground": "assets/images/ground.png",
+    "building1": "assets/images/building1.png",
+    "building2": "assets/images/building2.png",
+    "building3": "assets/images/building3.png",
+    "tank": "assets/images/tank.png",
+    "helicopter": "assets/images/helicopter.png",
+    "projectile": "assets/images/projectile.png",
+
+    "htpbox": "assets/images/htpbox.png",
+    "playbtn": "assets/images/playbtn.png",
+    "ovrbox": "assets/images/ovrbox.png",
+    "replay": "assets/images/replay.png",
+    "lvlbox": "assets/images/lvlbox.png",
+    "next": "assets/images/next.png",
+    "lvl_replay": "assets/images/lvl_replay.png",
+
+    "left": "assets/images/left.png",
+    "right": "assets/images/right.png",
+    "punch": "assets/images/punch.png"
+  },
+
+  "spritesheets": {
+    "kaiju_walk": { "url": "assets/images/hero.png", "frameWidth": 103, "frameHeight": 143 },
+    "kaiju_attack": { "url": "assets/images/hero.png", "frameWidth": 103, "frameHeight": 143 },
+    "explosion": { "url": "assets/images/explosion.png", "frameWidth": 51, "frameHeight": 127 }
+  },
+
+  "audio": {
+    "main_theme": "assets/audio/main_theme.mp3",
+    "stomp": "assets/audio/stomp.mp3",
+    "punch": "assets/audio/punch.mp3",
+    "explosion_sound": "assets/audio/explosion.mp3",
+    "roar": "assets/audio/roar.mp3",
+    "player_hit": "assets/audio/player_hit.mp3"
+  }
+}

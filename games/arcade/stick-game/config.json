@@ -1,0 +1,47 @@
+{
+  "entry": "Customstickgame/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap and hold to stretch a stick that will be used to walk between platforms.",
+    "score_label": "Score: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "targetScore": 10,
+    "playerWalkSpeed": 800,
+    "stickGrowRate": 900,
+    "stickRotateMs": 320,
+    "scrollMs": 590,
+    "perfectBonus": 2
+  },
+  "images1": {
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "winbg": "assets/ovrbg.png",
+    "ovrbg": "assets/winbg.png",
+    "htpbg": "assets/htpbg.png",
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "scoreback": "assets/scoreback.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "collect": "assets/collect.mp3"
+  }
+}

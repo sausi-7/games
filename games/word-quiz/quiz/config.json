@@ -1,0 +1,1049 @@
+{
+  "entry": "Customquizgame/index.html",
+  "numPairs": 3,
+  "images1": {},
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "dialog_bg_start": "assets/htp_landscape.png",
+    "levelComplete": "assets/level_complete.png",
+    "gameOver": "assets/game_over.png",
+    "playGame": "assets/play_game_landscape.png",
+    "replayLevel": "assets/replay.png",
+    "next": "assets/next.png",
+    "replay": "assets/replay_level.png",
+    "scorecard": "assets/scorecard.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1080,
+    "height": 1920
+  },
+  "audio": {
+    "correct": "assets/collect.mp3",
+    "wrong": "assets/wrong.mp3",
+    "bg_music": "assets/bgm.mp3"
+  },
+  "texts": {
+    "instructions": "Choose correct answers to score points!",
+    "instructions1": "How to play",
+    "levelComplete": "Level Complete!",
+    "gameOver": "Game Over",
+    "startButton": "Start",
+    "restartButton": "Restart",
+    "nextButton": "Next"
+  },
+  "gameplay": {
+    "timeLimit": 60,
+    "difficulty": "hard",
+    "maxQuestions": 10,
+    "targetScore": 4
+  },
+  "layout": {
+    "questionYRatio": 0.3,
+    "optionsStartYRatio": 0.48,
+    "optionsSpacing": 115
+  },
+  "questions": {
+    "easy": [
+      {
+        "id": 1,
+        "question": "Which animal is known as the King of the Jungle?",
+        "options": [
+          "Elephant",
+          "Lion",
+          "Tiger",
+          "Zebra"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 2,
+        "question": "Which planet is known as the Red Planet?",
+        "options": [
+          "Earth",
+          "Mars",
+          "Jupiter",
+          "Venus"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 3,
+        "question": "How many days are there in a leap year?",
+        "options": [
+          "365",
+          "366",
+          "364",
+          "360"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 4,
+        "question": "Which shape has 3 sides?",
+        "options": [
+          "Square",
+          "Circle",
+          "Triangle",
+          "Rectangle"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 5,
+        "question": "What do plants need to make food?",
+        "options": [
+          "Moonlight",
+          "Sunlight",
+          "Wind",
+          "Snow"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 6,
+        "question": "Which of these is a mammal?",
+        "options": [
+          "Shark",
+          "Frog",
+          "Dolphin",
+          "Eagle"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 7,
+        "question": "Which number is even?",
+        "options": [
+          "7",
+          "9",
+          "11",
+          "12"
+        ],
+        "correctIndex": 3
+      },
+      {
+        "id": 8,
+        "question": "Which is the largest ocean on Earth?",
+        "options": [
+          "Indian",
+          "Pacific",
+          "Atlantic",
+          "Arctic"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 9,
+        "question": "Which gas do we breathe in to stay alive?",
+        "options": [
+          "Carbon dioxide",
+          "Oxygen",
+          "Nitrogen",
+          "Hydrogen"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 10,
+        "question": "How many minutes are there in one hour?",
+        "options": [
+          "30",
+          "45",
+          "60",
+          "90"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 11,
+        "question": "How many legs does a spider have?",
+        "options": [
+          "4",
+          "6",
+          "8",
+          "10"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 12,
+        "question": "What color is the sky on a clear day?",
+        "options": [
+          "Blue",
+          "Green",
+          "Red",
+          "Yellow"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 13,
+        "question": "Which fruit is yellow and curved?",
+        "options": [
+          "Apple",
+          "Banana",
+          "Grapes",
+          "Orange"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 14,
+        "question": "Which animal says 'meow'?",
+        "options": [
+          "Dog",
+          "Cow",
+          "Cat",
+          "Horse"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 15,
+        "question": "What do bees make?",
+        "options": [
+          "Milk",
+          "Honey",
+          "Bread",
+          "Juice"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 16,
+        "question": "Which day comes after Monday?",
+        "options": [
+          "Sunday",
+          "Tuesday",
+          "Wednesday",
+          "Friday"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 17,
+        "question": "What do we use to write on a blackboard?",
+        "options": [
+          "Chalk",
+          "Spoon",
+          "Brush",
+          "Fork"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 18,
+        "question": "How many wheels does a bicycle have?",
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 19,
+        "question": "Which season is usually the coldest?",
+        "options": [
+          "Winter",
+          "Summer",
+          "Spring",
+          "Autumn"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 20,
+        "question": "What do we wear on our feet?",
+        "options": [
+          "Gloves",
+          "Shoes",
+          "Hat",
+          "Scarf"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 21,
+        "question": "Which shape is a ball most like?",
+        "options": [
+          "Circle",
+          "Square",
+          "Triangle",
+          "Rectangle"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 22,
+        "question": "What is H2O commonly called?",
+        "options": [
+          "Salt",
+          "Water",
+          "Sugar",
+          "Oil"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 23,
+        "question": "What do cows drink?",
+        "options": [
+          "Milk",
+          "Water",
+          "Juice",
+          "Tea"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 24,
+        "question": "Which animal can fly?",
+        "options": [
+          "Cat",
+          "Dog",
+          "Eagle",
+          "Horse"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 25,
+        "question": "How many days are there in a week?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 26,
+        "question": "What color are most leaves?",
+        "options": [
+          "Blue",
+          "Green",
+          "Red",
+          "Black"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 27,
+        "question": "Which transport moves on tracks?",
+        "options": [
+          "Car",
+          "Train",
+          "Boat",
+          "Plane"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 28,
+        "question": "Where do fish live?",
+        "options": [
+          "Forest",
+          "Sky",
+          "Water",
+          "Desert"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 29,
+        "question": "Which is a farm animal?",
+        "options": [
+          "Lion",
+          "Tiger",
+          "Cow",
+          "Shark"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 30,
+        "question": "What do we wear when it rains?",
+        "options": [
+          "Sunglasses",
+          "Raincoat",
+          "Helmet",
+          "Gloves"
+        ],
+        "correctIndex": 1
+      }
+    ],
+    "medium": [
+      {
+        "id": 101,
+        "question": "What is the boiling point of water at sea level?",
+        "options": [
+          "50°C",
+          "75°C",
+          "100°C",
+          "150°C"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 102,
+        "question": "Which organ in the human body pumps blood?",
+        "options": [
+          "Lungs",
+          "Heart",
+          "Brain",
+          "Stomach"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 103,
+        "question": "How many continents are there on Earth?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 104,
+        "question": "Who wrote the famous play 'Romeo and Juliet'?",
+        "options": [
+          "Charles Dickens",
+          "William Shakespeare",
+          "Mark Twain",
+          "Leo Tolstoy"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 105,
+        "question": "What is the largest planet in our Solar System?",
+        "options": [
+          "Earth",
+          "Jupiter",
+          "Mars",
+          "Saturn"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 106,
+        "question": "Which process do plants use to make their own food?",
+        "options": [
+          "Respiration",
+          "Photosynthesis",
+          "Digestion",
+          "Evaporation"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 107,
+        "question": "Which blood group is known as the universal donor?",
+        "options": [
+          "A",
+          "B",
+          "AB",
+          "O negative"
+        ],
+        "correctIndex": 3
+      },
+      {
+        "id": 108,
+        "question": "Which metal is used most for making wires?",
+        "options": [
+          "Gold",
+          "Copper",
+          "Silver",
+          "Iron"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 109,
+        "question": "In which direction does the Sun rise?",
+        "options": [
+          "North",
+          "South",
+          "East",
+          "West"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 110,
+        "question": "Which language has the most native speakers in the world?",
+        "options": [
+          "English",
+          "Spanish",
+          "Mandarin Chinese",
+          "Hindi"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 111,
+        "question": "What is the capital city of India?",
+        "options": [
+          "Mumbai",
+          "Delhi",
+          "Kolkata",
+          "Chennai"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 112,
+        "question": "Which vitamin is produced when skin is exposed to sunlight?",
+        "options": [
+          "Vitamin A",
+          "Vitamin B12",
+          "Vitamin C",
+          "Vitamin D"
+        ],
+        "correctIndex": 3
+      },
+      {
+        "id": 113,
+        "question": "What is 9 × 7?",
+        "options": [
+          "56",
+          "63",
+          "72",
+          "81"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 114,
+        "question": "Which gas do plants release during photosynthesis?",
+        "options": [
+          "Oxygen",
+          "Nitrogen",
+          "Carbon dioxide",
+          "Hydrogen"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 115,
+        "question": "Which planet is closest to the Sun?",
+        "options": [
+          "Earth",
+          "Venus",
+          "Mercury",
+          "Mars"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 116,
+        "question": "What is the largest mammal on Earth?",
+        "options": [
+          "Elephant",
+          "Blue whale",
+          "Giraffe",
+          "Hippopotamus"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 117,
+        "question": "How many bones are there in an adult human body?",
+        "options": [
+          "106",
+          "206",
+          "306",
+          "406"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 118,
+        "question": "What is the freezing point of water?",
+        "options": [
+          "0°C",
+          "50°C",
+          "100°C",
+          "-10°C"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 119,
+        "question": "Which continent is also a country?",
+        "options": [
+          "Asia",
+          "Africa",
+          "Australia",
+          "Europe"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 120,
+        "question": "Which instrument has black and white keys?",
+        "options": [
+          "Guitar",
+          "Piano",
+          "Violin",
+          "Flute"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 121,
+        "question": "Who is known as the Father of Computers?",
+        "options": [
+          "Charles Babbage",
+          "Thomas Edison",
+          "Alexander Graham Bell",
+          "James Watt"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 122,
+        "question": "Which organ helps us breathe?",
+        "options": [
+          "Heart",
+          "Lungs",
+          "Liver",
+          "Kidney"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 123,
+        "question": "Which one is a renewable source of energy?",
+        "options": [
+          "Coal",
+          "Petroleum",
+          "Wind",
+          "Natural gas"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 124,
+        "question": "How many sides does a hexagon have?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 125,
+        "question": "The Great Wall is in which country?",
+        "options": [
+          "India",
+          "China",
+          "Japan",
+          "Russia"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 126,
+        "question": "What is the main language spoken in Spain?",
+        "options": [
+          "French",
+          "English",
+          "Spanish",
+          "German"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 127,
+        "question": "Which force pulls objects toward Earth?",
+        "options": [
+          "Magnetism",
+          "Gravity",
+          "Friction",
+          "Electricity"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 128,
+        "question": "Which blood cells help in clotting?",
+        "options": [
+          "Red blood cells",
+          "White blood cells",
+          "Platelets",
+          "Plasma"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 129,
+        "question": "What is the main gas found in the air we breathe?",
+        "options": [
+          "Oxygen",
+          "Nitrogen",
+          "Carbon dioxide",
+          "Helium"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 130,
+        "question": "Which part of the plant is usually underground?",
+        "options": [
+          "Leaf",
+          "Stem",
+          "Root",
+          "Flower"
+        ],
+        "correctIndex": 2
+      }
+    ],
+    "hard": [
+      {
+        "id": 201,
+        "question": "What is the chemical symbol for table salt?",
+        "options": [
+          "NaCl",
+          "KCl",
+          "CaCO3",
+          "H2SO4"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 202,
+        "question": "Who proposed the three laws of motion?",
+        "options": [
+          "Albert Einstein",
+          "Isaac Newton",
+          "Galileo Galilei",
+          "Niels Bohr"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 203,
+        "question": "Which part of the cell contains genetic material?",
+        "options": [
+          "Cytoplasm",
+          "Nucleus",
+          "Cell membrane",
+          "Ribosome"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 204,
+        "question": "What is the smallest prime number?",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 205,
+        "question": "Which gas is most abundant in Earth's atmosphere?",
+        "options": [
+          "Oxygen",
+          "Nitrogen",
+          "Carbon dioxide",
+          "Argon"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 206,
+        "question": "What is the powerhouse of the cell?",
+        "options": [
+          "Nucleus",
+          "Chloroplast",
+          "Mitochondria",
+          "Golgi apparatus"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 207,
+        "question": "What is the square root of 256?",
+        "options": [
+          "12",
+          "14",
+          "16",
+          "18"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 208,
+        "question": "Who developed the theory of relativity?",
+        "options": [
+          "Max Planck",
+          "Albert Einstein",
+          "Marie Curie",
+          "Nikola Tesla"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 209,
+        "question": "Which element has the atomic number 1?",
+        "options": [
+          "Oxygen",
+          "Hydrogen",
+          "Helium",
+          "Carbon"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 210,
+        "question": "What is the value of Pi (π) rounded to two decimal places?",
+        "options": [
+          "3.12",
+          "3.14",
+          "3.16",
+          "3.18"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 211,
+        "question": "What is the chemical formula for carbon dioxide?",
+        "options": [
+          "CO2",
+          "CO",
+          "C2O",
+          "C2O2"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 212,
+        "question": "Who is known as the father of modern physics?",
+        "options": [
+          "Isaac Newton",
+          "Albert Einstein",
+          "Galileo Galilei",
+          "James Clerk Maxwell"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 213,
+        "question": "What is the SI unit of electric current?",
+        "options": [
+          "Volt",
+          "Watt",
+          "Ampere",
+          "Ohm"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 214,
+        "question": "What is 3/4 expressed as a percentage?",
+        "options": [
+          "25%",
+          "50%",
+          "60%",
+          "75%"
+        ],
+        "correctIndex": 3
+      },
+      {
+        "id": 215,
+        "question": "Which layer of the Earth is liquid?",
+        "options": [
+          "Inner core",
+          "Mantle",
+          "Outer core",
+          "Crust"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 216,
+        "question": "What is the process by which water changes from liquid to gas?",
+        "options": [
+          "Condensation",
+          "Evaporation",
+          "Sublimation",
+          "Freezing"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 217,
+        "question": "Who formulated the law of universal gravitation?",
+        "options": [
+          "Isaac Newton",
+          "Albert Einstein",
+          "Johannes Kepler",
+          "Nicolaus Copernicus"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 218,
+        "question": "Which part of the brain controls balance and coordination?",
+        "options": [
+          "Cerebrum",
+          "Cerebellum",
+          "Medulla",
+          "Hypothalamus"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 219,
+        "question": "What is the chemical symbol for gold?",
+        "options": [
+          "Ag",
+          "Au",
+          "Gd",
+          "Go"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 220,
+        "question": "What is the value of 2³ × 3²?",
+        "options": [
+          "18",
+          "36",
+          "54",
+          "72"
+        ],
+        "correctIndex": 3
+      },
+      {
+        "id": 221,
+        "question": "Which law explains why we need seat belts in cars?",
+        "options": [
+          "Newton's first law",
+          "Newton's second law",
+          "Newton's third law",
+          "Law of gravitation"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 222,
+        "question": "What is the pH of pure water at 25°C?",
+        "options": [
+          "0",
+          "3",
+          "7",
+          "14"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 223,
+        "question": "Which scientist discovered penicillin?",
+        "options": [
+          "Alexander Fleming",
+          "Louis Pasteur",
+          "Robert Koch",
+          "Joseph Lister"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "id": 224,
+        "question": "Which planet has the most moons in our Solar System?",
+        "options": [
+          "Earth",
+          "Mars",
+          "Jupiter",
+          "Mercury"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 225,
+        "question": "What is the speed of light in vacuum (approximately)?",
+        "options": [
+          "3,000 km/s",
+          "30,000 km/s",
+          "300,000 km/s",
+          "3,000,000 km/s"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 226,
+        "question": "What is the term for animals that eat both plants and meat?",
+        "options": [
+          "Herbivores",
+          "Carnivores",
+          "Omnivores",
+          "Detritivores"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 227,
+        "question": "In which part of the cell does photosynthesis mainly occur?",
+        "options": [
+          "Nucleus",
+          "Mitochondria",
+          "Chloroplast",
+          "Ribosome"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 228,
+        "question": "What is the derivative of x²?",
+        "options": [
+          "x",
+          "2x",
+          "x²",
+          "2x²"
+        ],
+        "correctIndex": 1
+      },
+      {
+        "id": 229,
+        "question": "Which gas causes the greenhouse effect the most among these?",
+        "options": [
+          "Oxygen",
+          "Nitrogen",
+          "Carbon dioxide",
+          "Helium"
+        ],
+        "correctIndex": 2
+      },
+      {
+        "id": 230,
+        "question": "What is the hardest natural substance on Earth?",
+        "options": [
+          "Diamond",
+          "Iron",
+          "Quartz",
+          "Graphite"
+        ],
+        "correctIndex": 0
+      }
+    ]
+  }
+}

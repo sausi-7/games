@@ -1,0 +1,100 @@
+{
+  "entry": "Customcrowdcontrol/index.html",
+  "waves": [
+    {
+      "boards": [
+        {
+          "type": "add",
+          "val": 25
+        },
+        {
+          "type": "add",
+          "val": 5
+        }
+      ],
+      "enemyCount": 20
+    },
+    {
+      "boards": [
+        {
+          "type": "sub",
+          "val": 1
+        },
+        {
+          "type": "add",
+          "val": 20
+        }
+      ],
+      "enemyCount": 20
+    },
+    {
+      "boards": [
+        {
+          "type": "add",
+          "val": 4
+        },
+        {
+          "type": "add",
+          "val": 40
+        }
+      ],
+      "enemyCount": 30
+    },
+    {
+      "boards": [
+        {
+          "type": "sub",
+          "val": 1
+        },
+        {
+          "type": "add",
+          "val": 40
+        }
+      ],
+      "enemyCount": 49
+    }
+  ],
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "text": {
+    "htpText": "How to Play",
+    "htpTitle": "Swipe to guide your player\nthrough series of obstacles\nthat increase or decrease\nits numbers. The higher\nyour number, the further\nyou go!"
+  },
+  "images2": {
+    "background": "./assets/bg.png"
+  },
+  "ui": {
+    "boardAdd": "./assets/boardAdd.png",
+    "boardMul": "./assets/boardMul.png",
+    "boardSub": "./assets/boardSub.png",
+    "htpbg": "./assets/htpbg.png",
+    "lvlbg": "./assets/lvlbg.png",
+    "backdrop": "./assets/backdrop.png",
+    "playbtn": "./assets/playbtn.png",
+    "ovrbg": "./assets/ovrbg.png",
+    "ovrbtn": "./assets/ovrbtn.png",
+    "nxtlvl": "./assets/nxtlvl.png",
+    "lvlrestart": "./assets/lvlrestart.png"
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "./assets/hero.png",
+      "frameWidth": 103,
+      "frameHeight": 157,
+      "endFrame": 23
+    },
+    "obs": {
+      "path": "./assets/obs.png",
+      "frameWidth": 460,
+      "frameHeight": 787,
+      "endFrame": 3
+    }
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "fight": "./assets/fight.mp3"
+  }
+}

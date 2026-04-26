@@ -1,0 +1,66 @@
+{
+  "entry": "Customendlessrunner/index.html",
+  "spritesheets": {},
+  "images1": {
+    "coin": "assets/coin.png",
+    "player": "assets/player.png",
+    "obstacle_high": "assets/eagle.png",
+    "obstacle": "assets/crow.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "winbg": "assets/winbg.png",
+    "htpbg": "assets/htpbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "platform": "assets/platform-long.png"
+  },
+  "ui": {
+    "dialog_bg_start": "assets/dialog_bg_start.png",
+    "button": "assets/play_button.png",
+    "level_complete": "assets/level_complete.png",
+    "next_button": "assets/next_button.png",
+    "replay_button": "assets/replay_button.png",
+    "game_over": "assets/game_over.png",
+    "replay_button_big": "assets/replay_button_big.png",
+    "timebox": "assets/timebox.png",
+    "pointbox": "assets/pointbox.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "audio": {
+    "coin": "assets/collect.mp3",
+    "jump": "assets/jump.mp3",
+    "collision": "assets/collision.mp3",
+    "background_music": "assets/bgm.mp3"
+  },
+  "mechanics": {
+    "playerSpeed": 400,
+    "jumpVelocity": -900,
+    "slideDuration": 1200,
+    "gravityY": 1000,
+    "obstacleSpawnDelay": 2500,
+    "coinSpawnDelay": 2000,
+    "obstacleSpawnDistance": 1400,
+    "coinSpawnDistance": 1200,
+    "gameTimer": 80,
+    "targetCoins": 5
+  },
+  "scales": {
+    "obstacle_high": 1.5,
+    "obstacle": 0.5,
+    "coin": 0.5
+  },
+  "texts": {
+    "title": "How to Play",
+    "instructions": "Control:",
+    "instructions1": "Collect:",
+    "levelComplete": "Level Completed",
+    "gameOver": "Game Over",
+    "startButton": "Start",
+    "restartButton": "Restart",
+    "nextButton": "Next"
+  }
+}

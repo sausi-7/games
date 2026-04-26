@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Kaiju Krush</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    // Utility: load font via CSS FontFace (from config)
+    function loadFont(name, url) {
+      if (!name || !url) return;
+      const font = new FontFace(name, `url(${url})`);
+      font.load().then(f => document.fonts.add(f)).catch(() => { });
+    }
+  </script>
+  <script src="Scenes/BootScene.js"></script>
+  <script src="Scenes/GameOverScene.js"></script>
+  <script src="Scenes/GameScene.js"></script>
+  <script src="Scenes/WinScene.js"></script>
+  <script src="Scenes/MainMenuScene.js"></script>
+
+  <script>
+    // --- ASSET MANAGER (FOR FALLBACKS) ---
+    class AssetManager {
+      constructor(scene) {
+        this.scene = scene;
+        this.fallbacks = {
+          'kaiju': { type: 'rectangle', width: 128, height: 160, color: 0x00ff00, label: 'KAIJU' },
+          'tank': { type: 'rectangle', width: 48, height: 24, color: 0x8B0000, label: 'TANK' },
+          'helicopter': { type: 'rectangle', width: 64, height: 32, color: 0x8B0000, label: 'HELI' },
+          'building1': { type: 'rectangle', width: 80, height: 200, color: 0x808080, label: '' },
+          'building2': { type: 'rectangle', width: 80, height: 300, color: 0x708090, label: '' },
+          'building3': { type: 'rectangle', width: 80, height: 250, color: 0x696969, label: '' },
+          'ground': { type: 'fill', color: 0x4B3A26 },
+          'background_sky': { type: 'fill', color: 0x4682B4 },
+          'projectile': { type: 'circle', radius: 8, color: 0xFF4500, label: '' },
+          'explosion': { type: 'circle', radius: 32, color: 0xFF8C00, label: '' }
+        };
+        this.createdFallbacks = new Map();
+      }
+      createFallback(key) {
+        if (this.createdFallbacks.has(key)) return this.createdFallbacks.get(key);
+        const f = this.fallbacks[key] || { type: 'rectangle', width: 32, height: 32, color: 0xff00ff, label: '?' };
+        let sprite;
+        switch (f.type) {
+          case 'rectangle': sprite = this.scene.add.rectangle(0, 0, f.width, f.height, f.color); break;
+          case 'circle': sprite = this.scene.add.circle(0, 0, f.radius, f.color); break;
+          case 'fill':
+            return this.scene.add.rectangle(
+              this.scene.scale.width / 2, this.scene.scale.height / 2,
+              this.scene.scale.width, this.scene.scale.height, f.color
+            ).setDepth(-10);
+        }
+        if (f.label) {
+          const text = this.scene.add.text(0, 0, f.label, { fontSize: '14px', fill: '#FFF', fontFamily: 'Outfit, Arial', resolution: 2 }).setOrigin(0.5);
+          const container = this.scene.add.container(0, 0, [sprite, text]);
+          this.scene.physics.world.enable(container);
+          this.createdFallbacks.set(key, container);
+          return container;
+        }
+        this.createdFallbacks.set(key, sprite);
+        return sprite;
+      }
+      getSprite(key, x, y, textureKey) {
+        const finalKey = textureKey || key;
+        if (this.scene.textures.exists(finalKey)) {
+          return this.scene.physics.add.sprite(x, y, finalKey);
+        } else {
+          console.warn(`AssetManager: Texture '${finalKey}' not found. Creating fallback for key '${key}'.`);
+          const fb = this.createFallback(key);
+          if (fb) fb.setPosition(x, y);
+          return fb;
+        }
+      }
+    }
+
+    const config = {
+      type: Phaser.AUTO,
+      width: 1080,
+      height: 1920,
+      scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+      physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
+      scene: [BootScene, MainMenuScene, GameScene, GameOverScene, WinScene]
+    };
+
+    const game = new Phaser.Game(config);
+
+
+  </script>
+
+
+</body>
+
+</html>

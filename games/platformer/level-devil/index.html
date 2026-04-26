@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tunnel Rush – Proper Version</title>
+<style>
+  body { margin: 0; overflow: hidden; background: black; }
+  #ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font: 20px monospace;
+  }
+</style>
+</head>
+<body>
+
+<div id="ui">Distance: 0</div>
+
+<!-- THREE.JS -->
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+
+<script>
+let scene, camera, renderer;
+let tunnel;
+let obstacles = [];
+let speed = 0.25;
+let distance = 0;
+let clock = new THREE.Clock();
+let keys = {};
+
+const TUNNEL_RADIUS = 10;
+const TUNNEL_LENGTH = 4000;
+
+init();
+animate();
+
+function init() {
+  scene = new THREE.Scene();
+
+  camera = new THREE.PerspectiveCamera(
+    80,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    5000
+  );
+  camera.position.z = 0;
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // Light
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const light = new THREE.PointLight(0xffffff, 1);
+  light.position.z = 10;
+  scene.add(light);
+
+  // TUNNEL (NEVER REMOVED)
+  const tunnelGeo = new THREE.CylinderGeometry(
+    TUNNEL_RADIUS,
+    TUNNEL_RADIUS,
+    TUNNEL_LENGTH,
+    64,
+    1,
+    true
+  );
+
+  const tunnelMat = new THREE.MeshStandardMaterial({
+    color: 0x2222ff,
+    side: THREE.BackSide
+  });
+
+  tunnel = new THREE.Mesh(tunnelGeo, tunnelMat);
+  tunnel.rotation.x = Math.PI / 2;
+  tunnel.position.z = -TUNNEL_LENGTH / 2;
+  scene.add(tunnel);
+
+  // OBSTACLES (RINGS)
+  for (let i = 0; i < 40; i++) {
+    createObstacle(-i * 100 - 50);
+  }
+
+  window.addEventListener("resize", resize);
+  document.addEventListener("keydown", e => keys[e.key] = true);
+  document.addEventListener("keyup", e => keys[e.key] = false);
+}
+
+function createObstacle(z) {
+  const ringGeo = new THREE.TorusGeometry(
+    TUNNEL_RADIUS - 2,
+    0.6,
+    16,
+    32
+  );
+
+  const ringMat = new THREE.MeshStandardMaterial({
+    color: 0xff3333
+  });
+
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.z = z;
+  ring.rotation.z = Math.random() * Math.PI * 2;
+
+  scene.add(ring);
+  obstacles.push(ring);
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const dt = clock.getDelta();
+
+  // Move forward (CAMERA ONLY)
+  camera.position.z -= speed;
+  distance += speed;
+
+  // Rotate tunnel slowly (KEY FEATURE)
+  tunnel.rotation.z += 0.002;
+
+  // Player movement (LEFT / RIGHT)
+  if (keys.ArrowLeft || keys.a) camera.position.x -= 6 * dt;
+  if (keys.ArrowRight || keys.d) camera.position.x += 6 * dt;
+
+  camera.position.x = THREE.MathUtils.clamp(camera.position.x, -5, 5);
+
+  // Recycle obstacles
+  obstacles.forEach(ring => {
+    if (ring.position.z > camera.position.z + 5) {
+      ring.position.z -= TUNNEL_LENGTH;
+      ring.rotation.z = Math.random() * Math.PI * 2;
+    }
+
+    // Collision check
+    const dx = ring.position.x - camera.position.x;
+    const dy = ring.position.y - camera.position.y;
+    const dz = ring.position.z - camera.position.z;
+
+    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+    if (dist < 3) {
+      alert("Game Over!");
+      location.reload();
+    }
+  });
+
+  document.getElementById("ui").innerText =
+    "Distance: " + Math.floor(distance);
+
+  renderer.render(scene, camera);
+}
+
+function resize() {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+}
+</script>
+
+</body>
+</html>

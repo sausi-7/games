@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Weaver — Bridges (Aligned)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; background: #0b1020; overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+    #game { width: 100vw; height: 100vh; }
+    .hint {
+      position: fixed; left: 12px; bottom: 12px; color: #9cc2ff; font-size: 12px; opacity: .85; user-select: none;
+      text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+</head>
+<body>
+  <div id="game"></div>
+  <div class="hint">Stand still ≈1s → bridge grows toward next platform • Overstay → spikes → crumble</div>
+
+<script>
+/* ===============================
+   AssetManager with Vector Fallbacks
+   =============================== */
+class AssetManager {
+  constructor(scene) {
+    this.scene = scene;
+    this.createdFallbacks = new Map();
+    this.fallbacks = {
+      player:   { type: 'circle', radius: 28,  color: 0x77ffd5 },
+      platform: { type: 'rectangle', width: 240, height: 24, color: 0x8890aa },
+      spike:    { type: 'rectangle', width: 80, height: 18, color: 0xff3355 },
+      gate:     { type: 'rectangle', width: 60, height: 120, color: 0x7df9ff },
+      background: { type: 'fill', color: 0x0e1530 }
+    };
+  }
+  createFallback(key) {
+    if (this.createdFallbacks.has(key)) return this.createdFallbacks.get(key);
+    const def = this.fallbacks[key] || { type: 'rectangle', width: 32, height: 32, color: 0xff00ff };
+    let go = null;
+    switch (def.type) {
+      case 'rectangle': go = this.scene.add.rectangle(0, 0, def.width, def.height, def.color).setStrokeStyle(2, 0x000000, 0.25); break;
+      case 'circle':    go = this.scene.add.circle(0, 0, def.radius, def.color).setStrokeStyle(2, 0x000000, 0.25); break;
+      case 'fill': {
+        const w = this.scene.scale.width, h = this.scene.scale.height;
+        go = this.scene.add.rectangle(w/2, h/2, w, h, def.color).setScrollFactor(0); break;
+      }
+      default: go = this.scene.add.rectangle(0, 0, 32, 32, 0xff00ff); break;
+    }
+    this.createdFallbacks.set(key, go);
+    return go;
+  }
+  getSprite(key, x, y) {
+    if (this.scene.textures.exists(key)) return this.scene.add.image(x, y, key);
+    const fb = this.createFallback(key); fb.setPosition(x, y); return fb;
+  }
+}
+
+/* ===============================
+   Fit image to screen
+   =============================== */
+function fitToScreen(image, width, height) {
+  const iw = image.width || image.displayWidth || 1;
+  const ih = image.height || image.displayHeight || 1;
+  const scale = Math.max(width / iw, height / ih);
+  image.setScale(scale).setScrollFactor(0);
+}
+
+/* ===============================
+   Morphing Platform (minor width growth; spikes/crumble)
+   =============================== */
+class MorphPlatform {
+  constructor(scene, x, y, width = 220, hazardous = false) {
+    this.scene = scene;
+    this.hazardous = hazardous;
+    this.baseWidth = width;
+    this.height = 24;
+    this.grown = false;
+    this.sprouted = false;
+    this.crumbled = false;
+
+    if (scene.textures.exists('platform')) {
+      this.display = scene.add.image(x, y, 'platform').setOrigin(0.5);
+      const naturalH = this.display.height || 24;
+      const scaleX = width / (this.display.width || width);
+      const scaleY = this.height / naturalH;
+      this.display.setScale(scaleX, scaleY);
+    } else {
+      this.display = scene.add.rectangle(x, y, width, this.height, 0x8890aa).setStrokeStyle(2, 0x000000, 0.2);
+    }
+    scene.physics.add.existing(this.display, true);
+    this._syncBodyToDisplay();
+    this.spikeBar = null;
+  }
+  _syncBodyToDisplay() {
+    const w = (this.display.displayWidth ?? this.display.width);
+    const h = (this.display.displayHeight ?? this.display.height);
+    if (this.display.body?.setSize) {
+      this.display.body.setSize(w, h);
+      this.display.body.updateFromGameObject?.();
+    }
+  }
+  setWidth(newWidth) {
+    if (this.display.setDisplaySize) this.display.setDisplaySize(newWidth, this.height);
+    else if (this.display.setSize) this.display.setSize(newWidth, this.height);
+    else {
+      const base = this.baseWidth || 240;
+      const sx = newWidth / base;
+      this.display.setScale?.(sx, 1);
+    }
+    this._syncBodyToDisplay();
+  }
+  grow() {
+    if (this.grown || this.crumbled) return;
+    this.grown = true;
+    const targetWidth = this.baseWidth * 1.5; // bridges do main connecting
+    const startWidth = (this.display.displayWidth || this.display.width || this.baseWidth);
+    this.scene.tweens.add({
+      targets: { w: startWidth }, w: targetWidth, duration: 380, ease: 'Sine.easeOut',
+      onUpdate: (t, obj) => this.setWidth(obj.w)
+    });
+  }
+  sproutSpikes() {
+    if (!this.hazardous || this.sprouted || this.crumbled) return;
+    this.sprouted = true;
+    const w = (this.display.displayWidth || this.display.width);
+    const x = this.display.x;
+    const y = this.display.y - (this.height/2) - 9;
+    let bar;
+    if (this.scene.textures.exists('spike')) {
+      bar = this.scene.add.image(x, y, 'spike').setOrigin(0.5, 1);
+      bar.displayWidth = w; bar.displayHeight = 18;
+    } else {
+      bar = this.scene.add.rectangle(x, y, w, 18, 0xff3355).setOrigin(0.5, 1);
+    }
+    this.scene.physics.add.existing(bar, true);
+    this.scene._spikeGroup.add(bar);
+    bar.alpha = 0; this.scene.tweens.add({ targets: bar, alpha: 1, duration: 160 });
+    this.spikeBar = bar;
+  }
+  crumble() {
+    if (this.crumbled) return;
+    this.crumbled = true;
+    this.scene.tweens.add({
+      targets: this.display, alpha: 0, duration: 240,
+      onComplete: () => {
+        this.display.disableBody?.(true, true);
+        this.display.setVisible(false).setActive(false);
+        if (this.display.body) this.display.body.checkCollision.none = true;
+      }
+    });
+    if (this.spikeBar) {
+      this.scene.tweens.add({ targets: this.spikeBar, alpha: 0, duration: 200, onComplete: () => this.spikeBar.destroy() });
+    }
+  }
+}
+
+/* ===============================
+   DreamBridge: grows from platform edge toward target (Y aligned)
+   =============================== */
+class DreamBridge {
+  constructor(scene, startX, yCenter, direction, targetX, maxLen = 420) {
+    this.scene = scene;
+    this.direction = Math.sign(direction) || 1;
+    this.maxLen = maxLen;
+
+    const thickness = 18;
+    this.rect = scene.add.rectangle(startX, yCenter, 10, thickness, 0x7df9ff)
+      .setOrigin(this.direction > 0 ? 0 : 1, 0.5)
+      .setAlpha(0.92);
+    scene.physics.add.existing(this.rect, true); // static
+    this._sync();
+
+    const gap = Math.abs(targetX - startX);
+    this.finalLen = Math.min(gap, this.maxLen);
+
+    // grow tween
+    this.rect.displayWidth = 10;
+    this.growTween = scene.tweens.add({
+      targets: this.rect,
+      displayWidth: this.finalLen,
+      duration: 380,
+      ease: 'Sine.easeOut',
+      onUpdate: () => this._sync()
+    });
+
+    // lifetime
+    this.alive = true;
+    this.crumbleTimer = scene.time.delayedCall(2600, () => this.crumble());
+  }
+
+  _sync() {
+    if (this.rect.body?.setSize) {
+      this.rect.body.setSize(this.rect.displayWidth, this.rect.displayHeight);
+      this.rect.body.updateFromGameObject?.();
+    } else {
+      this.rect.body?.updateFromGameObject?.();
+    }
+  }
+
+  crumble() {
+    if (!this.alive) return;
+    this.alive = false;
+    this.growTween?.stop();
+    this.scene.tweens.add({
+      targets: this.rect, alpha: 0, duration: 200,
+      onComplete: () => this.destroy()
+    });
+  }
+
+  destroy() {
+    this.rect.destroy();
+  }
+}
+
+/* ===============================
+   Main Scene
+   =============================== */
+class DreamWeaverScene extends Phaser.Scene {
+  constructor() {
+    super('DreamWeaver');
+
+    // Player/input
+    this.player = null;
+    this.cursors = null;
+    this.moveLeft = false;
+    this.moveRight = false;
+    this.jumpQueued = false;
+    this.started = false;
+    this.gameOver = false;
+    this.won = false;
+
+    // Platforms & bridges
+    this.platforms = [];
+    this._platformByGO = new Map();
+    this.currentSurface = null;
+    this.stillnessMs = 0;
+    this.activeBridge = null;
+
+    // Jump QoL
+    this.coyoteMs = 120;
+    this.bufferMs = 120;
+    this.coyoteTimer = 9999;
+    this.lastJumpRequest = -9999;
+  }
+
+  preload() {
+    this.assetManager = new AssetManager(this);
+    // IMAGES
+    this.load.image('background', 'assets/images/background.png');
+    this.load.image('player',     'assets/images/player.png');
+    this.load.image('platform',   'assets/images/platform.png');
+    this.load.image('spike',      'assets/images/spike.png');
+    this.load.image('gate',       'assets/images/gate.png');
+    // AUDIO (use your files; fallbacks are safe if missing)
+    this.load.audio('music', 'assets/audio/dream_music.mp3');
+    this.load.audio('jump',  'assets/audio/jump.mp3');
+    this.load.audio('morph', 'assets/audio/morph.mp3');
+  }
+
+  create() {
+    const W = this.scale.width, H = this.scale.height;
+
+    // Background
+    if (this.textures.exists('background')) {
+      const bg = this.add.image(W/2, H/2, 'background').setOrigin(0.5);
+      fitToScreen(bg, W, H);
+    } else {
+      this.assetManager.getSprite('background', W/2, H/2);
+      const stars = this.add.particles(0,0,'');
+      stars.createEmitter({
+        x: { min: 0, max: W }, y: 0, lifespan: 6000,
+        quantity: 2, frequency: 60,
+        speedY: { min: 40, max: 80 }, scale: { start: 0.8, end: 0 },
+        tint: 0x9cc2ff, alpha: { start: 0.9, end: 0 }, blendMode: 'ADD'
+      });
+    }
+
+    // Physics
+    this.physics.world.setBounds(0, 0, W, H);
+    this.physics.world.gravity.y = 1700;
+
+    // Groups
+    this._spikeGroup = this.physics.add.staticGroup();
+
+    // Gate
+    if (this.textures.exists('gate')) {
+      this.gate = this.physics.add.staticImage(W - 120, 260, 'gate').setOrigin(0.5,1);
+      this.gate.displayHeight = 160; this.gate.displayWidth = 80;
+    } else {
+      this.gate = this.add.rectangle(W - 120, 260, 80, 160, 0x7df9ff).setOrigin(0.5,1);
+      this.physics.add.existing(this.gate, true);
+    }
+
+    // Platforms
+    const P = (x,y,w,hazard=false) => {
+      const p = new MorphPlatform(this, x, y, w, hazard);
+      this.platforms.push(p);
+      this._platformByGO.set(p.display, p);
+      return p;
+    };
+    P(W*0.50, H-120, 220, false);
+    P(W*0.26, H-420, 170, false);
+    P(W*0.74, H-420, 170, true);
+    P(W*0.34, H-720, 160, false);
+    P(W*0.78, H-900, 160, true);
+    P(W*0.28, H-1180, 160, true);
+    P(W*0.76, H-1180, 160, false);
+    P(W*0.68, H-1480, 150, false);
+    P(W*0.86, H-1820, 150, false);
+
+    // Player
+    if (this.textures.exists('player')) {
+      this.player = this.physics.add.sprite(W/2, H-240, 'player').setCollideWorldBounds(true);
+      const targetH = 64; const s = targetH / (this.player.height || targetH);
+      this.player.setScale(s);
+    } else {
+      const circle = this.add.circle(W/2, H-240, 28, 0x77ffd5).setStrokeStyle(3, 0x004b3f, 0.35);
+      this.physics.add.existing(circle);
+      this.player = circle;
+      this.player.body.setCollideWorldBounds(true);
+    }
+    this.player.body.setMaxVelocity(440, 2100);
+    this.player.body.setDragX(900);
+    this.playerSpeed = 260;
+    this.jumpVel = -1120; // tweak as desired
+
+    // Colliders
+    for (const p of this.platforms) {
+      this.physics.add.collider(this.player, p.display, (playerGO, platGO) => {
+        const inst = this._platformByGO.get(platGO);
+        if (!inst) return;
+        const b = this.player.body;
+        if (b && (b.blocked.down || b.touching.down)) {
+          this.currentSurface = inst;
+          this.coyoteTimer = 0;
+        }
+      });
+    }
+
+    // Bridge collider (assigned when a bridge spawns)
+    this.bridgeCollider = null;
+
+    // Hazards / goal
+    this.physics.add.overlap(this.player, this._spikeGroup, () => this.doGameOver(), null, this);
+    this.physics.add.overlap(this.player, this.gate, () => this.doWin(), null, this);
+
+    // Camera
+    this.cameras.main.setBackgroundColor('#0b1020');
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, 200);
+    this.cameras.main.setBounds(0, 0, W, H);
+
+    // Input
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.input.keyboard.on('keydown-SPACE', () => { if (this.started) this.queueJump(); });
+
+    this.pointerDown = false;
+    this.pointerStart = { x:0, y:0 };
+    this.input.on('pointerdown', (p) => {
+      if (!this.started) { this.startGame(); return; }
+      this.pointerDown = true; this.pointerStart.x = p.x; this.pointerStart.y = p.y;
+      const half = this.scale.width / 2;
+      this.moveLeft  = (p.x < half);
+      this.moveRight = (p.x >= half);
+    });
+    this.input.on('pointermove', (p) => {
+      if (!this.pointerDown) return;
+      const dy = p.y - this.pointerStart.y;
+      if (dy < -90) { this.queueJump(); this.pointerDown = false; }
+    });
+    this.input.on('pointerup', () => { this.pointerDown = false; this.moveLeft = this.moveRight = false; });
+
+    // UI
+    this.makeStartOverlay();
+    this.makeEndOverlay();
+
+    // Music
+    if (this.sound && this.cache.audio && this.cache.audio.exists('music')) {
+      this.sound.add('music', { loop: true, volume: 0.33 }).play();
+    }
+  }
+
+  makeStartOverlay() {
+    const W = this.scale.width, H = this.scale.height;
+    const g = this.add.container(0,0).setScrollFactor(0);
+    const panel = this.add.rectangle(W/2, H/2, W*0.86, 360, 0x0f1a3a, 0.92).setStrokeStyle(3, 0x7df9ff, 0.6);
+    const title = this.add.text(W/2, H/2 - 120, 'DREAM WEAVER — BRIDGES', {
+      fontSize: '44px', fontWeight: '900', color: '#7df9ff', align: 'center'
+    }).setOrigin(0.5);
+    const info = this.add.text(W/2, H/2 - 20,
+      'Stand still ≈1s to conjure a bridge\ntoward the nearest platform.\nOverstay: spikes then crumble. Move to pause.',
+      { fontSize: '20px', color: '#cfe7ff', align: 'center', lineSpacing: 6 }
+    ).setOrigin(0.5);
+    const tap = this.add.text(W/2, H/2 + 120, 'Tap / Click to Start', { fontSize: '22px', color: '#ffffff' }).setOrigin(0.5);
+    g.add([panel, title, info, tap]);
+    this.startOverlay = g;
+    this.tweens.add({ targets: tap, alpha: { from: 1, to: 0.2 }, yoyo: true, repeat: -1, duration: 800 });
+  }
+
+  makeEndOverlay() {
+    const W = this.scale.width, H = this.scale.height;
+    const g = this.add.container(0,0).setScrollFactor(0).setVisible(false);
+    const dim = this.add.rectangle(W/2, H/2, W, H, 0x000000, 0.55);
+    const panel = this.add.rectangle(W/2, H/2, W*0.8, 280, 0x0f1a3a, 0.95).setStrokeStyle(3, 0x7df9ff, 0.6);
+    this.endTitle = this.add.text(W/2, H/2 - 60, 'You Win!', { fontSize: '46px', color: '#7df9ff' }).setOrigin(0.5);
+    const btn = this.add.rectangle(W/2, H/2 + 60, 220, 56, 0x7df9ff).setInteractive({ useHandCursor: true });
+    const btnt = this.add.text(W/2, H/2 + 60, 'Restart', { fontSize: '22px', color: '#00141d' }).setOrigin(0.5);
+    btn.on('pointerdown', () => this.scene.restart());
+    g.add([dim, panel, this.endTitle, btn, btnt]);
+    this.endOverlay = g;
+  }
+
+  startGame() {
+    if (this.started) return;
+    this.started = true;
+    if (this.startOverlay) {
+      this.tweens.add({ targets: this.startOverlay, alpha: 0, duration: 250, onComplete: () => this.startOverlay.destroy() });
+    }
+  }
+
+  queueJump() { this.jumpQueued = true; this.lastJumpRequest = this.time.now; }
+
+  doGameOver() { if (this.gameOver || this.won) return; this.gameOver = true; this.endTitle.setText('You Fell Asleep…'); this.showEnd(); }
+  doWin()      { if (this.gameOver || this.won) return; this.won = true; this.endTitle.setText('You Wove the Dream!'); this.showEnd(); }
+  showEnd() {
+    this.time.delayedCall(200, () => {
+      this.endOverlay.setVisible(true).setAlpha(0);
+      this.tweens.add({ targets: this.endOverlay, alpha: 1, duration: 220 });
+    });
+  }
+
+  /* ===== Bridge helpers ===== */
+  findNearestPlatformHoriz(fromPlat, yTolerance = 160) {
+    let best = null, bestDx = Infinity;
+    const y0 = fromPlat.display.y;
+    for (const p of this.platforms) {
+      if (p === fromPlat) continue;
+      if (Math.abs(p.display.y - y0) > yTolerance) continue;
+      const dx = p.display.x - fromPlat.display.x;
+      if (Math.abs(dx) < Math.abs(bestDx)) { best = p; bestDx = dx; }
+    }
+    if (!best) return null;
+    return { target: best, dx: bestDx };
+  }
+
+  spawnBridgeFromSurface(surface) {
+    if (this.activeBridge && this.activeBridge.alive) return; // one at a time
+    const info = this.findNearestPlatformHoriz(surface);
+    if (!info) return;
+
+    const dir = Math.sign(info.dx) || 1;
+    const surfDispW = (surface.display.displayWidth ?? surface.display.width ?? surface.baseWidth);
+    const targDispW = (info.target.display.displayWidth ?? info.target.display.width ?? info.target.baseWidth);
+    const surfDispH = (surface.display.displayHeight ?? surface.display.height ?? surface.height ?? 24);
+    const targDispH = (info.target.display.displayHeight ?? info.target.display.height ?? info.target.height ?? 24);
+
+    // edges
+    const startEdge = surface.display.x + dir * (surfDispW/2);
+    const tgtEdge   = info.target.display.x - dir * (targDispW/2);
+
+    // Y alignment: bridge top flush to platform tops
+    const surfaceTopY = surface.display.y - surfDispH / 2;
+    const targetTopY  = info.target.display.y - targDispH / 2;
+    const bridgeThickness = 18;
+    const topY = Math.min(surfaceTopY, targetTopY);   // choose the higher (smaller y) top
+    const yCenter = topY + bridgeThickness / 2;
+
+    const bridge = new DreamBridge(this, startEdge, yCenter, dir, tgtEdge, 460);
+    this.activeBridge = bridge;
+
+    // collider with player
+    if (this.bridgeCollider) this.bridgeCollider.destroy();
+    this.bridgeCollider = this.physics.add.collider(this.player, bridge.rect, () => {
+      // treat as same surface for stillness accumulation if you want; optional
+      this.currentSurface = surface;
+    });
+
+    return bridge;
+  }
+
+  tryDoJump(onFloor) {
+    const withinCoyote = this.coyoteTimer <= this.coyoteMs;
+    const withinBuffer = (this.time.now - this.lastJumpRequest) <= this.bufferMs;
+    if ((this.jumpQueued || withinBuffer) && (onFloor || withinCoyote)) {
+      this.player.body.setVelocityY(this.jumpVel);
+      this.jumpQueued = false; this.lastJumpRequest = -9999;
+      if (this.cache.audio?.exists('jump')) this.sound.play('jump', { volume: 0.55 });
+      const puff = this.add.particles(this.player.x, this.player.y + (this.player.displayHeight/2||30), '')
+        .createEmitter({ lifespan: 300, speed: {min:-80,max:80}, angle: {min:220,max:320}, quantity: 12, scale: { start: 1, end: 0 }, alpha: { start: 0.8, end: 0 }, tint: 0x7df9ff, blendMode: 'ADD' });
+      this.time.delayedCall(320, () => puff.manager.destroy());
+      return true;
+    }
+    return false;
+  }
+
+  update(time, delta) {
+    if (!this.started || this.gameOver || this.won) return;
+
+    const body = this.player.body;
+    const onFloor = body.blocked.down || body.touching.down;
+
+    // coyote tracking
+    if (onFloor) this.coyoteTimer = 0; else this.coyoteTimer += delta;
+
+    // input
+    const left = this.cursors.left?.isDown || this.moveLeft;
+    const right = this.cursors.right?.isDown || this.moveRight;
+    const moving = (left || right);
+
+    // movement
+    if (left && !right) { body.setVelocityX(-this.playerSpeed); this.player.flipX = true; }
+    else if (right && !left) { body.setVelocityX(this.playerSpeed); this.player.flipX = false; }
+    else { body.setVelocityX(0); }
+
+    // jump with coyote/buffer
+    this.tryDoJump(onFloor);
+
+    // fail off-screen
+    if (this.player.y > this.scale.height + 200) this.doGameOver();
+
+    // stillness logic (bridges + hazards)
+    if (!onFloor) { this.currentSurface = null; this.stillnessMs = 0; return; }
+
+    if (!moving && onFloor) {
+      this.stillnessMs += delta;
+
+      // ≈1.0s: conjure a bridge toward nearest platform (aligned Y)
+      if (this.stillnessMs >= 1000 && this.currentSurface && (!this.activeBridge || !this.activeBridge.alive)) {
+        this.spawnBridgeFromSurface(this.currentSurface);
+        this.sound?.play?.('morph', { volume: 0.45 });
+      }
+
+      // ≈1.9s: spikes on hazardous platforms
+      if (this.stillnessMs >= 1900 && this.currentSurface?.hazardous && !this.currentSurface.sprouted) {
+        this.currentSurface.sproutSpikes();
+      }
+
+      // ≈2.6s: originating platform crumbles
+      if (this.stillnessMs >= 2600 && this.currentSurface && !this.currentSurface.crumbled) {
+        this.currentSurface.crumble();
+      }
+    } else {
+      this.stillnessMs = 0; // moving pauses morph buildup
+    }
+  }
+}
+
+/* ===============================
+   Game Config & Launch
+   =============================== */
+const config = {
+  type: Phaser.AUTO,
+  parent: 'game',
+  backgroundColor: '#0b1020',
+  width: 1080,
+  height: 1920,
+  physics: {
+    default: 'arcade',
+    arcade: { gravity: { y: 0 }, debug: false }
+  },
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scene: [DreamWeaverScene]
+};
+
+new Phaser.Game(config);
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "entry": "Customcarrom/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Drag backwards from the striker to aim and set power. Release to shoot. Pocket white coins to score. The bot pockets black coins. Red queen gives +3 to whoever pockets it during their turn.",
+    "score_label": "Score: ",
+    "win_title": "Carrom Champion!",
+    "game_over_title": "Defeated! Try Again"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "playerSpeed": 0,
+    "enemySpawnRate": 0,
+    "coinSize": 50,
+    "strikerSize": 100,
+    "pocketRadius": 38,
+    "pocketInset": 8,
+    "strikerPowerCap": 300,
+    "strikerPowerScale": 70
+  },
+  "images1": {},
+  "images2": {
+    "background": "assets/background.png",
+    "carrom_board": "assets/carrom_board.png"
+  },
+  "ui": {
+    "striker": "assets/striker.png",
+    "coinWhite": "assets/white_coin.png",
+    "coinBlack": "assets/black_coin.png",
+    "coinQueen": "assets/pink_coin.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/Collision.mp3",
+    "hit": "assets/collect.mp3",
+    "collect": "assets/collect.mp3"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "entry": "Customspacefighter/index.html",
+  "spawn": {
+    "x": 190,
+    "y": 400
+  },
+  "images1": {
+    "asteroid": "./assets/asteroid.png",
+    "asteroid1": "./assets/asteroid1.png",
+    "asteroid2": "./assets/asteroid2.png",
+    "asteroid3": "./assets/asteroid3.png",
+    "round_bullet": "./assets/laser.png",
+    "spaceship": "./assets/spaceship.png"
+  },
+  "images2": {
+    "background": "./assets/background.png",
+    "htpbg": "./assets/htpbg.png",
+    "ovrbg": "./assets/ovrbg.png",
+    "winbg": "./assets/winbg.png"
+  },
+  "ui": {
+    "background": "./assets/background.png",
+    "bg": "./assets/bg.png",
+    "moon": "./assets/moon.png",
+    "explosion": "./assets/effect.png",
+    "htpbox": "./assets/htpbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "firebtn": "./assets/firebtn.png",
+    "timebg": "./assets/timebg.png",
+    "lvlbox": "./assets/lvlbox.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "restart": "./assets/restart.png",
+    "restart1": "./assets/restart1.png",
+    "gameover": "./assets/ovrbox.png",
+    "bomb": "./assets/bomb.png",
+    "scoreback": "./assets/scoreback.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "texts": {
+    "clueLabel": "Time:",
+    "htp": "How to Play",
+    "htpMessage": "Control:",
+    "htpMessage1": "Avoid and Destroy:",
+    "htpMessage2": "Tap To Shoot",
+    "leveltxt": "Game Over",
+    "levelComplete": "Level Completed"
+  },
+  "sheets": {
+    "hero": {
+      "url": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "crash": "./assets/crash.mp3",
+    "gun": "./assets/gun.mp3"
+  },
+  "mechanics": {
+    "playerSpeed": 500,
+    "maxAsteroids": 4,
+    "asteroidSpawnDelayMin": 2400,
+    "asteroidSpawnDelayMax": 5000,
+    "asteroidSpeedMin": 10,
+    "asteroidSpeedMax": 20,
+    "largeAsteroidSpawnDelay": 20000,
+    "laserFireDelay": 200,
+    "laserSpeed": 1800,
+    "maxLasers": 100,
+    "initialHealth": 200,
+    "initialLasers": 15,
+    "targetScore": 50,
+    "laserRefillDelay": 1000,
+    "healthDamagePerHit": 25,
+    "largeAsteroidHits": 2
+  }
+}

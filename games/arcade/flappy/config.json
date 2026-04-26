@@ -1,0 +1,58 @@
+{
+  "entry": "Customflappyplay/index.html",
+  "images1": {
+    "player": "./assets/player.png"
+  },
+  "images2": {
+    "pipe": "./assets/pipe-green.png",
+    "background": "./assets/background-day.png",
+    "ground": "./assets/base.png"
+  },
+  "ui": {
+    "backdrop": "./assets/backdrop.png",
+    "taskpanel": "./assets/taskpanel.png",
+    "playbtn1": "./assets/playbtn1.png",
+    "gameover": "./assets/gameover.png",
+    "message": "./assets/message.png",
+    "restart": "./assets/restart.png",
+    "restart1": "./assets/restart1.png",
+    "lvlboard": "./assets/lvlboard.png",
+    "nxtlvl": "./assets/nxtlvl.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "text": {
+    "howToPlay": "How to Play",
+    "tapInstructions": "Tap to Control:",
+    "tapInstructions1": "Avoid:",
+    "targetLabel": "Target: ",
+    "gameOver": "Game Over",
+    "yourScore": "Your Score: ",
+    "targetScore": "Target: ",
+    "levelCleared": "Level Completed"
+  },
+  "audio": {
+    "flap": "./assets/wing.wav",
+    "bgm": "./assets/bgm.mp3",
+    "score": "./assets/point.ogg",
+    "hit": "./assets/hit.ogg",
+    "die": "./assets/die.ogg"
+  },
+  "level1": {
+    "targetscore": 5,
+    "pipeSpeed": 300,
+    "gravity": 600,
+    "flapVelocity": -100,
+    "gap": 300
+  },
+  "spritesheets": {
+    "doodler": {
+      "path": "./assets/characters.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  }
+}

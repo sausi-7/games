@@ -1,0 +1,48 @@
+{
+  "entry": "Custompathfinder/index.html",
+  "mechanics": {
+    "cellSize": 64,
+    "offsetX": 32,
+    "offsetY": 112,
+    "batteryMax": 100,
+    "batteryDrain": 1.5,
+    "batteryZap": 20,
+    "powerBoost": 25,
+    "timeLimit": 60
+  },
+  "texts": {},
+  "images1": {
+    "key": "./assets/key.png",
+    "power": "./assets/power.png"
+  },
+  "images2": {
+    "tile": "./assets/tile.png"
+  },
+  "ui": {
+    "player": "./assets/player.png",
+    "exit": "./assets/exit.png",
+    "scorebar": "./assets/scorebar.png",
+    "htpbox": "./assets/htpbox.png",
+    "playtbtn": "./assets/playtbtn.png",
+    "ovrbox": "./assets/ovrbox.png",
+    "lvlbox": "./assets/lvlbox.png",
+    "replay": "./assets/replay.png",
+    "lvl_replay": "./assets/lvl_replay.png",
+    "next": "./assets/next.png",
+    "up": "./assets/up.png",
+    "down": "./assets/down.png",
+    "left": "./assets/left.png",
+    "right": "./assets/right.png"
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "lvlcomplete": "./assets/lvlcomplete.mp3",
+    "collect": "./assets/collect.mp3",
+    "gameover": "./assets/gameover.mp3"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  }
+}

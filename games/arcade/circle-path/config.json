@@ -1,0 +1,42 @@
+{
+    "entry": "Customcirclepath/index.html",
+    "mechanics": {
+        "ballDistance": 180,
+        "rotationSpeed": 4,
+        "visibleTargets": 7,
+        "targetGoal": 5
+    },
+    "images1": {},
+    "images2": {
+        "htpbg": "assets/htpbg.png",
+        "winbg": "assets/winbg.png",
+        "ovrbg": "assets/ovrbg.png",
+        "bg": "assets/bg.png"
+    },
+    "ui": {
+        "htpbox": "assets/htpbox.png",
+        "playbtn": "assets/playbtn.png",
+        "lvlbox": "assets/lvlbox.png",
+        "lvl_replay": "assets/lvl_replay.png",
+        "nextbtn": "assets/next.png",
+        "scoreback": "assets/scoreback.png",
+        "ovrbox": "assets/ovrbox.png",
+        "replaybtn": "assets/replay.png",
+        "ball": "assets/ball.png",
+        "target": "assets/target.png",
+        "arm": "assets/arm.png"
+    },
+    "texts": {
+        "bestLabel": "Best score",
+        "scoreLabel": "Score",
+        "targetLabel": "Target",
+        "howToPlayTitle": "How to Play",
+        "howToPlayBody": "Tap when the moving ball\nis over the next target.\n\nMiss a tap and you lose!",
+        "winTitle": "Level Completed",
+        "gameOverTitle": "Game Over"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "collect": "assets/collect.mp3"
+    }
+}

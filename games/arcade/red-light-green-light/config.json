@@ -1,0 +1,63 @@
+{
+  "entry": "Customredlight/index.html",
+  "timer": 60,
+  "playerSpeed": 5,
+  "finishLineY": 120,
+  "playerSize": 48,
+  "lightChangeMin": 1500,
+  "lightChangeMax": 4000,
+  "colors": {
+    "backgroundTop": "#87ceeb",
+    "backgroundBottom": "#98fb98"
+  },
+  "fontSizes": {
+    "light": "48px",
+    "timer": "32px",
+    "winLose": "48px"
+  },
+  "messageBox": {
+    "width": 600,
+    "height": 300
+  },
+  "images1": {
+    "player": "./assets/player.png"
+  },
+  "images2": {
+    "background": "./assets/space.png",
+    "htpbg": "./assets/htpbg.png",
+    "winbg": "./assets/winbg.png",
+    "ovrbg": "./assets/ovrbg.png"
+  },
+  "ui": {
+    "htp": "assets/htp.png",
+    "finish": "assets/finish.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "game_over": "assets/game_over.png",
+    "scorebar": "assets/scoreback.png",
+    "ball": "assets/ball.png"
+  },
+  "audio": {
+    "bgm": "./assets/calm.mp3",
+    "gameover": "./assets/gameover.mp3",
+    "tap": "./assets/Destroy.mp3",
+    "levelCompleted": "./assets/levelCompleted.mp3"
+  },
+  "spritesheets": {
+    "character": {
+      "url": "./assets/hero.png",
+      "frameWidth": 100,
+      "frameHeight": 158
+    }
+  },
+  "blockColors": [
+    "#4a90e2",
+    "#50c878",
+    "#ff6b6b",
+    "#ffd93d",
+    "#6c5ce7"
+  ]
+}

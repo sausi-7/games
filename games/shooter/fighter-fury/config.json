@@ -1,0 +1,58 @@
+{
+    "entry": "Customfighterfury/index.html",
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "game": {
+        "maxHealth": 3,
+        "startEnemySpeed": 100,
+        "spawnInterval": 1000,
+        "minSpawnInterval": 350,
+        "spawnAccel": 5,
+        "scoreToWin": 5
+    },
+    "images1": {
+        "enemy": "assets/enemy.png",
+        "plane": "assets/plane.png",
+        "rocket": "assets/rocket.png"
+    },
+    "images2": {
+        "background": "assets/background.png",
+        "htpbg": "assets/htpbg.png",
+        "ovrbg": "assets/ovrbg.png",
+        "winbg": "assets/winbg.png"
+    },
+    "ui": {
+        "explosion": "assets/explosion.png",
+        "start_overlay": "assets/start_bg.png",
+        "gameover_overlay": "assets/gameover_bg.png",
+        "levelcomplete_overlay": "assets/levelcomplete_bg.png",
+        "button_play": "assets/play_button.png",
+        "button_retry": "assets/replay.png",
+        "scorebar": "assets/scorebar.png",
+        "next": "assets/next.png",
+        "replay": "assets/replay_button.png",
+        "ui_bg": "assets/ui_bg.png"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "explosion": "assets/explosion.mp3",
+        "hit": "assets/hit.mp3"
+    },
+    "texts": {
+        "title": "",
+        "tapToStart": "Shoot to defend your player! Survive and score\nas high as you can.",
+        "score": "Score: {score}",
+        "gameOver": "",
+        "win": "",
+        "startBtn": "",
+        "retry": "",
+        "playAgain": ""
+    },
+    "colors": {
+        "background": "#756f4d"
+    },
+    "sheets": {}
+}

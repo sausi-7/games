@@ -1,0 +1,87 @@
+{
+  "entry": "Customshadowshooter/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "How to Play",
+    "score_label": "Light: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Your Score: "
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "arenaPadding": 80,
+    "wallThickness": 24,
+    "playerSpeed": 500,
+    "playerSize": 72,
+    "lightFallSpeed": 60,
+    "shadowSpeed": 140,
+    "shadowSize": 64,
+    "maxShadows": 12,
+    "trailSpawnMs": 700,
+    "trailJitter": 60,
+    "difficultyRampMs": 5000,
+    "shardSize": 54,
+    "shardSpawnMs": 2200,
+    "maxShards": 6,
+    "scoreTarget": 5,
+    "shadowShrinkPerShard": 0.12,
+    "shadowMinScale": 0.45,
+    "shadowKillBelow": 28,
+    "pulseRadius": 220,
+    "pulseForce": 700,
+    "pulseCooldownMs": 2000,
+    "hpStart": 10,
+    "enemySize": {
+      "w": 140,
+      "h": 140
+    },
+    "btnSize": 0.11,
+    "btnUpScale": 1.6,
+    "btnDownScale": 1.6,
+    "btnActionScale": 2,
+    "btnPadPx": 30,
+    "btnSpacingPx": 24,
+    "btnColX": 150,
+    "btnActionX": 1730,
+    "btnActionY": 900
+  },
+  "images1": {
+    "player": "assets/obj1.png",
+    "enemy": "assets/obj14.png",
+    "collectible": "assets/obj20.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "winbg": "assets/winbg.png",
+    "platform": "assets/platform2.png"
+  },
+  "ui": {
+    "joystick_bg": "assets/joystick_bg.png",
+    "joystick_knob": "assets/joystick_knob.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "scoreback": "assets/scoreback.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/Game_Background.mp3",
+    "collect": "assets/Collection.mp3",
+    "hit": "assets/Taking_a_Hit.mp3",
+    "explosion": "assets/Explosion.mp3",
+    "win": "assets/Level_Complete.mp3",
+    "gameover": "assets/Game_Over.mp3"
+  }
+}

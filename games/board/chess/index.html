@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Chess — Phaser 3 (PvC + Overlays)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --text: #cfe3ff;
+      --tileD: #1a2544;
+      --tileL: #263760;
+      --sel: #8ee0ff55;
+      --move: #78d3ff99;
+      --cap: #ffd07a;
+      --frame: #101a33;
+      --ui: #0e1626;
+      --border: #213259;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Arial
+    }
+
+    #game {
+      width: 100vw;
+      height: 100vh
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(180deg, rgba(5, 10, 22, .95), rgba(5, 10, 22, .65));
+      z-index: 5;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .btn {
+      background: var(--ui);
+      color: var(--text);
+      margin-top: 7px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 8px;
+      cursor: pointer;
+      font: 12px
+    }
+
+    .title {
+      margin-left: auto;
+      margin-right: auto;
+      color: #9cc2ff;
+      font-weight: 600;
+      letter-spacing: .3px;
+      text-align: center
+    }
+
+    .bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9cc2ff;
+      background: linear-gradient(0deg, rgba(5, 10, 22, .95), rgba(5, 10, 22, .65));
+      border-top: 1px solid var(--border);
+      z-index: 5
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+</head>
+
+<body>
+  <div class="topbar">
+    <!-- New Game button removed -->
+    <button class="btn" id="flipBtn">Flip Board</button>
+    <div class="title"></div>
+  </div>
+  <div id="game"></div>
+  <div class="bottom"><span id="status"></span></div>
+
+  <script>
+    // Optional webfont
+    function loadFont(name, url) {
+      var newFont = new FontFace(name, `url(${url})`);
+      newFont.load().then(f => document.fonts.add(f)).catch(() => { });
+    }
+    loadFont("Outfit", "./outfit.ttf");
+  </script>
+
+  <script>
+
+
+    (() => {
+      const statusEl = document.getElementById('status');
+      const flipBtn = document.getElementById('flipBtn');
+
+      // --- 0x88 board helpers ---
+      const EMPTY = 0, W = 1, B = -1;
+      const P = 1, N = 2, BISH = 3, R = 4, Q = 5, K = 6;
+      const KN_OFF = [31, 33, 14, 18, -31, -33, -14, -18];
+      const BI_OFF = [15, 17, -15, -17];
+      const RO_OFF = [1, -1, 16, -16];
+      const ALL_SLIDES = [...BI_OFF, ...RO_OFF];
+      const KI_OFF = [1, -1, 16, -16, 15, 17, -15, -17];
+      const UNI_W = { 1: '♙', 2: '♘', 3: '♗', 4: '♖', 5: '♕', 6: '♔' };
+      const UNI_B = { 1: '♟', 2: '♞', 3: '♝', 4: '♜', 5: '♛', 6: '♚' };
+      const inBoard = s => (s & 0x88) === 0;
+      const fr = s => s >> 4, fl = s => s & 7;
+      const sq = (f, r) => (r << 4) | f;
+      const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
+
+      class Position {
+        constructor(fen = START_FEN) { this.board = new Int8Array(128); this.side = W; this.loadFEN(fen); }
+        clear() { this.board.fill(0); this.side = W; }
+        loadFEN(fen) {
+          this.clear();
+          const [boardStr, stm = 'w'] = fen.trim().split(/\s+/);
+          const rows = boardStr.split('/');
+          for (let r = 0; r < 8; r++) {
+            let f = 0;
+            for (const c of rows[r]) {
+              if (c >= '0' && c <= '9') { f += c.charCodeAt(0) - 48; continue; }
+              const isW = c === c.toUpperCase();
+              const t = ({ p: P, n: N, b: BISH, r: R, q: Q, k: K })[c.toLowerCase()];
+              this.board[sq(f, 7 - r)] = (isW ? W : B) * t; f++;
+            }
+          }
+          this.side = (stm === 'b') ? B : W;
+        }
+        clone() { const p = new Position(); p.board.set(this.board); p.side = this.side; return p; }
+        kingSq(color) { for (let s = 0; s < 128; s++) { if (!inBoard(s)) { s = (s | 0x0F); continue; } const v = this.board[s]; if (v * color > 0 && Math.abs(v) === K) return s; } return -1; }
+        isSqAttacked(target, by) {
+          for (const o of KN_OFF) { const t = target + o; if (!inBoard(t)) continue; const v = this.board[t]; if (v * by > 0 && Math.abs(v) === N) return true; }
+          for (const o of BI_OFF) { let t = target + o; while (inBoard(t)) { const v = this.board[t]; if (v) { if (v * by > 0 && (Math.abs(v) === BISH || Math.abs(v) === Q)) return true; break; } t += o; } }
+          for (const o of RO_OFF) { let t = target + o; while (inBoard(t)) { const v = this.board[t]; if (v) { if (v * by > 0 && (Math.abs(v) === R || Math.abs(v) === Q)) return true; break; } t += o; } }
+          for (const o of KI_OFF) { const t = target + o; if (!inBoard(t)) continue; const v = this.board[t]; if (v * by > 0 && Math.abs(v) === K) return true; }
+          if (by === W) { for (const o of [-15, -17]) { const t = target + o; if (!inBoard(t)) continue; const v = this.board[t]; if (v > 0 && Math.abs(v) === P) return true; } }
+          else { for (const o of [15, 17]) { const t = target + o; if (!inBoard(t)) continue; const v = this.board[t]; if (v < 0 && Math.abs(v) === P) return true; } }
+          return false;
+        }
+        inCheck(color) { return this.isSqAttacked(this.kingSq(color), -color); }
+        genSlides(from, side, dirs, out) {
+          for (const o of dirs) {
+            let t = from + o;
+            while (inBoard(t)) {
+              const tv = this.board[t];
+              if (tv * side > 0) break;
+              out.push({ from, to: t, piece: this.board[from], capture: tv });
+              if (tv * side < 0) break;
+              t += o;
+            }
+          }
+        }
+        pseudoMoves() {
+          const side = this.side, out = [];
+          for (let s = 0; s < 128; s++) {
+            if (!inBoard(s)) { s = (s | 0x0F); continue; }
+            const v = this.board[s]; if (!v || v * side <= 0) continue;
+            const t = Math.abs(v);
+            if (t === P) {
+              const dir = side === W ? 16 : -16, one = s + dir, two = s + dir * 2, start = (side === W ? 1 : 6);
+              if (inBoard(one) && this.board[one] === EMPTY) {
+                out.push({ from: s, to: one, piece: v, capture: 0 });
+                if (fr(s) === start && this.board[two] === EMPTY) out.push({ from: s, to: two, piece: v, capture: 0 });
+              }
+              for (const d of [dir + 1, dir - 1]) {
+                const ts = s + d; if (!inBoard(ts)) continue; const tv = this.board[ts];
+                if (tv * side < 0) out.push({ from: s, to: ts, piece: v, capture: tv });
+              }
+            } else if (t === N) {
+              for (const o of KN_OFF) {
+                const ts = s + o; if (!inBoard(ts)) continue; const tv = this.board[ts];
+                if (tv * side > 0) continue; out.push({ from: s, to: ts, piece: v, capture: tv });
+              }
+            } else if (t === BISH) { this.genSlides(s, side, BI_OFF, out); }
+            else if (t === R) { this.genSlides(s, side, RO_OFF, out); }
+            else if (t === Q) { this.genSlides(s, side, ALL_SLIDES, out); }
+            else if (t === K) {
+              for (const o of KI_OFF) {
+                const ts = s + o; if (!inBoard(ts)) continue; const tv = this.board[ts];
+                if (tv * side > 0) continue; out.push({ from: s, to: ts, piece: v, capture: tv });
+              }
+            }
+          }
+          return out;
+        }
+        legalMoves() {
+          const side = this.side, moves = this.pseudoMoves(), legal = [];
+          for (const m of moves) {
+            const toVal = this.board[m.to], fromVal = this.board[m.from];
+            this.board[m.to] = fromVal; this.board[m.from] = EMPTY;
+            if (Math.abs(fromVal) === P) {
+              const r = fr(m.to); if ((side === W && r === 7) || (side === B && r === 0)) this.board[m.to] = side * Q;
+            }
+            const ok = !this.inCheck(side);
+            this.board[m.from] = fromVal; this.board[m.to] = toVal;
+            if (ok) legal.push(m);
+          }
+          return legal;
+        }
+        makeMove(m) {
+          const v = this.board[m.from];
+          this.board[m.to] = v; this.board[m.from] = EMPTY;
+          if (Math.abs(v) === P) {
+            const r = fr(m.to); if ((this.side === W && r === 7) || (this.side === B && r === 0)) this.board[m.to] = this.side * Q;
+          }
+          this.side = -this.side;
+        }
+      }
+
+      const PVAL = { 0: 0, [P]: 100, [N]: 320, [BISH]: 330, [R]: 500, [Q]: 900, [K]: 0 };
+      function evaluate(pos) {
+        let score = 0;
+        for (let s = 0; s < 128; s++) {
+          if (!inBoard(s)) { s = (s | 0x0F); continue; }
+          const v = pos.board[s]; if (!v) continue;
+          const sign = v > 0 ? 1 : -1; score += sign * PVAL[Math.abs(v)];
+        }
+        const moves = pos.legalMoves().length;
+        score += (pos.side === W ? 1 : -1) * 5 * moves;
+        return (pos.side === W ? 1 : -1) * score;
+      }
+      function aiSearch(pos, depth, alpha = -1e9, beta = 1e9) {
+        if (depth <= 0) return { score: evaluate(pos), move: null };
+        const moves = pos.legalMoves();
+        if (moves.length === 0) {
+          if (pos.inCheck(pos.side)) return { score: -999999 + (3 - depth), move: null };
+          return { score: 0, move: null };
+        }
+        moves.sort((a, b) => (PVAL[Math.abs(b.capture || 0)] - PVAL[Math.abs(a.capture || 0)]));
+        let best = null;
+        for (const m of moves) {
+          const np = pos.clone(); np.makeMove(m);
+          const r = aiSearch(np, depth - 1, -beta, -alpha);
+          const sc = -r.score;
+          if (sc > alpha) { alpha = sc; best = m; if (alpha >= beta) break; }
+        }
+        return { score: alpha, move: best };
+      }
+
+      class ChessScene extends Phaser.Scene {
+        constructor() {
+          super('Chess');
+          this.pos = new Position(START_FEN);
+          this.boardG = null; this.hiG = null; this.pLayer = null;
+          this.tile = 100; this.boardSize = 800; this.boardX = 140; this.boardY = 140;
+          this.flip = false; this.sel = -1; this.legal = []; this.pTexts = new Map(); this.gameOver = false;
+          this.humanSide = W;
+          this.aiDepth = 2;
+          this.started = false;
+
+          // overlays
+          this.startOverlay = null; this.loseOverlay = null; this.winOverlay = null;
+          this.startDim = null; this.loseDim = null; this.winDim = null;
+
+          // audio
+          this.bgm = null;
+
+          // config loaded from JSON
+          this.cfg = null;
+        }
+
+        // -------- Asset Loading from config.json --------
+        preload() {
+          this.sys.cameras.main.setBackgroundColor(0x0b0f1a);
+
+          // 1) Load config.json first
+          this.load.json('gameConfig', 'config.json');
+
+          // 2) When config is ready, enqueue images & audio listed inside it
+          this.load.once('filecomplete-json-gameConfig', () => {
+            this.cfg = this.cache.json.get('gameConfig') || {};
+
+            // Load images from cfg.images and cfg.ui (both optional)
+            const imageBuckets = ['images', 'ui'];
+            for (const b of imageBuckets) {
+              const obj = this.cfg[b];
+              if (obj && typeof obj === 'object') {
+                for (const [key, url] of Object.entries(obj)) {
+                  if (typeof url === 'string') this.load.image(key, url);
+                }
+              }
+            }
+
+            // Load audio from cfg.audio (expects key->url, with bgm at least)
+            if (this.cfg.audio && typeof this.cfg.audio === 'object') {
+              for (const [key, url] of Object.entries(this.cfg.audio)) {
+                if (typeof url === 'string') this.load.audio(key, url);
+              }
+            }
+          });
+
+          // (Optional) If config.json is missing, we still have graceful fallbacks in UI.
+        }
+
+        create() {
+          const { width, height } = this.sys.game.config;
+          const marginTop = 80, marginBottom = 80 + 64, usableH = height - (marginTop + marginBottom);
+          const target = Math.min(960, Math.max(640, Math.floor(Math.min(width, usableH))));
+          this.boardSize = target - (target % 8);
+          this.tile = this.boardSize / 8;
+          this.boardX = (width - this.boardSize) / 2;
+          this.boardY = marginTop + (usableH - this.boardSize) / 2;
+
+          this.boardG = this.add.graphics();
+          this.hiG = this.add.graphics();
+          this.pLayer = this.add.container(0, 0);
+
+          this.drawBoard(); this.refreshPieces(); this.updateStatus();
+
+          this.input.on('pointerdown', this.onDown, this);
+          flipBtn.onclick = () => { this.flip = !this.flip; this.refreshAll(); };
+
+          // Build overlays (they automatically use texture fallbacks if images missing)
+          this.buildStartOverlay();
+          this.buildLoseOverlay();
+          this.buildWinOverlay();
+          this.showStartOverlay();
+        }
+
+        // -------- Audio helpers --------
+        startBGM() {
+          if (this.bgm && this.bgm.isPlaying) return;
+          if (!this.bgm && this.textures && this.cache && this.cache.audio.has('bgm')) {
+            this.bgm = this.sound.add('bgm', { loop: true, volume: 0.5 });
+          }
+          if (this.bgm) this.bgm.play();
+        }
+        stopBGM() {
+          if (this.bgm && this.bgm.isPlaying) this.bgm.stop();
+        }
+
+        // ---------- Overlay helpers ----------
+        panelWithOptionalImage(key, fallbackW, fallbackH) {
+          const c = this.add.container(0, 0);
+          let boxW = fallbackW, boxH = fallbackH, panel;
+          if (this.textures.exists(key)) {
+            panel = this.add.image(0, 0, key).setOrigin(0.5);
+            const scale = Math.min(fallbackW / panel.width, fallbackH / panel.height);
+            panel.setScale(scale);
+            boxW = panel.width * panel.scaleX; boxH = panel.height * panel.scaleY;
+          } else {
+            panel = this.add.rectangle(0, 0, fallbackW, fallbackH, 0x0e1626, 0.95)
+              .setStrokeStyle(2, 0x213259, 1).setOrigin(0.5);
+          }
+          c.add(panel);
+          return { container: c, boxW, boxH };
+        }
+
+        makeText(x, y, txt, style = {}) {
+          return this.add.text(x, y, txt, Object.assign({
+            fontFamily: 'system-ui,-apple-system,Segoe UI,Roboto,Arial',
+            fontSize: '20px', color: '#cfe3ff', align: 'center',
+            wordWrap: { width: Math.max(200, this.sys.game.config.width * 0.7) }
+          }, style)).setOrigin(0.5, 0.5);
+        }
+
+        makeButton(imgKey, label, width, height) {
+          const group = this.add.container(0, 0);
+          if (this.textures.exists(imgKey)) {
+            const img = this.add.image(0, 0, imgKey).setOrigin(0.5);
+            const scale = Math.min(width / img.width, height / img.height);
+            img.setScale(scale).setInteractive({ useHandCursor: true });
+            group.add(img);
+            group.setSize(img.displayWidth, img.displayHeight);
+            group.setInteractive(
+              new Phaser.Geom.Rectangle(-img.displayWidth / 2, -img.displayHeight / 2, img.displayWidth, img.displayHeight),
+              Phaser.Geom.Rectangle.Contains
+            );
+          } else {
+            const rect = this.add.rectangle(0, 0, width, height, 0x101a33, 1).setOrigin(0.5)
+              .setStrokeStyle(2, 0x24355f, 1).setInteractive({ useHandCursor: true });
+            const t = this.makeText(0, 0, label, { fontSize: '18px', fontStyle: '600', color: '#9cc2ff' });
+            group.add(rect); group.add(t);
+            group.setSize(width, height);
+            group.setInteractive(
+              new Phaser.Geom.Rectangle(-width / 2, -height / 2, width, height),
+              Phaser.Geom.Rectangle.Contains
+            );
+          }
+          return group;
+        }
+
+        buildStartOverlay() {
+          const w = this.sys.game.config.width, h = this.sys.game.config.height;
+          const { container, boxW, boxH } = this.panelWithOptionalImage('htpbox', w * 0.82, h * 0.5);
+          container.setDepth(1000);
+          const title = this.makeText(0, -boxH * 0.34, '', { fontSize: '50px', fontStyle: '700', color: '#9cc2ff' });
+          const guide = this.makeText(0, -boxH * 0.08,
+            '• You play White.\n• Tap a piece to see legal moves.\n• Tap a highlighted square to move.\n• Checkmate the CPU to win.',
+            { fontSize: '50px', color: '#d7e7ff' }
+          );
+
+          const playBtn = this.makeButton('playbtn', 'PLAY', boxW * 1, boxH * 1);
+          playBtn.x = 1; playBtn.y = 550;
+          playBtn.on('pointerdown', () => this.startGame());
+          playBtn.list.forEach(ch => ch.setInteractive?.({ useHandCursor: true }).on?.('pointerdown', () => this.startGame()));
+
+          container.add([title, guide, playBtn]);
+          container.x = w / 2; container.y = h / 2; container.setVisible(false);
+          this.startOverlay = container;
+
+          this.startDim = this.add.rectangle(w / 2, h / 2, w, h, 0x000000, 0.45).setDepth(999).setVisible(false);
+        }
+
+        buildLoseOverlay() {
+          const w = this.sys.game.config.width, h = this.sys.game.config.height;
+          const { container, boxW, boxH } = this.panelWithOptionalImage('ovrbox', w * 0.82, h * 0.44);
+          container.setDepth(1000);
+          const title = this.makeText(0, -boxH * 0.34 + 200, 'Try Again!', { fontSize: '50px', fontStyle: '700', color: 'white' });
+          this.loseMsg = this.makeText(0, -boxH * 0.12, 'Checkmate — Black wins', { fontSize: '50px', color: 'white' });
+          const replayBtn = this.makeButton('replay', 'REPLAY', boxW * 1, boxH * 1);
+          replayBtn.y = boxH * 0.28 + 200;
+          replayBtn.on('pointerdown', () => {
+            this.resetGame(false);
+            this.startGame();
+            console.log("replayBtn clicked");
+          });
+          
+
+          container.add([title, this.loseMsg, replayBtn]);
+          container.x = w / 2; container.y = h / 2; container.setVisible(false);
+          this.loseOverlay = container;
+          this.loseDim = this.add.rectangle(w / 2, h / 2, w, h, 0x000000, 0.45).setDepth(999).setVisible(false);
+        }
+
+        buildWinOverlay() {
+          const w = this.sys.game.config.width, h = this.sys.game.config.height;
+          const { container, boxW, boxH } = this.panelWithOptionalImage('lvlbox', w * 0.82, h * 0.48);
+          container.setDepth(1000);
+          const title = this.makeText(0, 0, 'You Win!', { fontSize: '50px', fontStyle: '700', color: 'white' });
+          this.winMsg = this.makeText(0, 50, 'Checkmate — White wins', { fontSize: '18px', color: 'white' });
+
+          const btnRow = this.add.container(0, boxH * 0.22);
+          const replayBtn = this.makeButton('lvl_replay', 'REPLAY', boxW * 0.5, boxH * 0.2);
+          const nextBtn = this.makeButton('next', 'NEXT', boxW * 0.5, boxH * 0.2);
+          replayBtn.y = 0; nextBtn.y = 0; replayBtn.x = -220; nextBtn.x = 220;
+          replayBtn.on('pointerdown', () => {
+            this.resetGame(false);
+            this.startGame();
+          });
+          nextBtn.on('pointerdown', () => { this.resetGame(true); });
+
+          btnRow.add([replayBtn, nextBtn]);
+          container.add([title, this.winMsg, btnRow]);
+          container.x = w / 2; container.y = h / 2; container.setVisible(false);
+          this.winOverlay = container;
+          this.winDim = this.add.rectangle(w / 2, h / 2, w, h, 0x000000, 0.45).setDepth(999).setVisible(false);
+        }
+
+        showStartOverlay() { this.hideAllOverlays(); this.startDim.setVisible(true); this.startOverlay.setVisible(true); statusEl.textContent = 'Tap “Play” to start — You are White'; }
+        showLoseOverlay(msg) { this.hideAllOverlays(); this.loseMsg.setText(msg); this.loseDim.setVisible(true); this.loseOverlay.setVisible(true); }
+        showWinOverlay(msg) { this.hideAllOverlays(); this.winMsg.setText(msg); this.winDim.setVisible(true); this.winOverlay.setVisible(true); }
+        hideAllOverlays() {
+          [this.startOverlay, this.loseOverlay, this.winOverlay].forEach(o => o && o.setVisible(false));
+          [this.startDim, this.loseDim, this.winDim].forEach(d => d && d.setVisible(false));
+        }
+
+        startGame() {
+          this.started = true;
+          this.hideAllOverlays();
+          this.updateStatus();
+          this.startBGM();           // start background music only during play
+          this.maybeAIMove();
+        }
+
+        resetGame(showStart) {
+          this.time.removeAllEvents();
+          this.tweens.killAll();
+          this.stopBGM();            // ensure clean stop between runs
+          this.pos = new Position(START_FEN);
+          this.sel = -1; this.legal = []; this.gameOver = false; this.started = false;
+          this.refreshAll();
+          if (showStart) this.showStartOverlay();
+          else { this.hideAllOverlays(); this.updateStatus(); }
+        }
+
+        // ---------- Board & input ----------
+        refreshAll() { this.drawBoard(); this.refreshPieces(); this.drawHighlights(); }
+        drawBoard() {
+          const g = this.boardG; g.clear();
+          g.fillStyle(0x101a33, 1).fillRoundedRect(this.boardX - 12, this.boardY - 12, this.boardSize + 24, this.boardSize + 24, 14);
+          for (let r = 0; r < 8; r++) for (let f = 0; f < 8; f++) {
+            const light = ((r + f) & 1) === 0;
+            const x = this.boardX + f * this.tile, y = this.boardY + (7 - r) * this.tile;
+            g.fillStyle(light ? 0x263760 : 0x1a2544, 1).fillRect(x, y, this.tile, this.tile);
+          }
+          g.lineStyle(1, 0x24355f, 1).strokeRect(this.boardX, this.boardY, this.boardSize, this.boardSize);
+        }
+        sqCenter(s) {
+          let f = fl(s), r = fr(s);
+          if (this.flip) { f = 7 - f; r = 7 - r; }
+          return { x: this.boardX + f * this.tile + this.tile / 2, y: this.boardY + (7 - r) * this.tile + this.tile / 2 };
+        }
+        screenToSq(x, y) {
+          if (x < this.boardX || y < this.boardY || x > this.boardX + this.boardSize || y > this.boardY + this.boardSize) return -1;
+          let f = Math.floor((x - this.boardX) / this.tile), r = 7 - Math.floor((y - this.boardY) / this.tile);
+          if (this.flip) { f = 7 - f; r = 7 - r; }
+          return sq(f, r);
+        }
+        refreshPieces() {
+          this.pLayer.removeAll(true); this.pTexts.clear();
+          for (let s = 0; s < 128; s++) {
+            if (!inBoard(s)) { s = (s | 0x0F); continue; }
+            const v = this.pos.board[s]; if (!v) continue;
+            const glyph = v > 0 ? UNI_W[Math.abs(v)] : UNI_B[Math.abs(v)];
+            const { x, y } = this.sqCenter(s);
+            const txt = this.add.text(x, y, glyph, {
+              fontFamily: '"Segoe UI Symbol","Noto Sans Symbols",system-ui,sans-serif',
+              fontSize: Math.floor(this.tile * 0.75) + 'px',
+              color: v > 0 ? '#f3f7ff' : '#0e1324',
+              stroke: v > 0 ? '#0e1324' : '#dbe6ff',
+              strokeThickness: v > 0 ? 4 : 3,
+            }).setOrigin(0.5, 0.58);
+            this.pLayer.add(txt); this.pTexts.set(s, txt);
+          }
+          this.drawCheckRing();
+        }
+        drawHighlights() {
+          const g = this.hiG; g.clear();
+          if (this.sel >= 0) {
+            const { x, y } = this.sqCenter(this.sel);
+            g.fillStyle(0x8ee0ff, 0.35).fillCircle(x, y, this.tile * 0.42);
+          }
+          for (const m of this.legal) {
+            const { x, y } = this.sqCenter(m.to);
+            if (m.capture) { g.lineStyle(4, 0xffd07a, 1).strokeCircle(x, y, this.tile * 0.38); }
+            else { g.fillStyle(0x78d3ff, 0.55).fillCircle(x, y, this.tile * 0.16); }
+          }
+        }
+        drawCheckRing() {
+          const color = this.pos.side; if (!this.pos.inCheck(color)) return;
+          const ksq = this.pos.kingSq(color);
+          const { x, y } = this.sqCenter(ksq);
+          this.hiG.lineStyle(6, 0xff6b6b, 1).strokeCircle(x, y, this.tile * 0.45);
+        }
+
+        onDown(pointer) {
+          if (this.gameOver || !this.started) return;
+          if (this.pos.side !== this.humanSide) return;
+
+          const s = this.screenToSq(pointer.x, pointer.y);
+          if (s < 0) { this.sel = -1; this.legal = []; this.drawHighlights(); return; }
+          if (this.sel >= 0) {
+            const mv = this.legal.find(m => m.to === s);
+            if (mv) { this.playMove(mv); return; }
+          }
+          const v = this.pos.board[s];
+          if (!v || v * this.pos.side <= 0) { this.sel = -1; this.legal = []; this.drawHighlights(); return; }
+          this.sel = s; this.legal = this.pos.legalMoves().filter(m => m.from === s); this.drawHighlights();
+        }
+
+        playMove(m) {
+          this.pos.makeMove(m);
+          this.sel = -1; this.legal = [];
+          this.refreshAll();
+          if (this.checkEnd()) { this.updateStatus(); return; }
+          this.updateStatus();
+          this.maybeAIMove();
+        }
+
+        maybeAIMove() {
+          if (this.gameOver || !this.started) return;
+          if (this.pos.side === this.humanSide) return;
+          this.time.delayedCall(700, () => {
+            if (this.gameOver || !this.started || this.pos.side === this.humanSide) return;
+            const { move } = aiSearch(this.pos, this.aiDepth);
+            if (move) {
+              this.pos.makeMove(move);
+              this.refreshAll();
+              this.checkEnd();
+              this.updateStatus();
+            } else {
+              this.checkEnd();
+              this.updateStatus();
+            }
+          });
+        }
+
+        checkEnd() {
+          const moves = this.pos.legalMoves();
+          if (moves.length === 0) {
+            let msg = '';
+            if (this.pos.inCheck(this.pos.side)) {
+              const winner = this.pos.side === W ? 'Black' : 'White';
+              msg = `Checkmate — ${winner} wins`;
+              statusEl.textContent = msg;
+              this.gameOver = true;
+              this.stopBGM();   // stop music on checkmate
+
+              this.time.delayedCall(1500, () => {
+                if (winner === 'White' && this.humanSide === W) this.showWinOverlay(msg);
+                else this.showLoseOverlay(msg);
+              });
+            } else {
+              msg = 'Draw — Stalemate';
+              statusEl.textContent = msg;
+              this.gameOver = true;
+              this.stopBGM();   // stop music on stalemate
+              this.time.delayedCall(1500, () => this.showLoseOverlay(msg));
+            }
+            return true;
+          }
+          this.gameOver = false;
+          return false;
+        }
+
+        updateStatus() {
+          if (this.gameOver) return;
+          if (!this.started) { statusEl.textContent = 'Tap “Play” to start — You are White'; return; }
+          const stm = (this.pos.side === W ? 'White' : 'Black');
+          const who = (this.pos.side === this.humanSide ? 'You' : 'CPU');
+          statusEl.textContent = `${stm} to move — ${who}`;
+        }
+      }
+
+      new Phaser.Game({
+        type: Phaser.AUTO,
+        parent: 'game',
+        width: 1080,
+        height: 1920,
+        backgroundColor: '#0b0f1a',
+        scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+        scene: [ChessScene]
+      });
+    })();
+  </script>
+</body>
+
+</html>

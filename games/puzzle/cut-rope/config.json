@@ -1,0 +1,101 @@
+{
+  "entry": "Customcutrope/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Swipe to cut ropes so the candy swings to collect stars and land in Om Nom's mouth.",
+    "score_label": "Stars",
+    "win_title": "Sweet Success!",
+    "game_over_title": "Candy Lost!"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "playerSpeed": 0,
+    "enemySpawnRate": 0,
+
+    "gravityY": 1.05,
+    "ropeSlack": 1.12,
+    "beadFrictionAir": 0.028,
+    "beadFriction": 0.02
+  },
+  "images1": {
+    "player": "assets/obj2.png",          
+    "collectible": "assets/obj6.png",    
+    "star": "assets/obj7.png",   
+    "spike": "assets/obj12.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Collision.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "level_done": "assets/win.mp3",
+    "game_over": "assets/win.mp3"
+  },
+  "starsRequired": 3,
+
+  "levels": [
+    {
+      "monster": { "x": 540, "y": 1620 },
+      "candy":   { "x": 540, "y": 360  },
+
+      "anchors": [
+        { "x": 280, "y": 240 },
+        { "x": 800, "y": 240 },
+        { "x": 540, "y": 600 }
+      ],
+      "ropes": [
+        { "from": "candy", "to": 0, "segments": 9 },
+        { "from": "candy", "to": 1, "segments": 9 },
+        { "from": "candy", "to": 2, "segments": 8 }
+      ],
+      "stars": [
+        { "x": 380, "y": 780 },
+        { "x": 700, "y": 1020 },
+        { "x": 520, "y": 1260 }
+      ],
+      "spikes": []
+    },
+
+    {
+      "monster": { "x": 540, "y": 1620 },
+      "monsterPatrol": { "fromX": 420, "toX": 660, "duration": 5600 },
+
+      "candy":   { "x": 540, "y": 360  },
+
+      "anchors": [
+        { "x": 280, "y": 240 },
+        { "x": 800, "y": 240 },
+        { "x": 540, "y": 600 }
+      ],
+      "ropes": [
+        { "from": "candy", "to": 0, "segments": 9 },
+        { "from": "candy", "to": 1, "segments": 9 },
+        { "from": "candy", "to": 2, "segments": 8 }
+      ],
+      "stars": [
+        { "x": 380, "y": 780 },
+        { "x": 700, "y": 1020 },
+        { "x": 520, "y": 1260 }
+      ],
+      "spikes": [],
+      "starsRequired": 3
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "entry": "Customshapefitter/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "game": {
+    "shapes": [
+      "circle",
+      "square",
+      "triangle",
+      "hexagon"
+    ],
+    "timerDuration": 30,
+    "maxMistakes": 5,
+    "snapDistance": 48,
+    "outlineSize": 194,
+    "shapeSize": 194,
+    "outlineY": 0.22,
+    "shapeY": 0.74
+  },
+  "colors": {
+    "background": "#f9f9fb",
+    "outline": "#cccccc",
+    "shape0": "#46b3e6",
+    "shape1": "#86dd86",
+    "shape2": "#f9b54a",
+    "shape3": "#f9b54a"
+  },
+  "images2": {
+    "background": "assets/bg.png"
+  },
+  "ui": {
+    "start_overlay": "assets/htp.png",
+    "scorebar": "assets/scorebar.png",
+    "gameover_overlay": "assets/game_over.png",
+    "levelcomplete_overlay": "assets/level_complete.png",
+    "button_play": "assets/play_game.png",
+    "button_retry": "assets/replay.png",
+    "button_next": "assets/next.png",
+    "replay_level": "assets/replay_level.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3"
+  },
+  "texts": {
+    "title": "",
+    "play": "",
+    "retry": "",
+    "next": "",
+    "win": "You Win!",
+    "lose": "Too many mistakes!",
+    "howToPlay": "Drag and drop each shape onto its matching outline before time runs out!"
+  }
+}

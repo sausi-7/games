@@ -1,0 +1,89 @@
+{
+  "entry": "Customthundergod/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Move with arrow keys, collect all keys, and use / Action to dash through danger.Avoid demons and walls, then reach the glowing exit before the timer hits zero to win.",
+    "score_label": "Keys: ",
+    "win_title": "You escaped the Ghost Maze!",
+    "game_over_title": "Caught by a ghost..."
+  },
+  "dash": {
+    "speed": 1400,
+    "durationMs": 220,
+    "cooldownMs": 2500,
+    "invulnMs": 220
+  },
+  "gameplay": {
+    "orientation": "portrait",
+    "timerSeconds": 180,
+    "playerSpeed": 210,
+    "sprintSpeed": 340,
+    "sprintDuration": 500,
+    "sprintCooldown": 1200,
+    "ghostSpeed": 120,
+    "ghostChaseMultiplier": 1.8,
+    "ghostDetectRadius": 220,
+    "ghostCount": 3,
+    "keyCount": 5,
+    "cellSize": 56,
+    "gridCols": 17,
+    "gridRows": 29,
+    "lightRadius": 10,
+    "flickerIntensity": 18,
+    "speed": 1400,
+    "durationMs": 220,
+    "cooldownMs": 10000,
+    "invulnMs": 220,
+    "playerSize": {
+      "w": 64,
+      "h": 64
+    },
+    "enemySize": {
+      "w": 48,
+      "h": 48
+    },
+    "keySize": {
+      "w": 36,
+      "h": 36
+    },
+    "platformThickness": 16
+  },
+  "images1": {
+    "demon_enemy": "assets/obj5.png",
+    "enemy_exit": "assets/obj18.png",
+    "collectible": "assets/obj12.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "player": "assets/player.png",
+    "enemy_exit": "assets/obj18.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "up": "assets/up.png",
+    "down": "assets/down.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3",
+    "slice": "assets/slice.mp3"
+  }
+}

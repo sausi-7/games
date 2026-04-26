@@ -1,0 +1,66 @@
+{ "entry": "Customshadowrunner/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Move to avoid shadows. Collect Light Shards to weaken or destroy shadows. Use Action to emit a pulse that pushes nearby shadows away. Survive until the timer hits 0 to win.",
+    "score_label": "Light: ",
+    "win_title": "You Outlasted the Darkness!",
+    "game_over_title": "Shadow Caught You"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "arenaPadding": 80,
+    "wallThickness": 24,
+    "playerSpeed": 500,
+    "playerSize": 150,
+    "lightFallSpeed": 60,
+    "shadowSpeed": 140,
+    "shadowSize": 150,
+    "maxShadows": 12,
+    "trailSpawnMs": 700,
+    "trailJitter": 60,
+    "difficultyRampMs": 5000,
+    "shardSize": 54,
+    "shardSpawnMs": 2200,
+    "maxShards": 6,
+    "shadowShrinkPerShard": 0.12,
+    "shadowMinScale": 0.45,
+    "shadowKillBelow": 28,
+    "pulseRadius": 220,
+    "pulseForce": 700,
+    "pulseCooldownMs": 2000
+  },
+  "images1": {
+    "player": "assets/obj1.png",
+    "enemy": "assets/obj14.png",
+    "collectible": "assets/obj20.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform2.png"
+  },
+  "ui": {
+    "joystick_bg": "assets/joystick_bg.png",
+    "joystick_knob": "assets/joystick_knob.png",
+    "right": "assets/right.png",
+    "btn_action": "assets/right.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/Game_Background.mp3",
+    "collect": "assets/Collection.mp3",
+    "hit": "assets/Taking_a_Hit.mp3",
+    "explosion": "assets/Explosion.mp3",
+    "win": "assets/Level_Complete.mp3",
+    "gameover": "assets/Game_Over.mp3"
+  }
+}

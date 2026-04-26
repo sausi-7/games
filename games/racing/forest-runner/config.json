@@ -1,0 +1,72 @@
+{
+    "entry": "Customforestrunner/index.html",
+    "images1": {
+        "enemy": "./assets/eagle.png",
+        "burning-rock": "./assets/burning-rock.png",
+        "blue-power": "./assets/blue-power.png"
+    },
+    "images2": {
+        "background": "./assets/background.png",
+        "platform-long": "./assets/platform-long.png"
+    },
+    "ui": {
+        "blur_background": "./assets/blur_bg.png",
+        "branch": "./assets/branch.png",
+        "heart-icon": "./assets/heart-icon.svg",
+        "magic-icon": "./assets/magic-icon.svg",
+        "score-icon": "./assets/score-icon.svg",
+        "htp": "./assets/htp.png",
+        "replay": "./assets/replay.png",
+        "next": "./assets/next.png",
+        "play_game": "./assets/play_game.png",
+        "restart": "./assets/replay_level.png",
+        "completed": "./assets/completed.png",
+        "game_over": "./assets/game_over.png",
+        "replay_level": "./assets/replay_level.png",
+        "level_complete": "./assets/level_complete.png",
+        "blue-bar-empty": "./assets/blue-bar-empty.png",
+        "blue-bar-half": "./assets/blue-bar-half.png",
+        "blue-bar-full": "./assets/blue-bar-full.png",
+        "red-bar-empty": "./assets/red-bar-empty.png",
+        "red-bar-full": "./assets/red-bar-full.png",
+        "red-bar-1": "./assets/red-bar-1.png",
+        "red-bar-2": "./assets/red-bar-2.png",
+        "red-bar-3": "./assets/red-bar-3.png",
+        "red-bar-4": "./assets/red-bar-4.png",
+        "red-bar-5": "./assets/red-bar-5.png",
+        "blue-glow": "./assets/blue-glow.png",
+        "spellbook": "./assets/spellbook.png",
+        "book-glow": "./assets/book-glow.png"
+    },
+    "audio": {
+        "jump": "./assets/jump.mp3",
+        "collect": "./assets/collect.mp3",
+        "bgm": "./assets/background_music.mp3",
+        "collision": "./assets/collision.mp3",
+        "bird_hit": "./assets/hit_bird.mp3"
+    },
+    "spritesheets": {
+        "player": {
+            "url": "/assets/eve_spritesheet.png",
+            "frameWidth": 102,
+            "frameHeight": 158
+        }
+    },
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "mechanics": {
+        "gameSpeed": 800,
+        "targetGameSpeed": 300,
+        "playerJumpVelocity": -700,
+        "playerDoubleJumpVelocity": -750,
+        "initialHealth": 6,
+        "initialPower": 0,
+        "maxPower": 3,
+        "powerModeDuration": 10000,
+        "obstacleSpawnDelay": 1500,
+        "platformSpawnDelay": 3000
+    }
+}

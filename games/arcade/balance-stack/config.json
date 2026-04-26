@@ -1,0 +1,49 @@
+{
+  "entry": "Custombalancestack/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1090,
+    "height": 1920
+  },
+  "game": {
+    "blockWidth": 360,
+    "blockHeight": 95,
+    "baseWidth": 500,
+    "baseHeight": 115,
+    "targetBlocks": 10,
+    "blockColor": 6202239,
+    "baseColor": 2233143,
+    "backgroundColor": 16250813
+  },
+  "images1": {
+    "player": "assets/player.png.png"
+  },
+  "images2": {
+    "cool_images": "assets/block.png",
+    "background": "assets/bg.png",
+    "base": "assets/base.png"
+  },
+  "ui": {
+    "htp": "assets/htp.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png",
+    "replay_level": "assets/replay_level.png"
+  },
+  "texts": {
+    "score_label": "Score",
+    "target_label": "Target",
+    "htp_title": "How to Play",
+    "htp_body": "Tap to drop:               \n\nAligned on:\n\nStack up to win!",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over",
+    "your_score_fmt": "Your Score: {score}{slashTarget}"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "drop": "assets/drop.mp3"
+  }
+}

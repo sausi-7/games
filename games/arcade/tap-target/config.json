@@ -1,0 +1,33 @@
+{
+    "entry": "Customtaptarget/index.html",
+    "mechanics": {
+        "targetCount": 10,
+        "gameTime": 20,
+        "targetShape": "circle",
+        "targetColor": "0x26e6b7",
+        "backgroundColor": "0x111827",
+        "missLimit": 3,
+        "targetRadius": 35,
+        "targetLifetime": 1000,
+        "uiColor": "#ffffff"
+    },
+    "images1": {
+        "enemy": "assets/enemy.png"
+    },
+    "images2": {
+        "background": "assets/bg.png"
+    },
+    "ui": {
+        "scorebar": "assets/scorebar.png",
+        "ovrbox": "assets/game_over.png",
+        "lvlbox": "assets/level_complete.png",
+        "playbtn": "assets/play_game.png",
+        "replay": "assets/replay.png",
+        "next": "assets/next.png",
+        "replay_level": "assets/replay_level.png",
+        "htpbox": "assets/htp.png"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3"
+    }
+}

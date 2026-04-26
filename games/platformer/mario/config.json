@@ -1,0 +1,56 @@
+{
+  "entry": "Custommario/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Use ← → to move and [Jump] to leap. Stomp enemies, collect coins, and reach the flag before time runs out!",
+    "score_label": "Score:",
+    "win_title": "Level Complete!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "playerSpeed": 320,
+    "levelWidth": 5100,
+    "bgParallax": 0.5
+  },
+  "images1": {
+    "player": "assets/obj2.png",
+    "enemy": "assets/obj5.png",
+    "collectible": "assets/obj12.png",
+    "flag": "assets/obj20.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {
+    "hero": {
+      "url": "assets/hero.png",
+      "frameWidth": 342,
+      "frameHeight": 705,
+      "frames": 4
+    }
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "destroy": "assets/hit.mp3"
+  }
+}

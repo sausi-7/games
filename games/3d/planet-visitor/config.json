@@ -1,0 +1,52 @@
+{
+  "entry": "Customplanetvisitor/index.html",
+  "images1": {
+    "alien_plant": "./assets/plant1.png",
+    "alien_plant2": "./assets/plant2.png",
+    "alien_plant3": "./assets/plant3.png",
+    "alien_plant4": "./assets/plant4.png",
+    "alien_plant5": "./assets/plant5.png",
+    "bird": "./assets/fly.png"
+  },
+  "images2": {
+    "background": "./assets/background.png",
+    "flyingplatform": "./assets/flyingplatform.png",
+    "platform": "./assets/platform.png",
+    "largeflyingplatform": "./assets/largeflyingplatform.png",
+    "swamp": "./assets/swamp.png"
+  },
+  "ui": {
+    "spaceship": "./assets/spaceship.png",
+    "lightbeam": "./assets/lightbeam.png",
+    "warning": "./assets/warning.png",
+    "button": "./assets/button.png",
+    "dialog_bg_start": "./assets/dialog_bg_start.png",
+    "game_over": "./assets/game_over.png",
+    "level_complete": "./assets/level_complete.png",
+    "replay_button_big": "./assets/replay_button_big.png",
+    "replay_button": "./assets/replay_button.png",
+    "camera": "./assets/camera.png",
+    "joystick_bg": "./assets/joystick_bg.png",
+    "joystick_knob": "./assets/joystick_knob.png",
+    "next_button": "./assets/next_button.png",
+    "shoot_button": "./assets/shoot_button.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "shutter": "assets/shutter.wav",
+    "ouch": "assets/ouch.mp3",
+    "spaceship": "assets/spaceship.mp3"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "spritesheets": {
+    "player": {
+      "url": "./assets/player.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "entry": "Customslidepuzzle/index.html",
+  "images2": {
+    "tile2": "assets/tile2.png",
+    "tile1": "assets/tile1.png",
+    "tile3": "assets/tile3.png",
+    "tile4": "assets/tile4.png",
+    "tile5": "assets/tile5.png",
+    "tile6": "assets/tile6.png",
+    "tile7": "assets/tile7.png",
+    "tile8": "assets/tile8.png",
+    "tile9": "assets/tile9.png",
+    "background": "assets/background.png"
+  },
+  "ui": {
+    "scorebar": "assets/scorebar.png",
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "replay": "assets/replay.png",
+    "ovrbox": "assets/ovrbox.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/replay_level.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "slide": "assets/slide.mp3",
+    "game_over": "assets/game_over.mp3",
+    "win": "assets/win.mp3"
+  },
+  "mechanics": {
+    "TILE_SIZE": 220,
+    "TILE_GAP": 10,
+    "TILE_TEXT_COLOR": "white",
+    "timeLimit": 30,
+    "GRID_SIZE": 3
+  }
+}

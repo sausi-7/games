@@ -1,0 +1,47 @@
+{
+  "entry": "Customlaserbounce/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "images1": {
+    "enemy": "assets/enemy1.png"
+  },
+  "images2": {
+    "background": "assets/bg.png"
+  },
+  "ui": {
+    "scorebar": "assets/scorebar.png",
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "game_over": "assets/game_over.png",
+    "firebtn": "assets/firebtn.png"
+  },
+  "audio": {
+    "collection": "./assets/Collection.mp3",
+    "bgm": "./assets/bgm.mp3",
+    "jump": "./assets/Jump.mp3"
+  },
+  "spritesheets": {
+    "eve": {
+      "path": "assets/hero.png",
+      "frameWidth": 103,
+      "frameHeight": 158
+    }
+  },
+  "mechanics": {
+    "centerX": 540,
+    "centerY": 960,
+    "radius": 300,
+    "numTargets": 5,
+    "mirrorCount": 5,
+    "mirrorLength": 180,
+    "targetScore": 50,
+    "timeLimit": 60
+  }
+}

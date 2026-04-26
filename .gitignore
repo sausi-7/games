@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if anyone adds tooling later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Local server / runtime
+*.log
+.cache/
+
+# Backup files
+*.bak
+*.tmp
+*~

@@ -1,0 +1,24 @@
+{
+   "entry": "Customfootball/index.html",
+  "text": {
+    "title": "Sports Heads Football",
+    "startTitle": "⚽ SPORTS HEADS",
+    "startDesc": "Move: ◀ ▶ or A / D\nJump: ↑ / W\nKick: Space / ⚽\n\nScore more goals in 60 seconds to win!",
+    "winTitle": "🎉 YOU WIN",
+    "winDesc": "Great match! Ready for the next one?",
+    "loseTitle": "GAME OVER",
+    "loseDesc": "Try again and beat the CPU!"
+  },
+  "mechanics": {
+    "matchDuration": 60,
+    "playerSpeed": 420,
+    "aiSpeed": 360,
+    "jumpSpeed": 900,
+    "gravity": 2200,
+    "ballBounce": 0.8
+  },
+   "audio": {
+    "kick": "assets/kick.mp3",
+    "bgm": "assets/bgm.mp3"
+  }
+}

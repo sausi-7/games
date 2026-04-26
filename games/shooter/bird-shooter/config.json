@@ -1,0 +1,75 @@
+{
+  "entry": "Custombirdshooter/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "texts": {
+    "how_to_play": "How to Play",
+    "how_to_play1": "Control:",
+    "score_label": "Score: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "playerSpeed": 450,
+    "targetScore": 100,
+    "boltSpeed": 500,
+    "boltCooldown": 150,
+    "shardSpeedMin": 120,
+    "shardSpeedMax": 220,
+    "spawnRateStart": 1500,
+    "spawnRateMin": 600,
+    "maxShards": 6,
+    "villageHealth": 5
+  },
+  "images1": {
+    "enemy": "assets/shard.png",
+    "player": "assets/player.png",
+    "bolt": "assets/bolt.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "background1": "assets/background1.png",
+    "background2": "assets/background2.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "action": "assets/punch.png",
+    "scoreback": "assets/scoreback.png"
+  },
+  "spritesheets": {
+    "bird_flap": {
+      "url": "assets/hero.png",
+      "frameWidth": 103,
+      "frameHeight": 143,
+      "frames": 4
+    },
+    "shard_break": {
+      "url": "assets/spritesheets/shard_break.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 5
+    }
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "shoot": "assets/shoot.mp3",
+    "break": "assets/break.mp3",
+    "damage": "assets/damage.mp3"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Connect matching colored nodes with non-overlapping paths that fill the entire grid. Drag from a node to draw a pipe through empty cells. Pipes cannot cross. Fill every cell to win.",
+    "score_label": "Score:",
+    "win_title": "All flows connected!",
+    "game_over_title": "Time’s up!"
+  },
+  "gameplay": {
+    "timerSeconds": 20,
+    "levels": [
+      {
+        "timerSeconds": 20,
+        "requireFullFill": false,
+        "name": "Nine-Colors-8x8",
+        "rows": 3,
+        "cols": 3,
+        "colors": {
+          "red": "#ef4444",
+          "blue": "#3b82f6",
+          "green": "#22c55e",
+          "yellow": "#eab308",
+          "orange": "#f97316",
+          "purple": "#a855f7",
+          "cyan": "#06b6d4",
+          "pink": "#ec4899",
+          "teal": "#14b8a6"
+        },
+        "pairs": [
+          { "color": "red",    "a": [0, 0], "b": [2, 0] },
+        
+          { "color": "yellow", "a": [0, 2], "b": [2, 2] },
+
+           { "color": "green", "a": [0, 1], "b": [2, 1] }
+         
+        ]
+      }
+    ]
+  },
+  "images1": {
+    "red": "assets/red.png",
+    "yellow": "assets/yellow.png",
+    "green": "assets/green.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "Level_Complete": "assets/win.mp3",
+    "Game_Over": "assets/lose.mp3"
+  }
+}

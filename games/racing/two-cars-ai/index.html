@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Jet Fighter - Portrait</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+
+<body>
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
+    <script>
+      function loadFont(name, url) {
+          var newFont = new FontFace(name, `url(${url})`);
+          newFont.load().then(function(loaded) {
+              document.fonts.add(loaded);
+          }).catch(function(error) {
+              return error;
+          });
+      }
+      loadFont("Outfit", "./outfit.ttf");
+  </script>
+
+    <script type="module">
+        import GamePlayScene from './mechanics.js';
+        const payload = JSON.stringify({ type: "orientation", value: "portrait" });
+
+        if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+            window.ReactNativeWebView.postMessage(payload);
+        } else if (window.parent) {
+            window.parent.postMessage(payload, "*");
+        }
+        new Phaser.Game({
+            type: Phaser.CANVAS,
+            width: 1080,
+            height: 1920,
+            parent: "game",
+            scale: {
+                mode: Phaser.Scale.FIT,
+                autoCenter: Phaser.Scale.CENTER_BOTH,
+                parent: "game-container",
+            },
+            physics: {
+                default: "arcade",
+                arcade: { gravity: { y: 1000 } }
+            },
+            scene: GamePlayScene
+        });
+    </script>
+</body>
+
+</html>

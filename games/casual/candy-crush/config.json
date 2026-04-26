@@ -1,0 +1,81 @@
+{
+  "entry": "Customcandycrush/index.html",
+  "mechanics": {
+    "PLAYER_SPEED": 180,
+    "ATTACK_RANGE": 60,
+    "ATTACK_COOLDOWN": 400,
+    "PUNCH_DURATION": 200
+  },
+  "images1": {
+    "object1": "./assets/obj1.png",
+    "object2": "./assets/obj2.png",
+    "object3": "./assets/obj3.png",
+    "object4": "./assets/obj4.png",
+    "object5": "./assets/obj5.png"
+  },
+  "images2": {
+    "bg1": "./assets/lvl1bg.png"
+  },
+  "ui": {
+    "re": "./assets/reshuffle.png",
+    "lvl1": "./assets/lvl1icon.png",
+    "lvl1iconbg": "./assets/lvl1iconbg.png",
+    "lvlbg": "./assets/lvlbg.png",
+    "tilebg": "./assets/tilebg.png",
+    "lvlhead": "./assets/lvlheader.png",
+    "lvlcom": "./assets/lvlcom.png",
+    "timeout": "./assets/timeout.png",
+    "lvl2": "./assets/lvl2icon.png",
+    "htpbox": "./assets/htpbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "gameovrbg": "./assets/gameovrbg.png",
+    "restart1btn": "./assets/restart1btn.png",
+    "restartbtn": "./assets/restartbtn.png",
+    "lvlbox": "./assets/lvlcompleted.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "timebg": "./assets/timebg.png",
+    "scorebg": "./assets/scorebg.png",
+    "lvltxtbg": "./assets/lvltxtbg.png"
+  },
+  "audio": {
+    "divine": "./assets/divine.mp3",
+    "destroy": "./assets/destroy.mp3",
+    "bgmusic": "./assets/bg.mp3"
+  },
+  "text": {
+    "howToPlayTitle": "How to Play",
+    "howToPlayText": "On a grid covered with\nvarious objects, try to form\nhorizontal or vertical chains\nof at least three identical\nones by swapping\nneighbouring objects.",
+    "gameOverTitle": "Game Over",
+    "levelCompletedTitle": "Level Completed",
+    "scoreLabel": "Score",
+    "timeLabel": "Time",
+    "levelLabel": "Level",
+    "targetLabel": "Target",
+    "levelNumber": "1"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "levels": {
+    "level1": {
+      "timeLimit": 25,
+      "scoreTarget": 300,
+      "rows": 8,
+      "columns": 5
+    },
+    "level2": {
+      "timeLimit": 20,
+      "scoreTarget": 50,
+      "rows": 8,
+      "columns": 5
+    },
+    "level3": {
+      "timeLimit": 25,
+      "scoreTarget": 100,
+      "rows": 8,
+      "columns": 5
+    }
+  }
+}

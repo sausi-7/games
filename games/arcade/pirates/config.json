@@ -1,0 +1,83 @@
+{
+  "entry": "Custompirates/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": " Win by defeating enough enemies before time runs out.",
+    "score_label": "Score: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Try Again!",
+    "kills": "Shoot"
+  },
+  "gameplay": {
+    "orientation": "landscape",
+    "timerSeconds": 60,
+    "playerSpeed": 300,
+    "playerHealth": 5,
+    "playerJumpVelocity": 520,
+    "playerShootCooldownMs": 250,
+    "playerBody": {
+      "width": 400,
+      "height": 700,
+      "offsetX": 30,
+      "offsetY": 8
+    },
+    "enemyBody": {
+      "width": 200,
+      "height": 230,
+      "offsetX": 12,
+      "offsetY": 12
+    },
+    "enemySpawnRate": 2500,
+    "enemyShootMin": 1200,
+    "enemyShootMax": 2200,
+    "cannonballRate": 1800,
+    "coinSpawnRate": 2000,
+    "enemyTargetKills": 2,
+    "deckScrollSpeed": 90,
+    "bgmVolume": 0.4,
+    "sfxVolume": 0.6,
+    "enemyhealth": 1,
+    "enemyShootDelayMs": 900,
+    "targetKills": 2
+  },
+  "images1": {
+    "player": "assets/player.png",
+    "enemy": "assets/obj10.png",
+    "collectible": "assets/collect.png",
+    "obstacle": "assets/obj1.png",
+    "bullet": "assets/bullet.png",
+    "bullet1": "assets/bullet1.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "winbackground": "assets/background1.png",
+    "ovrbackground": "assets/background2.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scoreback": "assets/scoreback.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Attack.mp3",
+    "collect": "assets/Collect.mp3",
+    "hit": "assets/hit.mp3",
+    "destroy": "assets/Explosion.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3",
+    "jump": "assets/jump.mp3"
+  }
+}

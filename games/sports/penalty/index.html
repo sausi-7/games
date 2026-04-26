@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spot Kick Duel — Penalty Shootout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <style>
+    html, body { margin:0; padding:0; height:100%; background:#0b0f1a; overflow:hidden; }
+    #game { width:100vw; height:100vh; }
+    .hint {
+      position: fixed; left: 12px; bottom: 12px; color: #a6c6ff;
+      font: 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      opacity: .9; text-shadow: 0 1px 2px rgba(0,0,0,.5); user-select: none;
+    }
+  </style>
+  <!-- Phaser 3.60.x -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+<body>
+  <div id="game"></div>
+  <div class="hint">Tip: Use ◀ / ▶ to choose Aim/Dive, Space to Kick/Dive. Mobile buttons included.</div>
+
+  <script type="module">
+    import GameScene from './gamescene.js';
+
+    // Minimal placeholder scenes so GameScene can hand off cleanly.
+    class WinScene extends Phaser.Scene {
+      constructor(){ super('WinScene'); }
+      create(){
+        const { width:w, height:h } = this.sys.game.config;
+        this.add.rectangle(w/2, h/2, w, h, 0x103d1f).setAlpha(0.9);
+        this.add.text(w/2, h*0.45, 'YOU WIN! 🏆', { fontFamily:'system-ui', fontSize:'64px', color:'#b6ffb6' }).setOrigin(0.5);
+        this.add.text(w/2, h*0.58, 'Tap / Click / Space to Restart', { fontFamily:'system-ui', fontSize:'28px', color:'#ffffff' }).setOrigin(0.5);
+        this.input.keyboard.once('keydown-SPACE', ()=> this.scene.start('GameScene'));
+        this.input.once('pointerdown', ()=> this.scene.start('GameScene'));
+      }
+    }
+    class GameOverScene extends Phaser.Scene {
+      constructor(){ super('GameOverScene'); }
+      create(){
+        const { width:w, height:h } = this.sys.game.config;
+        this.add.rectangle(w/2, h/2, w, h, 0x3d1010).setAlpha(0.9);
+        this.add.text(w/2, h*0.45, 'YOU LOSE! 😞', { fontFamily:'system-ui', fontSize:'64px', color:'#ffb6b6' }).setOrigin(0.5);
+        this.add.text(w/2, h*0.58, 'Tap / Click / Space to Retry', { fontFamily:'system-ui', fontSize:'28px', color:'#ffffff' }).setOrigin(0.5);
+        this.input.keyboard.once('keydown-SPACE', ()=> this.scene.start('GameScene'));
+        this.input.once('pointerdown', ()=> this.scene.start('GameScene'));
+      }
+    }
+
+    // Fetch config.json, then boot the game.
+    (async function boot(){
+      let cfg = {};
+      try {
+        const res = await fetch('./config.json', { cache: 'no-store' });
+        cfg = await res.json();
+      } catch (e) {
+        console.warn('Failed to load config.json, using defaults.', e);
+      }
+
+      const phaserConfig = {
+        type: Phaser.AUTO,
+        parent: 'game',
+        backgroundColor: '#0b0f1a',
+        scale: {
+          mode: Phaser.Scale.FIT,
+          autoCenter: Phaser.Scale.CENTER_BOTH,
+          width: 1080,
+          height: 1920
+        },
+        render: { pixelArt: false, roundPixels: true },
+        physics: { default: 'arcade', arcade: { debug: false } },
+        scene: [GameScene, WinScene, GameOverScene]
+      };
+
+      const game = new Phaser.Game(phaserConfig);
+
+      // Provide cfg to scenes via registry before they create().
+      game.events.on('ready', () => {
+        game.scene.keys['GameScene']?.registry?.set('cfg', cfg);
+        // If you later add custom BootScene, set registry there.
+      });
+
+      // In some Phaser builds 'ready' may not fire reliably;
+      // ensure registry is set on scene start as well:
+      game.scene.getScene('GameScene').events.once('create', function(){
+        this.registry.set('cfg', cfg);
+      });
+    })();
+  </script>
+</body>
+</html>

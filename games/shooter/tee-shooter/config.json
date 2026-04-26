@@ -1,0 +1,60 @@
+{
+    "entry": "Customteeshooter/index.html",
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "game": {
+        "numWindows": 3,
+        "windowWidth": 220,
+        "windowHeight": 320,
+        "marginY": 200,
+        "killsToWin": 10,
+        "hostageChance": 0.2,
+        "minShowTime": 900,
+        "maxShowTime": 1800
+    },
+    "colors": {
+        "background": "#353b48",
+        "windowOutline": "#1a1a1a",
+        "windowFill": "#ededed",
+        "terrorist": "#d7263d",
+        "hostage": "#0cc73e"
+    },
+    "images1": {
+        "hostage": "assets/hostage.png",
+        "terrorist": "assets/terrorist.png"
+    },
+    "images2": {
+        "background": "assets/bg.png"
+    },
+    "ui": {
+        "explosion": "assets/explosion.png",
+        "window": "assets/window.png",
+        "bg": "assets/bg.png",
+        "start_overlay": "assets/start_bg.png",
+        "gameover_overlay": "assets/gameover_bg.png",
+        "levelcomplete_overlay": "assets/levelcomplete_bg.png",
+        "button_play": "assets/play_button.png",
+        "button_retry": "assets/replay_button.png",
+        "replay": "assets/replay.png",
+        "scorebar": "assets/scorebar.png",
+        "next": "assets/next.png"
+    },
+    "audio": {
+        "attack": "assets/attack.mp3",
+        "gameover": "assets/gameover.mp3",
+        "bgm": "assets/bgm.mp3"
+    },
+    "texts": {
+        "title": "WINDOW SHOOTER",
+        "tapToStart": "Shoot the terrorists, don't hit the hostages.",
+        "kills": "Enemies: {kills}/{maxKills}",
+        "startBtn": "",
+        "gameOver": "Try Again!",
+        "win": "You Win!",
+        "retry": "",
+        "playAgain": ""
+    }
+}

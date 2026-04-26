@@ -1,0 +1,62 @@
+{
+  "entry": "Customgunrun/index.html",
+  "images1": {
+    "bullet": "./assets/bullet.png",
+    "enemybullet": "./assets/enemybullet.png",
+    "goblin": "./assets/enemy.png",
+    "bat": "./assets/bat.png",
+    "batbullet": "./assets/batbullet.png"
+  },
+  "images2": {
+    "background": "./assets/bg.png",
+    "platform1": "./assets/plt1.png",
+    "platform2": "./assets/plt2.png",
+    "platform3": "./assets/plt3.png",
+    "wall": "./assets/wall.png",
+    "portal": "./assets/portal.png"
+  },
+  "ui": {
+    "htpbox": "./assets/htpbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "lvlbg": "./assets/lvlbg.png",
+    "restart": "./assets/restart.png",
+    "restart1": "./assets/restart1.png",
+    "gameovrbg": "./assets/gameovrbg.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "life2": "./assets/life2.png",
+    "life1": "./assets/life1.png",
+    "life3": "./assets/life3.png",
+    "life4": "./assets/life4.png",
+    "blur": "./assets/blur.png",
+    "jump": "./assets/up.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "spritesheets": {
+    "hero": {
+      "url": "./assets/hero.png",
+      "frameConfig": {
+        "frameWidth": 103,
+        "frameHeight": 143
+      }
+    }
+  },
+  "audio": {
+    "bgmusic": "./assets/bgmusic.mp3",
+    "gun": "./assets/gun.mp3"
+  },
+  "mechanics": {
+    "gravityY": 1000,
+    "moveSpeed": 200,
+    "jumpVelocity": 900,
+    "maxJumps": 2,
+    "runFrameRate": 10,
+    "bulletSpeed": 600,
+    "enemyFireDelay": 1000,
+    "batFireDelay": 1500,
+    "heroFireDelay": 800
+  }
+}

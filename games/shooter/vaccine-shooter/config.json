@@ -1,0 +1,61 @@
+{
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Move with WASD/Arrows. Hold Space/Click/Action to shoot. Collect Vaccines for Burst (E or double-tap Action). Survive until the timer hits 0.",
+    "score_label": "Score:",
+    "win_title": "Infection Cleared!",
+    "game_over_title": "Nano-bot Destroyed"
+  },
+  "gameplay": {
+    "timerSeconds": 120,
+    "playerSpeed": 320,
+    "playerAccel": 1400,
+    "playerDrag": 800,
+    "playerSize": 64,
+    "fireRateMs": 160,
+    "bulletSpeed": 700,
+    "maxBullets": 30,
+    "spawnStartMs": 1400,
+    "maxEnemiesStart": 6,
+    "vaccineBurstRadius": 220,
+    "shieldMs": 2500,
+    "rapidMs": 3000
+  },
+  "images": {
+    "background": "assets/background.png",
+    "player": "assets/obj3.png",
+    "enemy_basic": "assets/obj5.png",
+    "enemy_spitter": "assets/obj9.png",
+    "enemy_mutant": "assets/obj14.png",
+    "projectile": "assets/obj2.png",
+    "vaccine": "assets/obj12.png",
+    "shield": "assets/obj7.png",
+    "rapid": "assets/obj20.png",
+    "platform": "assets/platform1.png",
+
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/audio/Game_Background.mp3",
+    "attack": "assets/audio/Attack.mp3",
+    "hit": "assets/audio/Taking_a_Hit.mp3",
+    "collect": "assets/audio/Collection.mp3",
+    "destroy": "assets/audio/Destroy.mp3",
+    "win": "assets/audio/Level_Complete.mp3",
+    "gameover": "assets/audio/Game_Over.mp3"
+  }
+}

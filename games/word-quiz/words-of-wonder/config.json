@@ -1,0 +1,285 @@
+{
+  "entry": "Customwordsofwonder/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Connect letters to form valid words. Fill the crossword grid to win. Drag across letters in sequence; release to submit.",
+    "score_label": "Score:",
+    "win_title": "Puzzle Solved!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {
+    "orientation": "portrait",
+    "timerSeconds": 0,
+    "puzzles": [
+      {
+        "letters": [
+          "H",
+          "R",
+          "W",
+          "O",
+          "T"
+        ],
+        "crossword": {
+          "words": [
+            {
+              "word": "WHO",
+              "dir": "across",
+              "slots": [
+                {
+                  "r": 0,
+                  "c": 2
+                },
+                {
+                  "r": 0,
+                  "c": 3
+                },
+                {
+                  "r": 0,
+                  "c": 4
+                }
+              ]
+            },
+            {
+              "word": "TWO",
+              "dir": "across",
+              "slots": [
+                {
+                  "r": 1,
+                  "c": 0
+                },
+                {
+                  "r": 1,
+                  "c": 1
+                },
+                {
+                  "r": 1,
+                  "c": 2
+                }
+              ]
+            },
+            {
+              "word": "WORTH",
+              "dir": "down",
+              "slots": [
+                {
+                  "r": 0,
+                  "c": 2
+                },
+                {
+                  "r": 1,
+                  "c": 2
+                },
+                {
+                  "r": 2,
+                  "c": 2
+                },
+                {
+                  "r": 3,
+                  "c": 2
+                },
+                {
+                  "r": 4,
+                  "c": 2
+                }
+              ]
+            },
+            {
+              "word": "HOW",
+              "dir": "down",
+              "slots": [
+                {
+                  "r": 2,
+                  "c": 5
+                },
+                {
+                  "r": 3,
+                  "c": 5
+                },
+                {
+                  "r": 4,
+                  "c": 5
+                }
+              ]
+            },
+            {
+              "word": "THROW",
+              "dir": "across",
+              "slots": [
+                {
+                  "r": 4,
+                  "c": 1
+                },
+                {
+                  "r": 4,
+                  "c": 2
+                },
+                {
+                  "r": 4,
+                  "c": 3
+                },
+                {
+                  "r": 4,
+                  "c": 4
+                },
+                {
+                  "r": 4,
+                  "c": 5
+                }
+              ]
+            }
+          ]
+        },
+        "bonusWords": [
+          "ROW",
+          "HOT",
+          "TOR",
+          "ROT"
+        ]
+      },
+      {
+        "letters": [
+          "T",
+          "H",
+          "R",
+          "E",
+          "E"
+        ],
+        "crossword": {
+          "words": [
+            {
+              "word": "THREE",
+              "dir": "down",
+              "slots": [
+                {
+                  "r": 0,
+                  "c": 5
+                },
+                {
+                  "r": 1,
+                  "c": 5
+                },
+                {
+                  "r": 2,
+                  "c": 5
+                },
+                {
+                  "r": 3,
+                  "c": 5
+                },
+                {
+                  "r": 4,
+                  "c": 5
+                }
+              ]
+            },
+            {
+              "word": "TREE",
+              "dir": "across",
+              "slots": [
+                {
+                  "r": 2,
+                  "c": 0
+                },
+                {
+                  "r": 2,
+                  "c": 1
+                },
+                {
+                  "r": 2,
+                  "c": 2
+                },
+                {
+                  "r": 2,
+                  "c": 3
+                }
+              ]
+            },
+            {
+              "word": "HERE",
+              "dir": "down",
+              "slots": [
+                {
+                  "r": 1,
+                  "c": 3
+                },
+                {
+                  "r": 2,
+                  "c": 3
+                },
+                {
+                  "r": 3,
+                  "c": 3
+                },
+                {
+                  "r": 4,
+                  "c": 3
+                }
+              ]
+            },
+            {
+              "word": "THERE",
+              "dir": "across",
+              "slots": [
+                {
+                  "r": 4,
+                  "c": 1
+                },
+                {
+                  "r": 4,
+                  "c": 2
+                },
+                {
+                  "r": 4,
+                  "c": 3
+                },
+                {
+                  "r": 4,
+                  "c": 4
+                },
+                {
+                  "r": 4,
+                  "c": 5
+                }
+              ]
+            }
+          ]
+        },
+        "bonusWords": [
+          "THE",
+          "HER",
+          "ERE",
+          "HE",
+          "RE"
+        ]
+      }
+    ]
+  },
+  "images1": {},
+  "images2": {
+    "background": "assets/bg.png",
+    "platform": "assets/platform1.png",
+    "platform1": "assets/platform1.png",
+    "platform2": "assets/platform2.png",
+    "platform3": "assets/platform3.png",
+    "platform4": "assets/platform4.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Attack.mp3",
+    "collect": "assets/collect.mp3",
+    "hit": "assets/hit.mp3",
+    "win": "assets/win.mp3"
+  }
+}

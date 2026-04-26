@@ -1,0 +1,60 @@
+{
+  "entry": "Customfourdots/index.html",
+  "cols": 7,
+  "rows": 6,
+  "cellSize": 130,
+  "player1Color": 16766720,
+  "player2Color": 16729344,
+  "howToPlayText": "Connect four pieces vertically, horizontally or diagonally. The first one to align 4 pieces wins!",
+  "images1": {
+    "Alien1": "assets/Alien1.png",
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "background": "./assets/space.png",
+    "htpbg": "./assets/htpbg.png",
+    "winbg": "./assets/winbg.png",
+    "ovrbg": "./assets/ovrbg.png"
+  },
+  "ui": {
+    "fontSize": "48px",
+    "fontColor": "#ffffff",
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "game_over": "assets/game_over.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bgm": "./assets/calm.mp3",
+    "gameover": "./assets/gameover.mp3",
+    "tap": "./assets/drop.mp3",
+    "levelCompleted": "./assets/levelCompleted.mp3"
+  },
+  "spritesheets": {
+    "character": {
+      "url": "./assets/hero.png",
+      "frameWidth": 100,
+      "frameHeight": 158
+    }
+  },
+  "texts": {
+    "htp_title": "How to Play",
+    "htp_desc": "Connect four pieces vertically, horizontally or diagonally. The first one to align 4 pieces wins!",
+    "turn_player": "Your Turn",
+    "turn_ai": "AI's Turn",
+    "win_title": "You Win!!",
+    "game_over_title": "Game Over",
+    "draw_title": "Draw!"
+  },
+  "blockColors": [
+    "#4a90e2",
+    "#50c878",
+    "#ff6b6b",
+    "#ffd93d",
+    "#6c5ce7"
+  ]
+}

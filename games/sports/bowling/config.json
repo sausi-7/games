@@ -1,0 +1,75 @@
+{
+  "entry": "Custombowling/index.html",
+  "targetScore": 40,
+  "strings": {
+    "howto": "Classic Bowling Game.\nDrag, aim, and release to roll the ball.\nTwo rolls per frame, 10 frames total.",
+    "startButton": "Tap to Start",
+    "scoreLabel": "Score",
+    "targetLabel": "Target",
+    "frameTitle": "Frame / Rolls",
+    "winTitle": "You Win! 🎉",
+    "loseTitle": "Try Again!",
+    "finalScore": "Final"
+  },
+  "images1": {
+    "ball": "assets/ball.png"
+  },
+  "images2": {},
+  "ui": {
+    "pin": "assets/pin.png",
+    "lane": "assets/lane.png",
+    "ui_btn": "assets/ui_btn.png",
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/lvl_replay.png"
+  },
+  "audio": {
+    "roll_sfx": "assets/roll.mp3",
+    "pin_sfx": "assets/pin.mp3",
+    "strike_sfx": "assets/strike.mp3",
+    "spare_sfx": "assets/spare.mp3"
+  },
+  "audioVolume": {
+    "roll": 0.3,
+    "pin": 0.25,
+    "strike": 0.35,
+    "spare": 0.35
+  },
+  "mechanics": {
+    "lane": {
+      "widthFactor": 0.9,
+      "height": 1500,
+      "railMargin": 40
+    },
+    "ball": {
+      "restitution": 0.05,
+      "friction": 0.02,
+      "frictionAir": 0.012,
+      "mass": 6,
+      "radius": 44,
+      "speedScale": 0.10
+    },
+    "pin": {
+      "restitution": 0.12,
+      "friction": 0.2,
+      "frictionAir": 0.002,
+      "mass": 0.5,
+      "width": 24,
+      "height": 92,
+      "scale": 0.3,
+      "rowSpacingY": 72,
+      "spacingX": 64
+    },
+    "detection": {
+      "tilt": 0.22,
+      "angularSpeed": 0.6,
+      "linearSpeed": 3.2,
+      "stopSpeed": 0.15,
+      "stopTicks": 60
+    }
+  }
+}

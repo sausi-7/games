@@ -1,0 +1,50 @@
+{
+  "entry": "Customsignalcircuit/index.html",
+  "images2": {
+    "platform": "./assets/platform1.png",
+    "background": "./assets/bg.png",
+    "ovrbg": "./assets/ovrbg.png",
+    "winbg": "./assets/winbg.png"
+  },
+  "ui": {
+    "scorebar": "./assets/scorebar.png",
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "tileImage": "assets/platformSand.png",
+    "game_over": "assets/game_over.png",
+    "ball": "assets/ball.png"
+  },
+  "audio": {
+    "collection": "./assets/Collection.mp3",
+    "bgm": "./assets/bgm.mp3",
+    "jump": "./assets/Jump.mp3"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "mechanics": {
+    "timer": 60,
+    "gridRows": 5,
+    "gridCols": 5,
+    "tileSize": 200
+  },
+  "text": {
+    "label_start": "START",
+    "label_end": "END",
+    "timer_label": "Time",
+    "htp_description": "Complete the circuit from start to end, before time’s up!",
+    "gameover_title": "Game Over",
+    "gameover_time_left": "Time Left",
+    "win_title": "Level Completed",
+    "win_time_taken": "Time Taken",
+    "btn_play": "Play",
+    "btn_replay": "Replay",
+    "btn_next": "Next"
+  }
+}

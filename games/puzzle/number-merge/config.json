@@ -1,0 +1,30 @@
+{
+  "entry": "Customnumbermerge/index.html",
+  "settings": {
+    "gameWidth": 1080,
+    "gameHeight": 1920,
+    "gridSize": 3,
+    "tileGap": 24
+  },
+  "images1": {},
+  "images2": {
+    "background": "assets/background.png",
+    "enemy1": "assets/obj1.png",
+    "enemy2": "assets/obj2.png",
+    "enemy3": "assets/obj3.png",
+    "enemy4": "assets/obj4.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3"
+  }
+}

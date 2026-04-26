@@ -1,0 +1,46 @@
+{
+  "entry": "Customsquareone/index.html",
+  "mechanics": {
+    "baseTileSize": 120,
+    "baseWidth": 1920,
+    "startSquare": 2,
+    "moveTime": 250,
+    "squareColors": [
+      8947848,
+      11184810
+    ],
+    "targetDistance": 40
+  },
+  "images1": {},
+  "images2": {
+    "square_player": "assets/square.png",
+    "square_enemy": "assets/enemy.png",
+    "platform": "assets/platform.png",
+    "htpbg": "assets/htpbg.png",
+    "background": "assets/background.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "lvlbox": "assets/lvlbox.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png"
+  },
+  "texts": {
+    "how_to_play_title": "HOW TO PLAY",
+    "how_to_play_desc": "Control:",
+    "level_completed": "LEVEL COMPLETED",
+    "game_over": "GAME OVER",
+    "distance_label": "Distance",
+    "play_button_label": "PLAY",
+    "replay_label": "REPLAY"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3"
+  }
+}

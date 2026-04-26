@@ -1,0 +1,64 @@
+{
+  "entry": "Customcandycrusher/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Drag tiles to make lines of 3 or more",
+    "score_label": "Score:",
+    "win_title": "Level Completed",
+    "game_over_title": "Time’s Up!"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "targetScore": 70,
+    "pointsPerTile": 5,
+    "hintAfterSeconds": 5,
+    "allowUnbreakable": false,
+    "candyKeys": [
+      "object1",
+      "object2",
+      "object3",
+      "object4",
+      "object5"
+    ]
+  },
+  "images1": {
+    "colorbomb": "assets/obj14.png",
+    "object1": "assets/Frame-1.png",
+    "object2": "assets/Frame-2.png",
+    "object3": "assets/Frame-3.png",
+    "object4": "assets/Frame-4.png",
+    "object5": "assets/Frame-5.png",
+    "power": "assets/Frame-6.png"
+  },
+  "images2": {
+    "game_bg": "assets/bg1.png",
+    "startscreen_bg": "assets/tctitle.png",
+    "game-over": "assets/over.png",
+    "complete": "assets/complete.png"
+  },
+  "ui": {
+    "tile_bg": "assets/tile.png",
+    "htpbox": "assets/htp.png",
+    "ovrbox": "assets/htp.png",
+    "replay": "assets/replay_button.png",
+    "lvl_replay": "assets/replay_button.png",
+    "lvlbox": "assets/htp.png",
+    "next": "assets/next_button.png",
+    "playbtn": "assets/play_game.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/mushroom.mp3",
+    "swap": "assets/Attack.mp3",
+    "match": "assets/sparkle.mp3",
+    "special": "assets/sparkle.mp3",
+    "tick": "assets/tick.mp3",
+    "win": "assets/Level_Complete.mp3",
+    "lose": "assets/Game_Over.mp3",
+    "swap_success": "assets/correct_swap.mp3",
+    "swap_fail": "assets/wrong_swap.mp3"
+  }
+}

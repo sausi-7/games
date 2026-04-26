@@ -1,0 +1,158 @@
+{
+  "entry": "Customsniper/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Drag the scope to aim. When the aim turns red, tap to shoot:",
+    "score_label": "Shots",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "gameplay": {
+    "reloadMsMin": 1000,
+    "reloadMsMax": 2000,
+    "bulletLimit": 12,
+    "timerSeconds": 0,
+    "playerSpeed": 0,
+    "enemySpawnRate": 0,
+    "timeLimitSec": 120,
+   "roofCollider": {
+      "padX": 0,
+      "padY": 0,
+      "shiftY": 40
+    },
+    "los": {
+      "enabled": true,          
+      "aimYOffsetFactor": 0.35  
+    },
+    "enemyCollider": {
+      "extraH": 20,   
+      "extraW": 0    
+    },
+    "level": {
+      "roofs": [
+        {
+          "x": 360,
+          "y": 850,
+          "w": 420,
+          "h": 48
+        },
+        {
+          "x": 840,
+          "y": 550,
+          "w": 360,
+          "h": 48
+        },
+        {
+          "x": 1320,
+          "y": 850,
+          "w": 500,
+          "h": 48
+        },
+        {
+          "x": 360,
+          "y": 300,
+          "w": 420,
+          "h": 48
+        },
+        {
+          "x": 1600,
+          "y": 300,
+          "w": 420,
+          "h": 48
+        }
+      ],
+      "enemies": [
+        {
+          "x": 270,
+          "y": 750,
+          "patrol": {
+            "dx": 120,
+            "speed": 80
+          },
+          "size": 200,
+          "key": "enemy"
+        },
+        {
+          "x": 840,
+          "y": 460,
+          "patrol": {
+            "dx": 160,
+            "speed": 65
+          },
+          "size": 200,
+          "key": "enemy"
+        },
+        {
+          "x": 1160,
+          "y": 760,
+          "patrol": {
+            "dx": 150,
+            "speed": 60
+          },
+          "size": 200,
+          "key": "enemy"
+        },
+        {
+          "x": 360,
+          "y": 210,
+          "patrol": {
+            "dx": 120,
+            "speed": 95
+          },
+          "size": 200,
+          "key": "enemy"
+        },
+        {
+          "x": 1600,
+          "y": 210,
+          "patrol": {
+            "dx": 120,
+            "speed": 110
+          },
+          "size": 200,
+          "key": "enemy"
+        }
+      ]
+    }
+  },
+  "images1": {
+    "enemy": "assets/obj5.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "background1": "assets/background1.png",
+    "background2": "assets/background2.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "bullet": "assets/obj12.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png",
+    "timerbar": "assets/scoreback.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/attack.mp3",
+    "hit": "assets/hit.mp3",
+    "destroy": "assets/collide.mp3",
+    "collect": "assets/collide.mp3",
+    "reload": "assets/reload.mp3"
+  }
+}

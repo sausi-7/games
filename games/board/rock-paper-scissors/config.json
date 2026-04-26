@@ -1,0 +1,53 @@
+{
+  "entry": "CustomRPS/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Choose Rock, Paper, or Scissors before the countdown ends—beat the computer’s choice to win, or lose on a draw or timeout!",
+    "score_label": "Moves: ",
+    "win_title": "Perfect Pour!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {},
+  "images1": {
+    "side_view_scissors": "assets/scissors.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "A4_paper": "assets/paper.png",
+    "rock": "assets/rock.png"
+  },
+  "ui": {
+    "particle": "assets/particle.png",
+    "star": "assets/star.png",
+    "red": "assets/red.png",
+    "white": "assets/white.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/attack.mp3",
+    "collision": "assets/collision.mp3",
+    "level_complete": "assets/win.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3"
+  },
+  "colors": {
+    "ruby": "#e25458",
+    "mint": "#35d0a1",
+    "sun": "#f3c34a",
+    "ocean": "#4db2ff",
+    "plum": "#9146e8",
+    "rose": "#ff7aa2",
+    "teal": "#22b3b9",
+    "cocoa": "#7a5440"
+  }
+}

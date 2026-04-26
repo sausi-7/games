@@ -1,0 +1,61 @@
+{
+  "entry": "Customchess/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Move with arrows. A = Attack, S = Special. Defeat your opponent!",
+    "score_label": "HP:",
+    "win_title": "Victory! You are the Arena Champion!",
+    "game_over_title": "Defeat! Better luck next time."
+  },
+  "gameplay": {
+    "timerSeconds": null,
+    "playerHP": 100,
+    "enemyHP": 100,
+    "attackDamage": 10,
+    "specialDamage": 25,
+    "specialCooldown": 5
+  },
+  "images1": {
+  
+  },
+  "images2": {
+    "background": "assets/images/arena_bg.png"
+  },
+  "ui": {
+    "htpbox": "assets/images/htpbox.png",
+    "playbtn": "assets/images/playbtn.png",
+    "ovrbox": "assets/images/ovrbox.png",
+    "replay": "assets/images/replay.png",
+    "lvlbox": "assets/images/lvlbox.png",
+    "next": "assets/images/next.png",
+    "lvl_replay": "assets/images/lvl_replay.png",
+    "left": "assets/images/left.png",
+    "right": "assets/images/right.png",
+    "jump": "assets/images/jump.png",
+    "attack": "assets/images/attack.png",
+    "special": "assets/images/special.png"
+  },
+  "spritesheets": {
+    "dragon": {
+      "path": "assets/images/dragon.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6
+    },
+    "griffin": {
+      "path": "assets/images/griffin.png",
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "frameCount": 6
+    }
+  },
+  "audio": {
+    "bgm": "assets/audio/bgm_arena.mp3",
+    "attack": "assets/audio/attack.wav",
+    "special": "assets/audio/special.wav",
+    "win": "assets/audio/win.wav"
+  }
+}

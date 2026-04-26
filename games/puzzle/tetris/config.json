@@ -1,0 +1,37 @@
+{
+  "entry": "Customtetris/index.html",
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "rotate": "assets/rotate.mp3",
+    "clear": "assets/clear.mp3",
+    "down": "assets/down.mp3",
+    "move": "assets/move.mp3"
+  },
+  "mechanics": {
+    "target_score": 500,
+    "line_points": {
+      "1": 100,
+      "2": 300,
+      "3": 500,
+      "4": 800
+    },
+    "base_drop_speed": 800,
+    "speed_increase_per_level": 60,
+    "min_drop_speed": 120
+  },
+  "texts": {
+    "howto_title": "How to Play",
+    "howto_subtitle": "Swipe left/right to move, swipe down or tap ▼ to fall faster, tap ⟳ to rotate, tap ⏬ to drop. Reach TARGET points to win.",
+    "start_title": "Tap to Play",
+    "start_subtitle": "Reach TARGET score to win!",
+    "win_title": "You Win!",
+    "win_subtitle": "Great job reaching the target score!",
+    "gameover_title": "Game Over",
+    "gameover_subtitle": "Tap Replay to play again",
+    "pause_title": "Paused",
+    "pause_subtitle": "Tap any control or press P"
+  }
+}

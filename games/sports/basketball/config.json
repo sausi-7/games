@@ -1,0 +1,31 @@
+{
+  "entry": "Custombasketball/index.html",
+  "images1": {
+    "ball": "assets/ball.png"
+  },
+  "images2": {
+    "background": "assets/background.png"
+  },
+  "texts": {
+    "how_to_play": "Drag from the ball to aim; longer drag = more power, then release to shoot an arc toward the hoop. Sink shots through the net to score (ball respawns on the left platform); you have limited attempts, so wait for the ball to stop before aiming again. First to 5 points wins."
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "score": "assets/score.mp3"
+  },
+  "spritesheets": {},
+  "gameplay": {
+    "initialShots": 7,
+    "maxPower": 2000,
+    "powerScale": 8.0
+  }
+}

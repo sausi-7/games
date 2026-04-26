@@ -1,0 +1,22 @@
+{
+  "entry": "Customcrossyroad/index.html",
+  "mechanics": {
+    "scorePerStep": 1,
+    "bonusScoreOnLane": 5,
+    "playerMoveTime": 200,
+    "playerSize": 15,
+    "carSpeedMin": 1.5,
+    "carSpeedMax": 4,
+    "laneWidth": 42,
+    "columns": 17,
+    "targetScore": 500,
+    "stepTime": 200
+  },
+  "ui": {
+    "howToPlay": "Tap to play — dodge traffic and keep moving!"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.wav"
+  }
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Kaiju Krush</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas { display: block; }
+  </style>
+</head>
+
+<body>
+  <script>
+    // Utility: load font via CSS FontFace (from config)
+    function loadFont(name, url) {
+      if (!name || !url) return;
+      const font = new FontFace(name, `url(${url})`);
+      font.load().then(f => document.fonts.add(f)).catch(() => {});
+    }
+  </script>
+
+  <script>
+    // --- ASSET MANAGER (FOR FALLBACKS) ---
+    class AssetManager {
+      constructor(scene) {
+        this.scene = scene;
+        this.fallbacks = {
+          'kaiju': { type: 'rectangle', width: 128, height: 160, color: 0x00ff00, label: 'KAIJU' },
+          'tank': { type: 'rectangle', width: 48, height: 24, color: 0x8B0000, label: 'TANK' },
+          'helicopter': { type: 'rectangle', width: 64, height: 32, color: 0x8B0000, label: 'HELI' },
+          'building1': { type: 'rectangle', width: 80, height: 200, color: 0x808080, label: '' },
+          'building2': { type: 'rectangle', width: 80, height: 300, color: 0x708090, label: '' },
+          'building3': { type: 'rectangle', width: 80, height: 250, color: 0x696969, label: '' },
+          'ground': { type: 'fill', color: 0x4B3A26 },
+          'background_sky': { type: 'fill', color: 0x4682B4 },
+          'projectile': { type: 'circle', radius: 8, color: 0xFF4500, label: '' },
+          'explosion': { type: 'circle', radius: 32, color: 0xFF8C00, label: '' }
+        };
+        this.createdFallbacks = new Map();
+      }
+      createFallback(key) {
+        if (this.createdFallbacks.has(key)) return this.createdFallbacks.get(key);
+        const f = this.fallbacks[key] || { type: 'rectangle', width: 32, height: 32, color: 0xff00ff, label: '?' };
+        let sprite;
+        switch (f.type) {
+          case 'rectangle': sprite = this.scene.add.rectangle(0, 0, f.width, f.height, f.color); break;
+          case 'circle': sprite = this.scene.add.circle(0, 0, f.radius, f.color); break;
+          case 'fill':
+            return this.scene.add.rectangle(
+              this.scene.scale.width / 2, this.scene.scale.height / 2,
+              this.scene.scale.width, this.scene.scale.height, f.color
+            ).setDepth(-10);
+        }
+        if (f.label) {
+          const text = this.scene.add.text(0, 0, f.label, { fontSize: '14px', fill: '#FFF', fontFamily: 'Outfit, Arial', resolution: 2 }).setOrigin(0.5);
+          const container = this.scene.add.container(0, 0, [sprite, text]);
+          this.scene.physics.world.enable(container);
+          this.createdFallbacks.set(key, container);
+          return container;
+        }
+        this.createdFallbacks.set(key, sprite);
+        return sprite;
+      }
+      getSprite(key, x, y, textureKey) {
+        const finalKey = textureKey || key;
+        if (this.scene.textures.exists(finalKey)) {
+          return this.scene.physics.add.sprite(x, y, finalKey);
+        } else {
+          console.warn(`AssetManager: Texture '${finalKey}' not found. Creating fallback for key '${key}'.`);
+          const fb = this.createFallback(key);
+          if (fb) fb.setPosition(x, y);
+          return fb;
+        }
+      }
+    }
+
+    // --- BOOT: load config.json, then all assets from it ---
+    class BootScene extends Phaser.Scene {
+      constructor() { super('BootScene'); }
+      preload() {
+        // Adjust if your config lives elsewhere
+        this.load.json('gameConfig', 'config.json');
+
+        this.load.once('filecomplete-json-gameConfig', () => {
+          const cfg = this.cache.json.get('gameConfig') || {};
+          this.registry.set('cfg', cfg);
+
+          // Font (optional)
+          if (cfg.font && cfg.font.family && cfg.font.url) {
+            loadFont(cfg.font.family, cfg.font.url);
+          }
+
+          // Images
+          const images = cfg.images || {};
+          Object.keys(images).forEach(k => this.load.image(k, images[k]));
+
+          // Spritesheets
+          const sheets = cfg.spritesheets || {};
+          Object.keys(sheets).forEach(k => {
+            const s = sheets[k];
+            this.load.spritesheet(k, s.url, {
+              frameWidth: s.frameWidth, frameHeight: s.frameHeight,
+              startFrame: s.startFrame || 0, endFrame: s.endFrame || undefined
+            });
+          });
+
+          // Audio
+          const audio = cfg.audio || {};
+          Object.keys(audio).forEach(k => this.load.audio(k, audio[k]));
+        });
+      }
+      create() {
+        // When everything above finishes, start menu
+        // Slight delay ensures font is ready
+        this.time.delayedCall(50, () => this.scene.start('MainMenuScene'));
+      }
+    }
+
+    // --- MAIN MENU (HTP OVERLAY) ---
+    class MainMenuScene extends Phaser.Scene {
+      constructor() { super('MainMenuScene'); }
+      create() {
+        const cfg = this.registry.get('cfg') || {};
+        const fontFamily = (cfg.font && cfg.font.family) ? cfg.font.family : 'Outfit, Arial';
+        const texts = cfg.texts || {};
+        const howTo = texts.how_to_play || "SURVIVE 60 SECONDS.";
+
+        const cx = this.scale.width / 2;
+        const cy = this.scale.height / 2;
+
+        const boxKey = (cfg.images && cfg.images.htpbox) ? 'htpbox' : null;
+        const playKey = (cfg.images && cfg.images.playbtn) ? 'playbtn' : null;
+
+        const box = boxKey ? this.add.image(cx, cy - 40, boxKey).setScrollFactor(0) : null;
+
+        this.add.text(cx, (box ? cy - (box.displayHeight * 0.33) : cy - 200) + 220, howTo, {
+          fontSize: '50px',
+          fill: '#ffffff',
+          fontFamily,
+          align: 'center',
+          wordWrap: { width: Math.min(1100, box ? box.displayWidth - 80 : 1100), useAdvancedWrap: true },
+          lineSpacing: 6,
+          stroke: '#000', strokeThickness: 6
+        }).setOrigin(0.5).setScrollFactor(0);
+
+        const play = playKey
+          ? this.add.image(cx, (box ? cy + (box.displayHeight * 0.33) : cy + 200) + 200, playKey)
+          : this.add.text(cx, cy + 260, 'PLAY', { fontSize: '64px', fill: '#0f0', fontFamily, stroke: '#000', strokeThickness: 8 })
+              .setOrigin(0.5);
+
+        play.setInteractive({ useHandCursor: true }).setScrollFactor(0);
+        play.on('pointerdown', () => {
+          this.cameras.main.fadeOut(300, 0, 0, 0);
+          this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('GameScene');
+          });
+        });
+      }
+    }
+
+    // --- GAME SCENE ---
+    class GameScene extends Phaser.Scene {
+      constructor() { super('GameScene'); }
+
+      preload() {
+        this.assetManager = new AssetManager(this);
+      }
+
+      create() {
+        const cfg = this.registry.get('cfg') || {};
+        const fontFamily = (cfg.font && cfg.font.family) ? cfg.font.family : 'Outfit, Arial';
+        const images = cfg.images || {};
+        const gameplay = cfg.gameplay || { timerSeconds: 60 };
+
+        // Background & ground
+        if (this.textures.exists('background_sky')) this.add.sprite(960, 540, 'background_sky').setScrollFactor(0);
+        else this.assetManager.createFallback('background_sky');
+
+        if (this.textures.exists('ground')) this.ground = this.add.tileSprite(960, 1030, 1920, 100, 'ground');
+        else this.ground = this.assetManager.createFallback('ground');
+        this.physics.add.existing(this.ground, true);
+
+        // Player
+        this.player = this.assetManager.getSprite('kaiju', 960, 950, 'kaiju_walk');
+        this.player.body.setCollideWorldBounds(true);
+        this.player.body.setSize(100, 150);
+        this.player.body.setImmovable(true);
+
+        // Animations
+        if (this.textures.exists('kaiju_walk')) {
+          this.anims.create({ key: 'walk', frames: this.anims.generateFrameNumbers('kaiju_walk', { start: 0, end: 3 }), frameRate: 8, repeat: -1 });
+          this.anims.create({ key: 'idle', frames: [{ key: 'kaiju_walk', frame: 0 }], frameRate: 20 });
+        }
+        if (this.textures.exists('kaiju_attack')) {
+          this.anims.create({ key: 'attack', frames: this.anims.generateFrameNumbers('kaiju_attack', { start: 7, end: 8 }), frameRate: 10, repeat: 0 });
+        }
+        if (this.textures.exists('explosion')) {
+          this.anims.create({ key: 'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 0 }), frameRate: 20, repeat: 0, hideOnComplete: true });
+        }
+
+        if (this.player.on) {
+          this.player.on('animationcomplete', (animation) => {
+            if (animation.key === 'attack') this.player.isAttacking = false;
+          });
+        }
+
+        // Groups
+        this.buildings = this.physics.add.group({ immovable: true, allowGravity: false });
+        this.enemies = this.physics.add.group({ allowGravity: false });
+        this.enemyProjectiles = this.physics.add.group({ allowGravity: false, defaultKey: 'projectile' });
+        this.explosions = this.add.group({ defaultKey: 'explosion', maxSize: 20 });
+
+        // World content
+        this.spawnBuildings();
+        this.tankSpawnEvent = this.time.addEvent({ delay: 5000, callback: this.spawnTank, callbackScope: this, loop: true });
+        this.heliSpawnEvent = this.time.addEvent({ delay: 8000, callback: this.spawnHelicopter, callbackScope: this, loop: true });
+
+        // Stats
+        this.playerHealth = 100;
+        this.maxPlayerHealth = 100;
+        this.score = 0;
+
+        // UI
+        this.setupUI(fontFamily, cfg.texts);
+
+        // Survival timer (from config)
+        this.timeLeft = gameplay.timerSeconds || 60;
+        this.timeText = this.add.text(this.scale.width - 50, 50, String(this.timeLeft), {
+          fontSize: '36px', fill: '#FFF', fontFamily, stroke: '#000', strokeThickness: 6
+        }).setOrigin(1, 0).setScrollFactor(0);
+
+        this.survivalTimerEvent = this.time.addEvent({
+          delay: 1000, loop: true, callback: () => {
+            this.timeLeft--;
+            this.timeText.setText(String(this.timeLeft));
+            if (this.timeLeft <= 0) this.winGame();
+          }
+        });
+
+        // Input
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // Mobile buttons (keys read from images)
+        this.leftHeld = false; this.rightHeld = false;
+        this.createMobileControls(images);
+
+        // Collisions
+        this.physics.add.overlap(this.player, this.enemyProjectiles, this.handlePlayerHit, null, this);
+
+        // Music
+        if (this.sound && this.cache.audio.exists('main_theme')) {
+          this.sound.play('main_theme', { loop: true, volume: 0.5 });
+        }
+
+        // Cleanup on shutdown
+        this.events.on('shutdown', this.cleanupEvents, this);
+        this.events.on('destroy', this.cleanupEvents, this);
+      }
+
+      // On-screen mobile buttons from config keys
+      createMobileControls(images) {
+        const margin = 40;
+        const bottomY = this.scale.height - 100;
+
+        const leftKey = images.left ? 'left' : null;
+        const rightKey = images.right ? 'right' : null;
+        const punchKey = images.punch ? 'punch' : null;
+
+        const leftBtn = leftKey
+          ? this.add.image(margin + 120, bottomY, leftKey).setScrollFactor(0).setInteractive({ useHandCursor: true }).setAlpha(0.9)
+          : null;
+
+        const rightBtn = rightKey
+          ? this.add.image(margin + 450, bottomY, rightKey).setScrollFactor(0).setInteractive({ useHandCursor: true }).setAlpha(0.9)
+          : null;
+
+        const punchBtn = punchKey
+          ? this.add.image(this.scale.width - (margin + 160), bottomY, punchKey).setScrollFactor(0).setInteractive({ useHandCursor: true }).setAlpha(0.9)
+          : null;
+
+        const press = (btn, flagSetter) => {
+          if (!btn) return;
+          btn.on('pointerdown', () => { flagSetter(true); btn.setScale(0.95).setAlpha(1); });
+          btn.on('pointerup', () => { flagSetter(false); btn.setScale(1).setAlpha(0.9); });
+          btn.on('pointerout', () => { flagSetter(false); btn.setScale(1).setAlpha(0.9); });
+          btn.on('pointercancel', () => { flagSetter(false); btn.setScale(1).setAlpha(0.9); });
+        };
+
+        press(leftBtn, (v) => { this.leftHeld = v; });
+        press(rightBtn, (v) => { this.rightHeld = v; });
+
+        if (punchBtn) {
+          punchBtn.on('pointerdown', () => {
+            this.tryPunch();
+            punchBtn.setScale(0.95).setAlpha(1);
+            this.time.delayedCall(120, () => punchBtn.setScale(1).setAlpha(0.9));
+          });
+        }
+      }
+
+      tryPunch() {
+        if (this.player.isAttacking) return;
+        this.player.isAttacking = true;
+        if (this.cache.audio.exists('punch')) this.sound.play('punch');
+
+        if (this.textures.exists('kaiju_attack') && this.player.anims) {
+          this.player.anims.play('attack', true);
+        } else {
+          this.time.delayedCall(400, () => { this.player.isAttacking = false; });
+        }
+
+        this.time.delayedCall(200, () => {
+          const flipXMultiplier = (this.player.type !== 'Container' && this.player.flipX) ? -1 : 1;
+          const attackX = this.player.x + (100 * flipXMultiplier);
+          const attackY = this.player.y - 20;
+          const attackZone = this.add.zone(attackX, attackY, 120, 100);
+          this.physics.world.enable(attackZone);
+          attackZone.body.setAllowGravity(false);
+          this.physics.add.overlap(attackZone, this.buildings, this.damageBuilding, null, this);
+          this.physics.add.overlap(attackZone, this.enemies, this.damageEnemy, null, this);
+          this.time.delayedCall(100, () => attackZone.destroy());
+        });
+      }
+
+      update() {
+        const movingLeft = this.leftHeld || this.cursors.left.isDown;
+        const movingRight = this.rightHeld || this.cursors.right.isDown;
+
+        if (this.player.isAttacking) {
+          this.player.body.setVelocityX(0);
+        } else if (movingLeft) {
+          this.player.body.setVelocityX(-300);
+          if (this.player.type !== 'Container') this.player.flipX = true;
+          if (this.player.anims) this.player.anims.play('walk', true);
+        } else if (movingRight) {
+          this.player.body.setVelocityX(300);
+          if (this.player.type !== 'Container') this.player.flipX = false;
+          if (this.player.anims) this.player.anims.play('walk', true);
+        } else {
+          this.player.body.setVelocityX(0);
+          if (this.player.anims) this.player.anims.play('idle', true);
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) this.tryPunch();
+
+        if (this.playerHealth <= 0) this.endGameTo('GameOverScene');
+      }
+
+      // ---- Helpers ----
+      cleanupEvents() {
+        if (this.survivalTimerEvent) this.survivalTimerEvent.remove();
+        if (this.tankSpawnEvent) this.tankSpawnEvent.remove();
+        if (this.heliSpawnEvent) this.heliSpawnEvent.remove();
+        this.sound.stopAll();
+      }
+      endGameTo(sceneKey) { this.cleanupEvents(); this.scene.start(sceneKey, { score: this.score }); }
+      winGame() { this.endGameTo('WinScene'); }
+
+      spawnBuildings() {
+        for (let i = 0; i < 20; i++) {
+          const x = Phaser.Math.Between(100, 1820);
+          const key = `building${Phaser.Math.Between(1, 3)}`;
+          let b = this.assetManager.getSprite(key, x, 0, key);
+          if (b.body) {
+            b.body.setAllowGravity(false);
+            b.body.setImmovable(true);
+            const h = b.type === 'Container' ? b.getBounds().height : b.displayHeight;
+            b.y = 1080 - this.ground.height / 2 - h / 2;
+          }
+          this.buildings.add(b);
+          b.health = 100;
+        }
+      }
+
+      spawnTank() {
+        const x = Math.random() < 0.5 ? -50 : 1970;
+        const tank = this.assetManager.getSprite('tank', x, 990);
+        tank.setScale(0.5);
+        this.enemies.add(tank);
+        tank.body.setVelocityX(x < 100 ? 100 : -100);
+        if (tank.type !== 'Container') tank.flipX = (x > 100);
+
+        const fireEvent = this.time.addEvent({
+          delay: 2000,
+          callback: () => { if (tank.active) this.enemyFire(tank); else fireEvent.remove(); },
+          callbackScope: this,
+          loop: true
+        });
+      }
+
+      spawnHelicopter() {
+        const y = Phaser.Math.Between(200, 400);
+        const x = Math.random() < 0.5 ? -50 : 1970;
+        const heli = this.assetManager.getSprite('helicopter', x, y);
+        heli.setScale(0.5);
+        this.enemies.add(heli);
+        heli.body.setVelocityX(x < 100 ? 150 : -150);
+        if (heli.type !== 'Container') heli.flipX = (x > 100);
+        heli.body.setAllowGravity(false);
+
+        const fireEvent = this.time.addEvent({
+          delay: 2500,
+          callback: () => { if (heli.active) this.enemyFire(heli); else fireEvent.remove(); },
+          callbackScope: this,
+          loop: true
+        });
+      }
+
+      enemyFire(enemy) {
+        if (!enemy.active) return;
+        const projectile = this.enemyProjectiles.get(enemy.x, enemy.y, 'projectile');
+        if (projectile) {
+          projectile.setActive(true).setVisible(true);
+          if (!this.textures.exists('projectile')) {
+            const fb = this.assetManager.createFallback('projectile');
+            fb.setPosition(enemy.x, enemy.y);
+            this.enemyProjectiles.add(fb);
+            this.physics.moveToObject(fb, this.player, 300);
+          } else {
+            this.physics.moveToObject(projectile, this.player, 300);
+          }
+        }
+      }
+
+      damageBuilding(_zone, b) {
+        b.health -= 50;
+        if (b.health <= 0) {
+          this.createExplosion(b.x, b.y);
+          b.destroy();
+          this.score += 100;
+          this.updateScoreText();
+        }
+      }
+      damageEnemy(_zone, e) {
+        this.createExplosion(e.x, e.y);
+        e.destroy();
+        this.score += 250;
+        this.updateScoreText();
+      }
+
+      handlePlayerHit(player, projectile) {
+        projectile.destroy();
+        this.playerHealth -= 10;
+        this.updateHealthBar();
+        if (this.cache.audio.exists('player_hit')) this.sound.play('player_hit');
+        this.cameras.main.flash(200, 255, 0, 0);
+        if (player.setTint) player.setTint(0xff0000);
+        this.time.delayedCall(200, () => { if (player.clearTint) player.clearTint(); });
+      }
+
+      createExplosion(x, y) {
+        let ex = this.explosions.get(x, y);
+        if (ex) {
+          ex.setActive(true).setVisible(true);
+          if (this.textures.exists('explosion') && ex.anims) ex.play('explode');
+          else {
+            const fb = this.assetManager.createFallback('explosion');
+            fb.setPosition(x, y);
+            this.tweens.add({ targets: fb, alpha: 0, duration: 300, onComplete: () => fb.destroy() });
+          }
+          if (this.cache.audio.exists('explosion_sound')) this.sound.play('explosion_sound');
+        }
+      }
+
+      setupUI(fontFamily, texts = {}) {
+        const label = texts.score_label || 'Score: ';
+        this.scoreText = this.add.text(50, 50, label + '0', {
+          fontSize: '32px', fill: '#FFF', fontFamily, stroke: '#000', strokeThickness: 6
+        }).setScrollFactor(0);
+
+        this.healthBarBg = this.add.graphics().setScrollFactor(0);
+        this.healthBarBg.fillStyle(0x000000, 0.5);
+        this.healthBarBg.fillRect(this.scale.width / 2 - 202, 48, 404, 34);
+
+        this.healthBar = this.add.graphics().setScrollFactor(0);
+        this.updateHealthBar();
+      }
+      updateScoreText() { 
+        const cfg = this.registry.get('cfg') || {};
+        const label = (cfg.texts && cfg.texts.score_label) ? cfg.texts.score_label : 'Score: ';
+        this.scoreText.setText(label + this.score);
+      }
+      updateHealthBar() {
+        this.healthBar.clear();
+        this.healthBar.fillStyle(0xff0000, 1);
+        this.healthBar.fillRect(this.scale.width / 2 - 200, 50, (this.playerHealth / 100) * 400, 30);
+      }
+    }
+
+    // --- GAME OVER (OVR OVERLAY) ---
+    class GameOverScene extends Phaser.Scene {
+      constructor() { super('GameOverScene'); }
+      init(data) { this.finalScore = data.score || 0; }
+      create() {
+        const cfg = this.registry.get('cfg') || {};
+        const fontFamily = (cfg.font && cfg.font.family) ? cfg.font.family : 'Outfit, Arial';
+        const texts = cfg.texts || {};
+        const title = texts.game_over_title || 'Final Score: ';
+
+        const cx = this.scale.width / 2;
+        const cy = this.scale.height / 2;
+
+        if (this.textures.exists('ovrbox')) this.add.image(cx, cy, 'ovrbox').setScrollFactor(0);
+
+        this.add.text(cx, cy - 40, title + this.finalScore, {
+          fontSize: '42px', fill: '#ffffff', fontFamily, stroke: '#000', strokeThickness: 6
+        }).setOrigin(0.5).setScrollFactor(0);
+
+        const replayKey = (cfg.images && cfg.images.replay) ? 'replay' : null;
+        const replay = replayKey
+          ? this.add.image(cx, cy + 320, replayKey).setScrollFactor(0)
+          : this.add.text(cx, cy + 280, 'REPLAY', { fontSize: '56px', fill: '#0f0', fontFamily, stroke: '#000', strokeThickness: 8 }).setOrigin(0.5);
+
+        replay.setInteractive({ useHandCursor: true });
+        replay.on('pointerdown', () => this.scene.start('GameScene'));
+      }
+    }
+
+    // --- WIN SCENE (LVL OVERLAY) ---
+    class WinScene extends Phaser.Scene {
+      constructor() { super('WinScene'); }
+      init(data) { this.finalScore = data.score || 0; }
+      create() {
+        const cfg = this.registry.get('cfg') || {};
+        const fontFamily = (cfg.font && cfg.font.family) ? cfg.font.family : 'Outfit, Arial';
+        const texts = cfg.texts || {};
+        const title = texts.win_title || 'Score: ';
+
+        const cx = this.scale.width / 2;
+        const cy = this.scale.height / 2;
+
+        if (this.textures.exists('lvlbox')) this.add.image(cx, cy, 'lvlbox').setScrollFactor(0);
+
+        this.add.text(cx, cy - 40, title + this.finalScore, {
+          fontSize: '42px', fill: '#ffffff', fontFamily, stroke: '#000', strokeThickness: 6
+        }).setOrigin(0.5).setScrollFactor(0);
+
+        const nextKey = (cfg.images && cfg.images.next) ? 'next' : null;
+        const replayKey = (cfg.images && cfg.images.lvl_replay) ? 'lvl_replay' : null;
+
+        const next = nextKey
+          ? this.add.image(cx - 235, cy + 330, nextKey).setScrollFactor(0)
+          : this.add.text(cx - 235, cy + 330, 'NEXT', { fontSize: '56px', fill: '#0ff', fontFamily, stroke: '#000', strokeThickness: 8 }).setOrigin(0.5);
+
+        const lvlReplay = replayKey
+          ? this.add.image(cx + 235, cy + 330, replayKey).setScrollFactor(0)
+          : this.add.text(cx + 235, cy + 330, 'REPLAY', { fontSize: '56px', fill: '#0f0', fontFamily, stroke: '#000', strokeThickness: 8 }).setOrigin(0.5);
+
+        next.setInteractive({ useHandCursor: true });
+        lvlReplay.setInteractive({ useHandCursor: true });
+
+        next.on('pointerdown', () => this.scene.start('GameScene'));
+        lvlReplay.on('pointerdown', () => this.scene.start('GameScene'));
+      }
+    }
+
+    // --- GAME CONFIG ---
+    const config = {
+      type: Phaser.AUTO,
+      width: 1920,
+      height: 1080,
+      scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+      physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
+      scene: [BootScene, MainMenuScene, GameScene, GameOverScene, WinScene]
+    };
+
+    const game = new Phaser.Game(config);
+  </script>
+</body>
+</html>

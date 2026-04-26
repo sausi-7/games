@@ -1,0 +1,65 @@
+{
+  "entry": "Custombreakoid/index.html",
+  "howToPlayText": "Tap to stop the moving block at the right time and stack it perfectly. Each perfect stop builds your combo. Get {perfectCount} perfect stacks in 60 seconds to win!",
+  "images1": {
+    "ball": "assets/ball.png"
+  },
+  "images2": {
+    "background": "./assets/space.png",
+    "platform": "assets/paddle.png"
+  },
+  "ui": {
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "game_over": "assets/game_over.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bgm": "./assets/calm.mp3",
+    "gameover": "./assets/gameover.mp3",
+    "tap": "./assets/Destroy.mp3",
+    "levelCompleted": "./assets/levelCompleted.mp3"
+  },
+  "spritesheets": {
+    "character": {
+      "url": "./assets/hero.png",
+      "frameWidth": 64,
+      "frameHeight": 64
+    }
+  },
+  "mechanics": {
+    "timeLimit": 2,
+    "gravity": 1,
+    "winScore": 250,
+    "ballInitialSpeed": 2000,
+    "ballMinSpeed": 600,
+    "ballMaxSpeed": 1000,
+    "paddleSpeed": 5,
+    "paddleLerpFactor": 0.15,
+    "paddleWidthRatio": 0.25,
+    "paddleHeight": 20,
+    "ballRadius": 12,
+    "brickRows": 5,
+    "brickCols": 5,
+    "brickHeight": 30,
+    "brickSpacing": 10,
+    "brickColors": [
+      16760576,
+      16763904,
+      16724793,
+      16723693,
+      16724393
+    ]
+  },
+  "blockColors": [
+    "#4a90e2",
+    "#50c878",
+    "#ff6b6b",
+    "#ffd93d",
+    "#6c5ce7"
+  ]
+}

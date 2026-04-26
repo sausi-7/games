@@ -1,0 +1,51 @@
+{
+  "entry": "Customgunman/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap or click to shoot when the oscillating aim line points at the enemy. Defeat three enemies and then a tougher mini-boss to clear Level 1.",
+    "score_label": "Score: ",
+    "win_title": "Level 1 Cleared!",
+    "game_over_title": "Try Again!"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "aimSpeed": 1.25,
+    "aimMinDeg": -135,
+    "aimMaxDeg": -45,
+    "playerSpeed": 0,
+    "enemySpawnRate": 0,
+    "bulletSpeed": 1200,
+    "bulletLimit": 20,
+    "bulletLifeMs": 1200
+  },
+  "ui": {
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "images1": {
+    "player": "assets/player.png",
+    "enemy": "assets/enemy.png",
+    "enemy_boss": "assets/boss.png",
+    "collectible": "assets/collectible.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/attack.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3"
+  }
+}

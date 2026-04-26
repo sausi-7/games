@@ -1,0 +1,370 @@
+{
+  "entry": "CustomthatlevelagainL2/index.html",
+  "spawn": {
+    "x": 190,
+    "y": 400
+  },
+  "images2": {
+    "background": "./assets/bg.png",
+    "stick": "./assets/stick.png",
+    "platform": "./assets/platform.png"
+  },
+  "ui": {
+    "clue": "./assets/clue.png",
+    "board": "./assets/board.png",
+    "startbg": "./assets/startbg.png",
+    "restart": "./assets/restart.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "spike": "./assets/spike.png",
+    "right": "./assets/right.png",
+    "left": "./assets/left.png",
+    "hint": "./assets/hint.png",
+    "jump": "./assets/up.png",
+    "next": "./assets/next.png",
+    "button": "./assets/button.png",
+    "playbg": "./assets/playbg.png",
+    "playbg1": "./assets/playbg1.png",
+    "playbtnbg": "./assets/playbtnbg.png",
+    "button1": "./assets/button1.png",
+    "close": "./assets/cross.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "mechanics": {
+    "heroSpeed": 300,
+    "jumpVelocity": -700,
+    "heroGravityY": 0,
+    "buttonHitCount": 4,
+    "buttonStayPressed": false
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "./assets/hero.png",
+      "frameWidth": 102,
+      "frameHeight": 151
+    }
+  },
+  "texts": {
+    "clueLabel": "Clue:",
+    "clueValue": "Try More",
+    "hintMessage": "Oh, come on. Just press\non the button 4 time",
+    "htp": "How to Play",
+    "htpMessage": "Unlock the door to finish\nthe level. For hints, tap\nthe bulb.",
+    "leveltxt": "Level Completed"
+  },
+  "audio": {
+    "bgmusic": "./assets/bgsound.mp3",
+    "death": "./assets/death.mp3"
+  },
+  "modules": [
+    {
+      "type": "door",
+      "x": 1700,
+      "y": 450,
+      "scale": 0.2
+    },
+    {
+      "type": "button",
+      "x": 1010,
+      "y": 555,
+      "scale": 0.2
+    },
+    {
+      "type": "platform",
+      "x": 107,
+      "y": 574,
+      "scale": 0.3,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 1050,
+      "y": 14,
+      "height": 400,
+      "width": 350
+    },
+    {
+      "type": "platform",
+      "x": 650,
+      "y": 830,
+      "height": 60,
+      "width": 350,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 1020,
+      "y": 600,
+      "height": 60,
+      "width": 350,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 85,
+      "y": 300,
+      "height": 60,
+      "width": 350,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 680,
+      "y": 400,
+      "scale": 0.2,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 1400,
+      "y": 750,
+      "scale": 0.2,
+      "angle": 0
+    },
+    {
+      "type": "platform",
+      "x": 1830,
+      "y": 600,
+      "height": 40,
+      "width": 380
+    },
+    {
+      "type": "platform",
+      "x": 1810,
+      "y": 300,
+      "height": 40,
+      "width": 380
+    },
+    {
+      "type": "platform",
+      "x": 1410,
+      "y": 400,
+      "scale": 0.2
+    },
+    {
+      "type": "platform",
+      "x": 1250,
+      "y": 1050,
+      "height": 200,
+      "width": 200
+    },
+    {
+      "type": "platform",
+      "x": 115,
+      "y": 1080,
+      "height": 30,
+      "width": 5000
+    },
+    {
+      "type": "platform",
+      "x": 115,
+      "y": 10,
+      "height": 30,
+      "width": 5000
+    },
+    {
+      "type": "platform",
+      "x": 1915,
+      "y": 850,
+      "scale": 0.2
+    },
+    {
+      "type": "platform",
+      "x": 1915,
+      "y": 50,
+      "height": 30,
+      "width": 5000,
+      "angle": -90
+    },
+    {
+      "type": "platform",
+      "x": 100,
+      "y": 1020,
+      "height": 150,
+      "width": 350
+    },
+    {
+      "type": "platform",
+      "x": 1800,
+      "y": 1020,
+      "height": 150,
+      "width": 210
+    },
+    {
+      "type": "platform",
+      "x": 1840,
+      "y": 920,
+      "height": 100,
+      "width": 140
+    },
+    {
+      "type": "spike",
+      "x": 350,
+      "y": 30,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1000,
+      "y": 240,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1050,
+      "y": 240,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1100,
+      "y": 240,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 800,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 850,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 900,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 750,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 700,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 650,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 1880,
+      "y": 60,
+      "scale": 0.5,
+      "angle": 80
+    },
+    {
+      "type": "spike",
+      "x": 1880,
+      "y": 100,
+      "scale": 0.5,
+      "angle": 80
+    },
+    {
+      "type": "spike",
+      "x": 1880,
+      "y": 140,
+      "scale": 0.5,
+      "angle": 80
+    },
+    {
+      "type": "spike",
+      "x": 1880,
+      "y": 180,
+      "scale": 0.5,
+      "angle": 80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 80,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 120,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 160,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 10,
+      "y": 200,
+      "scale": 0.5,
+      "angle": -80
+    },
+    {
+      "type": "spike",
+      "x": 1400,
+      "y": 40,
+      "scale": 0.5,
+      "angle": 0
+    },
+    {
+      "type": "spike",
+      "x": 1440,
+      "y": 40,
+      "scale": 0.5,
+      "angle": 0
+    },
+    {
+      "type": "spike",
+      "x": 950,
+      "y": 640,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1030,
+      "y": 640,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1100,
+      "y": 640,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1400,
+      "y": 440,
+      "scale": 0.5
+    },
+    {
+      "type": "spike",
+      "x": 1430,
+      "y": 440,
+      "scale": 0.5
+    }
+  ]
+}

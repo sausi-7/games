@@ -1,0 +1,84 @@
+{
+  "entry": "Customplanetwar/index.html",
+  "spawn": {
+    "x": 190,
+    "y": 400
+  },
+  "images1": {
+    "enemy": "./assets/enemy.png",
+    "player": "./assets/player.png"
+  },
+  "images2": {
+    "platform": "./assets/plt.png",
+    "background": "./assets/bg.png",
+    "winbg": "./assets/winbg.png",
+    "htpbg": "./assets/htpbg.png",
+    "ovrbg": "./assets/ovrbg.png"
+  },
+  "ui": {
+    "bullet": "./assets/bullet.png",
+    "bullet1": "./assets/bullet1.png",
+    "right": "./assets/right.png",
+    "jump": "./assets/up.png",
+    "left": "./assets/left.png",
+    "restart": "./assets/restart.png",
+    "firebtn": "./assets/firebtn.png",
+    "restart1": "./assets/restart1.png",
+    "gameovrbg": "./assets/gameovrbg.png",
+    "nextbtn": "./assets/nextbtn.png",
+    "htpbox": "./assets/htpbox.png",
+    "box": "./assets/box.png",
+    "lvlbox": "./assets/lvlbox.png",
+    "playbtn": "./assets/playbtn.png",
+    "shieldbtn": "./assets/shieldbtn.png",
+    "shield": "./assets/shield.png",
+    "s1": "./assets/s1.png",
+    "s2": "./assets/s2.png",
+    "s3": "./assets/s3.png",
+    "s4": "./assets/s4.png",
+    "s5": "./assets/s5.png",
+    "s6": "./assets/s6.png",
+    "s7": "./assets/s7.png",
+    "e1": "./assets/e1.png",
+    "e2": "./assets/e2.png",
+    "explosion": "./assets/explosion.png",
+    "hp1": "./assets/hp1.png",
+    "hp2": "./assets/hp2.png",
+    "hp3": "./assets/hp3.png",
+    "hp4": "./assets/hp4.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "texts": {
+    "howToPlayTitle": "How to Play",
+    "howToPlayBody": "Control:",
+    "levelCompleted": "Level Completed!",
+    "gameOver": "Game Over"
+  },
+  "spritesheets": {
+    "hero": {
+      "path": "https://s3.ap-south-1.amazonaws.com/games.chaoswale.in/default_character/posed_character_spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  },
+  "audio": {
+    "bgm": "./assets/bgm.mp3",
+    "timer": "./assets/time.mp3",
+    "gun": "./assets/gun.mp3",
+    "destroy": "./assets/destroy.mp3",
+    "shield": "./assets/shield.mp3"
+  },
+  "mechanics": {
+    "playerSpeed": 300,
+    "jumpForce": 780,
+    "deactivationTime": 3,
+    "bulletDamage": 50,
+    "heroHP": 300,
+    "enemyHP": 1,
+    "heroBulletDamage": 2
+  }
+}

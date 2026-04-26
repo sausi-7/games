@@ -1,0 +1,51 @@
+{
+  "entry": "Custompairinggame/index.html",
+  "numPairs": 3,
+  "images1": {
+    "animal1Image": "assets/dog.png",
+    "animal2Image": "assets/monkey.png",
+    "animal3Image": "assets/cat.png",
+    "food1Image": "assets/apple.png",
+    "food2Image": "assets/carrot.png",
+    "food3Image": "assets/banana.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "dialog_bg_start": "assets/htp_landscape.png",
+    "levelComplete": "assets/level_complete.png",
+    "gameOver": "assets/game_over.png",
+    "playGame": "assets/play_game_landscape.png",
+    "replayLevel": "assets/replay.png",
+    "next": "assets/next.png",
+    "replay": "assets/replay_level.png",
+    "scorecard": "assets/scorecard.png"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "audio": {
+    "correct": "assets/collect.mp3",
+    "wrong": "assets/jump.mp3",
+    "bg_music": "assets/background_music.mp3"
+  },
+  "texts": {
+    "instructions": "Memorise the pairs shown in the guide below.\nMatch them within the given time to win!",
+    "instructions1": "How to play",
+    "levelComplete": "Level Complete!",
+    "gameOver": "Game Over",
+    "startButton": "Start",
+    "restartButton": "Restart",
+    "nextButton": "Next"
+  },
+  "gameplay": {
+    "timeLimit": 60,
+    "targetScore": 30
+  }
+}

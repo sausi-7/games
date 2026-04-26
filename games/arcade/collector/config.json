@@ -1,0 +1,93 @@
+{
+  "entry": "Customcollector/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Use the Joystick to control your horizontal movement and avoid obstacles.",
+    "score_label": "Score: ",
+    "timer_label": "Time: ",
+    "alt_label": "Alt: ",
+    "win_title": "Perfect Landing!",
+    "game_over_title": "Hard Landing!"
+  },
+  "gameplay": {
+    "orientation": "landscape",
+    "displayW": 96,
+    "targetScore": 250,
+    "displayH": 96,
+    "gravityY": 1100,
+    "steerAccel": 720,
+    "liftAccel": 1400,
+    "maxUpSpeed": -520,
+    "maxDownSpeed": 1700,
+    "worldWidth": 1920,
+    "worldHeight": 4000,
+    "timerSeconds": 75,
+    "player": {
+      "displayW": 96,
+      "displayH": 96,
+      "gravityY": 1100,
+      "maxVx": 550,
+      "maxVy": 1700,
+      "steerAccel": 720,
+      "gravityYParachute": 350,
+      "maxVxParachute": 400,
+      "maxVyParachute": 520,
+      "steerAccelParachute": 380
+    },
+    "rings": {
+      "count": 12,
+      "displayW": 108,
+      "displayH": 108,
+      "scorePerRing": 50
+    },
+    "landing": {
+      "safeVy": 420,
+      "padOnly": false,
+      "padBonus": 200
+    },
+    "obstacles": {
+      "count": 7,
+      "displayW": 96,
+      "displayH": 96,
+      "speed": 260
+    }
+  },
+  "images1": {
+    "player": "assets/player.png",
+    "ring": "assets/obj12.png",
+    "enemy": "assets/obj6.png"
+  },
+  "images2": {
+    "background": "assets/bg.png",
+    "platform1": "assets/platform.png",
+    "platform2": "assets/platform2.png",
+    "platform3": "assets/platform2.png",
+    "platform4": "assets/platform.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/jump.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "wind": "assets/Attack.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "collide": "assets/hit.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3"
+  }
+}

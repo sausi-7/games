@@ -1,0 +1,42 @@
+{
+  "entry": "Custom2048/index.html",
+  "game": {
+    "gridSize": 4,
+    "gap": 15,
+    "tileSize":220,
+    "fontSize": 94,
+    "timeLimitSeconds": 1200,
+    "theme": {
+      "boardColor": "#bbada0",
+      "cellColor": "#cdc1b4"
+    }
+  },
+  "images2": {
+    "background": "assets/bg1.png",
+    "tile_2": "assets/obj8.png",
+    "tile_4": "assets/obj7.png",
+    "tile_8": "assets/obj6.png",
+    "tile_16": "assets/obj5.png",
+    "tile_32": "assets/obj4.png",
+    "tile_64": "assets/obj3.png",
+    "tile_128": "assets/obj2.png",
+    "tile_256": "assets/obj9.png",
+    "tile_512": "assets/obj11.png",
+    "tile_1024": "assets/obj12.png",
+    "tile_2048": "assets/obj22.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "merge": "assets/merge.mp3"
+  }
+}

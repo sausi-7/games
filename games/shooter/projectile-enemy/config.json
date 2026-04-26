@@ -1,0 +1,46 @@
+{
+    "entry": "Customprojenemy/index.html",
+    "orientation": {
+        "frame": "portrait",
+        "width": 1080,
+        "height": 1920
+    },
+    "images1": {
+        "enemy": "assets/enemy1.png",
+        "bomb": "assets/bomb1.png"
+    },
+    "images2": {
+        "background": "assets/bg.png"
+    },
+    "ui": {
+        "htpbox": "assets/htpbox.png",
+        "playbtn": "assets/playbtn.png",
+        "ovrbox": "assets/ovrbox.png",
+        "replay": "assets/replay.png",
+        "lvlbox": "assets/lvlbox.png",
+        "next": "assets/next.png",
+        "lvl_replay": "assets/lvl_replay.png",
+        "scorebar": "assets/scorebar.png"
+    },
+    "spritesheets": {
+        "eve": {
+            "path": "./assets/eve_spritesheet.png",
+            "frameWidth": 103,
+            "frameHeight": 158
+        }
+    },
+    "mechanics": {
+        "timer": 30,
+        "arrowSpeed": 800,
+        "enemyArrowSpeed": 400,
+        "objectSpawnInterval": 1000,
+        "enemyShootInterval": 3000,
+        "objectRadius": 30,
+        "objectBounce": 0.3,
+        "maxMisses": 5
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "fire": "assets/fire.mp3"
+    }
+}

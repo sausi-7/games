@@ -1,0 +1,85 @@
+{
+  "entry": "Custommemory/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "images2": {
+    "background": "./assets/background.png",
+    "htpbg": "./assets/htpbg.png",
+    "winbg": "./assets/winbg.png",
+    "ovrbg": "./assets/ovrbg.png",
+    "card1": "./assets/card1.png",
+    "card2": "./assets/card2.png",
+    "card3": "./assets/card3.png",
+    "card4": "./assets/card4.png",
+    "card5": "./assets/card5.png",
+    "card6": "./assets/card6.png",
+    "card7": "./assets/card7.png",
+    "card8": "./assets/card8.png"
+  },
+  "ui": {
+    "tile": "./assets/tile.png",
+    "playButton": "./assets/button.png",
+    "retryButton": "./assets/replay_button.png",
+    "replay_button": "./assets/replay.png",
+    "next_button": "./assets/next_button.png",
+    "grid_bg": "./assets/grid_bg.png",
+    "dialog_bg_start": "./assets/htp.png",
+    "level_complete": "./assets/htp.png",
+    "game_over": "./assets/htp.png",
+    "match": "./assets/match.png",
+    "popbars": "./assets/popbars.png",
+    "timer-bg": "./assets/Timer_bg.png",
+    "timer-icon": "./assets/timer_icon.png"
+  },
+  "fonts": [
+    {
+      "name": "outfit",
+      "url": "./assets/outfit.ttf"
+    }
+  ],
+  "audio": {
+    "bgmusic": "./assets/bgmusic.mp3",
+    "flip": "./assets/flip.mp3",
+    "match": "./assets/match_success.mp3",
+    "wrong": "./assets/no_match.mp3",
+    "gameover": "./assets/fail.mp3",
+    "win": "./assets/victory.mp3",
+    "click": "./assets/ui_click.mp3"
+  },
+  "texts": {
+    "title": "How to Play",
+    "instructions": "Flip over two tiles to find\n matching pairs.",
+    "clueLabel": "Clue",
+    "clueValue": "Value: 100"
+  },
+  "modules": [
+    {
+      "type": "platform",
+      "x": 100,
+      "y": 500,
+      "scale": 2
+    },
+    {
+      "type": "spike",
+      "x": 200,
+      "y": 400
+    },
+    {
+      "type": "button",
+      "x": 300,
+      "y": 300
+    }
+  ],
+  "spawn": {
+    "x": 100,
+    "y": 400
+  },
+  "mechanics": {
+    "startTime": 60,
+    "rows":4,
+    "cols": 4
+  }
+}

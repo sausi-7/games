@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Veggie Merge – Chaos Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #020617;
+            overflow: hidden;
+            touch-action: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.90.0/phaser.min.js"></script>
+
+    <script>
+        class GameScene extends Phaser.Scene {
+            constructor() { super("Game"); }
+
+            init() {
+                this.currentFruit = null;
+                this.fruits = new Set();
+                this.started = false;
+                this.canDrop = false;
+                this.gameOver = false;
+                this.score = 0;
+                this.touchStartX = 0;
+                this.touchMoved = false;
+            }
+
+            preload() {
+                this.load.json("config", "./config.json");
+            }
+
+            create() {
+                this.CFG = this.cache.json.get("config");
+                if (!this.CFG) {
+                    console.error("❌ config.json not loaded");
+                    return;
+                }
+
+                Object.entries(this.CFG.images2 || {}).forEach(([k, p]) => this.load.image(k, p));
+                Object.entries(this.CFG.ui || {}).forEach(([k, p]) => this.load.image(k, p));
+                Object.entries(this.CFG.audio || {}).forEach(([k, p]) => this.load.audio(k, p));
+
+                this.load.once("complete", () => this.initGame());
+                this.load.start();
+            }
+
+            initGame() {
+                const M = this.CFG.mechanics;
+
+                this.GAME_W = M.gameWidth;
+                this.GAME_H = M.gameHeight;
+
+                this.BOX_LEFT = M.boxLeft;
+                this.BOX_RIGHT = M.boxRight;
+                this.BOX_BOTTOM = M.boxBottom;
+                this.DANGER_Y = M.dangerY;
+                this.DROP_Y = M.dropY;
+
+                this.FRUITS = this.CFG.fruits;
+                this.TEXTS = this.CFG.texts;
+
+                this.matter.world.engine.gravity.y = M.gravityY;
+
+                this.bgm = this.sound.add("bgm", { loop: true, volume: 0.5 });
+                this.sfxDrop = this.sound.add("drop", { volume: 0.8 });
+                this.sfxMerge = this.sound.add("merge", { volume: 0.9 });
+
+                this.buildScene();
+                this.showHowToPlay();
+            }
+
+            buildScene() {
+                this.add.image(this.GAME_W / 2, this.GAME_H / 2, "bg")
+                    .setDisplaySize(this.GAME_W, this.GAME_H)
+                    .setDepth(-10);
+
+                const g = this.add.graphics();
+                g.lineStyle(6, 0x334155);
+                g.strokeRect(
+                    this.BOX_LEFT,
+                    this.DANGER_Y,
+                    this.BOX_RIGHT - this.BOX_LEFT,
+                    this.BOX_BOTTOM - this.DANGER_Y
+                );
+
+                this.createWall((this.BOX_LEFT + this.BOX_RIGHT) / 2, this.BOX_BOTTOM + 25,
+                    this.BOX_RIGHT - this.BOX_LEFT, 50);
+                this.createWall(this.BOX_LEFT - 25, (this.DANGER_Y + this.BOX_BOTTOM) / 2,
+                    50, this.BOX_BOTTOM - this.DANGER_Y);
+                this.createWall(this.BOX_RIGHT + 25, (this.DANGER_Y + this.BOX_BOTTOM) / 2,
+                    50, this.BOX_BOTTOM - this.DANGER_Y);
+
+                this.scoreText = this.add.text(
+                    this.GAME_W / 2, 90,
+                    `${this.TEXTS.score} 0`,
+                    { fontSize: "56px", color: "#facc15", fontStyle: "bold" }
+                ).setOrigin(0.5);
+
+                this.input.on("pointerdown", p => {
+                    if (!this.started || !this.canDrop || this.gameOver) return;
+                    this.touchStartX = p.x;
+                    this.touchMoved = false;
+                });
+
+                this.input.on("pointermove", p => {
+                    if (!this.started || !this.canDrop || !this.currentFruit) return;
+                    if (Math.abs(p.x - this.touchStartX) > 10) {
+                        this.touchMoved = true;
+                        this.currentFruit.setPosition(
+                            Phaser.Math.Clamp(p.x, this.BOX_LEFT + 90, this.BOX_RIGHT - 90),
+                            this.DROP_Y
+                        );
+                    }
+                });
+
+                this.input.on("pointerup", () => {
+                    if (!this.started || !this.canDrop || this.gameOver) return;
+                    if (!this.touchMoved) this.dropFruit();
+                });
+
+                this.matter.world.on("collisionstart", ev => {
+                    ev.pairs.forEach(pair => {
+                        const a = pair.bodyA.gameObject;
+                        const b = pair.bodyB.gameObject;
+                        if (!a || !b) return;
+                        if (!this.fruits.has(a) || !this.fruits.has(b)) return;
+                        if (a.dead || b.dead) return;
+                        if (a.fruitIndex === b.fruitIndex) this.merge(a, b);
+                    });
+                });
+            }
+
+            createWall(x, y, w, h) {
+                this.matter.add.rectangle(x, y, w, h, { isStatic: true });
+            }
+
+            showHowToPlay() {
+                const popup = this.add.container(0, 0);
+
+                popup.add([
+                    this.add.rectangle(this.GAME_W / 2, this.GAME_H / 2,
+                        this.GAME_W, this.GAME_H, 0x000000, 0.75),
+                    this.add.text(this.GAME_W / 2, this.GAME_H / 2 - 280,
+                        this.TEXTS.how_to_play_title,
+                        { fontSize: "76px", color: "#22c55e", fontStyle: "bold" }).setOrigin(0.5),
+                    this.add.text(this.GAME_W / 2, this.GAME_H / 2,
+                        this.TEXTS.how_to_play_desc,
+                        { fontSize: "40px", color: "#e5e7eb", align: "center" }).setOrigin(0.5)
+                ]);
+
+                const btn = this.add.rectangle(this.GAME_W / 2, this.GAME_H / 2 + 320,
+                    360, 96, 0x22c55e).setInteractive();
+                popup.add(btn);
+                popup.add(this.add.text(this.GAME_W / 2, this.GAME_H / 2 + 320,
+                    this.TEXTS.play,
+                    { fontSize: "40px", color: "#020617", fontStyle: "bold" }).setOrigin(0.5));
+
+                btn.on("pointerdown", () => {
+                    popup.destroy();
+                    this.bgm.play();
+                    this.started = true;
+                    this.canDrop = true;
+                    this.spawnNext();
+                });
+            }
+
+            spawnNext() {
+                const r = Math.random();
+                const probs = this.CFG.mechanics.spawnProbability;
+                let i = 0;
+                for (; i < probs.length; i++) if (r <= probs[i]) break;
+
+                this.currentFruit = this.createFruit(
+                    this.GAME_W / 2 + Phaser.Math.Between(-40, 40),
+                    this.DROP_Y,
+                    i,
+                    true
+                );
+            }
+
+            dropFruit() {
+                if (!this.currentFruit || !this.currentFruit.body) return;
+
+                this.canDrop = false;
+                this.sfxDrop.play();
+
+                const drift = Phaser.Math.FloatBetween(-0.015, 0.015);
+
+                this.currentFruit.setStatic(false);
+                this.currentFruit.ignoreGravity = false;
+                this.currentFruit.applyForce({ x: drift, y: 0 });
+                this.currentFruit = null;
+
+                this.time.delayedCall(450, () => {
+                    if (!this.gameOver) {
+                        if (this.checkLose()) this.showEndPopup("lose");
+                        else { this.canDrop = true; this.spawnNext(); }
+                    }
+                });
+            }
+
+            checkLose() {
+                const M = this.CFG.mechanics;
+                for (const f of this.fruits) {
+                    if (!f.body) continue;
+                    if (f.body.speed < M.loseSpeed && f.y < this.DANGER_Y + M.loseOffset)
+                        return true;
+                }
+                return false;
+            }
+
+            createFruit(x, y, i, isStatic) {
+                const f = this.FRUITS[i];
+                const img = this.add.image(x, y, f.key)
+                    .setDisplaySize(f.radius * 2, f.radius * 2);
+
+                const fruit = this.matter.add.gameObject(img, {
+                    shape: { type: "circle", radius: f.radius },
+                    restitution: this.CFG.mechanics.restitution,
+                    friction: this.CFG.mechanics.friction,
+                    frictionAir: this.CFG.mechanics.air
+                });
+
+                fruit.fruitIndex = i;
+                fruit.dead = false;
+                fruit.setStatic(isStatic);
+                if (isStatic) fruit.ignoreGravity = true;
+
+                this.fruits.add(fruit);
+                return fruit;
+            }
+
+            merge(a, b) {
+                if (a.dead || b.dead) return;
+
+                a.dead = b.dead = true;
+                this.sfxMerge.play();
+
+                const idx = a.fruitIndex;
+                this.score += this.FRUITS[idx].score;
+                this.scoreText.setText(`${this.TEXTS.score} ${this.score}`);
+
+                const mx = (a.x + b.x) / 2;
+                const my = (a.y + b.y) / 2;
+
+                this.fruits.delete(a);
+                this.fruits.delete(b);
+
+                a.setStatic(true);
+                b.setStatic(true);
+
+                this.tweens.add({
+                    targets: [a, b],
+                    scale: 0,
+                    alpha: 0,
+                    duration: this.CFG.mechanics.mergeScaleTime,
+                    onComplete: () => {
+                        a.destroy();
+                        b.destroy();
+                        if (idx + 1 < this.FRUITS.length) {
+                            this.createFruit(mx, my, idx + 1, false);
+                        } else {
+                            this.showEndPopup("win");
+                        }
+
+                    }
+                });
+            }
+
+
+            notifyParent(type, data) {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type, ...data }, "*");
+                }
+            }
+
+            showEndPopup(type) {
+                this.gameOver = true;
+
+                // dark overlay
+                this.add.rectangle(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2,
+                    this.GAME_W,
+                    this.GAME_H,
+                    0x000000,
+                    0.75
+                );
+
+                // popup box
+                const box = this.add.rectangle(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2,
+                    760,
+                    540,
+                    0x020617
+                ).setStrokeStyle(6, 0x334155);
+
+                // title
+                this.add.text(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2 - 180,
+                    type === "win" ? this.TEXTS.win : this.TEXTS.lose,
+                    {
+                        fontSize: "68px",
+                        fontStyle: "bold",
+                        color: type === "win" ? "#22c55e" : "#f87171"
+                    }
+                ).setOrigin(0.5);
+
+                // score
+                this.add.text(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2 - 60,
+                    `FINAL SCORE\n${this.score}`,
+                    {
+                        fontSize: "40px",
+                        color: "#e5e7eb",
+                        align: "center"
+                    }
+                ).setOrigin(0.5);
+
+                // 🔁 REPLAY BUTTON (COMMON)
+                const replayBtn = this.add.rectangle(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2 + 120,
+                    360,
+                    96,
+                    0x22c55e
+                ).setInteractive();
+
+                this.add.text(
+                    this.GAME_W / 2,
+                    this.GAME_H / 2 + 120,
+                    this.TEXTS.play_again || "REPLAY",
+                    {
+                        fontSize: "40px",
+                        fontStyle: "bold",
+                        color: "#020617"
+                    }
+                ).setOrigin(0.5);
+
+                replayBtn.on("pointerdown", () => {
+                    this.bgm.stop();
+                    this.scene.restart();
+                });
+
+                // ▶️ NEXT BUTTON (ONLY ON WIN)
+                if (type === "win") {
+                    const nextBtn = this.add.rectangle(
+                        this.GAME_W / 2,
+                        this.GAME_H / 2 + 240,
+                        360,
+                        96,
+                        0x38bdf8
+                    ).setInteractive();
+
+                    this.add.text(
+                        this.GAME_W / 2,
+                        this.GAME_H / 2 + 240,
+                        this.TEXTS.next || "NEXT",
+                        {
+                            fontSize: "40px",
+                            fontStyle: "bold",
+                            color: "#020617"
+                        }
+                    ).setOrigin(0.5);
+
+                    nextBtn.on("pointerdown", () => {
+                        this.notifyParent("sceneComplete", { result: "win" });
+                    });
+                }
+            }
+
+        }
+
+        new Phaser.Game({
+            type: Phaser.AUTO,
+            width: 1080,
+            height: 1920,
+            scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+            scene: GameScene,
+            physics: { default: "matter" }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+{
+  "entry": "Customdemon/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Defeat all d emons on each level. Tap action to attack; Tap to jump when grounded. Clear waves, enter the stairs to advance. Beat the final floor before the timer ends.",
+    "score_label": "Slain: ",
+    "win_title": "Tower Purged!",
+    "game_over_title": "The Night Consumes You"
+  },
+  "gameplay": {
+    "timerSeconds": 180,
+    "playerSpeed": 380,
+    "jumpSpeed": 960,
+    "gravityY": 1200,
+    "enemySpawnRate": 2500,
+    "enemyBaseSpeed": 120,
+    "playerMaxHealth": 10,
+    "targetFloors": 15
+  },
+  "images1": {
+    "boss": "assets/obj15.png",
+    "projectile": "assets/obj12.png",
+    "collectible": "assets/obj22.png",
+    "stairs": "assets/platform4.png"
+  },
+  "images2": {
+    "demon_slayer_background": "assets/background.png",
+    "platform": "assets/platform1.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "slash": "assets/obj4.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {
+    "player": {
+      "url": "assets/tanjiro_sheet.png",
+      "frameWidth": 236,
+      "frameHeight": 300,
+      "frames": 4
+    },
+    "enemy": {
+      "url": "assets/demon_sheet.png",
+      "frameWidth": 115,
+      "frameHeight": 164,
+      "frames": 3
+    },
+    "akaza_boss": {
+      "url": "assets/akaza.png",
+      "frameWidth": 165,
+      "frameHeight": 228,
+      "frames": 4
+    },
+    "akaza2_boss": {
+      "url": "assets/akaza2.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza3_boss": {
+      "url": "assets/akaza3.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza4_boss": {
+      "url": "assets/akaza4.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza5_boss": {
+      "url": "assets/akaza5.png",
+      "frameWidth": 132,
+      "frameHeight": 274
+    },
+    "akaza6_boss": {
+      "url": "assets/akaza6.png",
+      "frameWidth": 213,
+      "frameHeight": 360
+    },
+    "akaza7_boss": {
+      "url": "assets/akaza7.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza8_boss": {
+      "url": "assets/akaza8.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza9_boss": {
+      "url": "assets/akaza9.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza10_boss": {
+      "url": "assets/akaza10.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza11_boss": {
+      "url": "assets/akaza11.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza12_boss": {
+      "url": "assets/akaza12.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza13_boss": {
+      "url": "assets/akaza13.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    },
+    "akaza14_boss": {
+      "url": "assets/akaza14.png",
+      "frameWidth": 172,
+      "frameHeight": 413
+    },
+    "akaza15_boss": {
+      "url": "assets/akaza15.png",
+      "frameWidth": 165,
+      "frameHeight": 228
+    }
+  },
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "jump": "assets/jump.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "destroy": "assets/Destroy.mp3",
+    "game_over": "assets/lose.mp3",
+    "level_complete": "assets/win.mp3",
+    "attack": "assets/attack.mp3"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  }
+}

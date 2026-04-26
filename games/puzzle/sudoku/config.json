@@ -1,0 +1,25 @@
+{
+  "entry": "CustomSudoku/index.html",
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "game": {
+   
+  },
+
+  "images1": {
+   
+  },
+  "images2": {
+    "background":"https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1950&q=80"
+    
+  },
+  "ui": {
+  
+  },
+  "texts": {
+   
+  }
+}

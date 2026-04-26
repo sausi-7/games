@@ -1,0 +1,151 @@
+{
+  "entry": "Customantigravity/index.html",
+  "game": {
+    "width": 1920,
+    "height": 1080,
+    "gravity": 500
+  },
+  "levels": [
+    {
+      "playerStart": {
+        "x": 100,
+        "y": 500
+      },
+      "exit": {
+        "x": 1750,
+        "y": 350
+      },
+      "platforms": [
+        {
+          "x": 200,
+          "y": 900,
+          "type": "platform"
+        },
+        {
+          "x": 1200,
+          "y": 650,
+          "type": "conveyor",
+          "speed": 150
+        },
+        {
+          "x": 900,
+          "y": 300,
+          "type": "conveyor",
+          "speed": 80
+        },
+        {
+          "x": 600,
+          "y": 750,
+          "type": "platform"
+        },
+        {
+          "x": 400,
+          "y": 500,
+          "type": "platform"
+        },
+        {
+          "x": 1600,
+          "y": 450,
+          "type": "platform"
+        }
+      ],
+      "hazards": [
+        {
+          "x": 800,
+          "y": 890,
+          "type": "laser_beam"
+        },
+        {
+          "x": 1400,
+          "y": 550,
+          "type": "laser_beam"
+        },
+        {
+          "x": 1060,
+          "y": 460,
+          "type": "laser_beam"
+        }
+      ],
+      "cores": [
+        {
+          "x": 600,
+          "y": 710
+        },
+        {
+          "x": 1200,
+          "y": 610
+        },
+        {
+          "x": 400,
+          "y": 460
+        },
+        {
+          "x": 1600,
+          "y": 410
+        }
+      ]
+    }
+  ],
+  "texts": {
+    "how_to_play_title": "How to Play",
+    "control_label": "Control:",
+    "collect_label": "Collect:",
+    "avoid_label": "Avoid:",
+    "cores_label": "Cores",
+    "game_over_title": "Game Over",
+    "try_again_label": "Try Again!",
+    "level_completed_title": "Level Completed",
+    "cores_collected_label": "Cores Collected"
+  },
+  "images1": {
+    "power_core": "assets/power_core.png",
+    "exit_portal": "assets/exit_portal.png",
+    "player": "assets/player.png",
+    "laser_beam": "assets/laser.png"
+  },
+  "images2": {
+    "platform": "assets/platform.png",
+    "conveyor": "assets/conveyor.png",
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "button": "assets/button.png",
+    "scorebar": "assets/scorebar.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "up": "assets/up.png",
+    "htpbox": "assets/htpbox.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png"
+  },
+  "audio": {
+    "bg_music": "assets/bg_music.mp3",
+    "flip": "assets/flip.mp3",
+    "collect": "assets/collect.mp3",
+    "death": "assets/death.mp3"
+  },
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "mechanics": {
+    "playerSpeed": 300,
+    "jumpVelocity": 500,
+    "maxJumps": 2,
+    "conveyorDefaultSpeed": 120
+  },
+  "spritesheets": {
+    "player": {
+      "path": "assets/shark.png",
+      "frameWidth": 103,
+      "frameHeight": 143
+    }
+  }
+}

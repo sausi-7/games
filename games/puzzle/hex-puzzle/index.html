@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hex Puzzle – Pure JS (Enhanced)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <style>
+    :root {
+      --bg1: #0b1224;
+      --bg2: #020617;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel2: rgba(0, 0, 0, 0.35);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #e5e7eb;
+      --muted: rgba(229, 231, 235, 0.85);
+      --good: #22c55e;
+      --bad: #ef4444;
+      --accent: #38bdf8;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(1200px 800px at 50% 0%, #1e293b 0%, var(--bg2) 55%);
+      touch-action: none;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+    }
+
+    canvas {
+      display: block;
+    }
+
+    /* ===== HUD ===== */
+    #hud {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 800;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 10px 14px;
+      border-radius: 16px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+      /* ✅ FIX */
+      overflow-x: auto;
+      /* ✅ FIX */
+      max-width: calc(100vw - 16px);
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    #hud::-webkit-scrollbar {
+      display: none;
+    }
+
+
+
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      font-weight: 800;
+      white-space: nowrap;
+      /* ✅ prevents wrapping */
+    }
+
+
+    .pill strong {
+      font-size: 19px;
+      color: #fff;
+      letter-spacing: 0.2px;
+    }
+
+    .target {
+      opacity: 0.95;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    #time {
+      color: #fff;
+    }
+
+    #msg {
+      font-weight: 700;
+      opacity: 0.9;
+    }
+
+    /* score bump animation */
+    .bump {
+      animation: bump 220ms ease;
+    }
+
+    @keyframes bump {
+      0% {
+        transform: scale(1);
+      }
+
+      55% {
+        transform: scale(1.18);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* ===== Overlay / Popup ===== */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 18px;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .popup {
+      width: min(420px, 92vw);
+      background: linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.88));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 22px;
+      padding: 22px 18px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+      transform-origin: center;
+      animation: pop 260ms ease;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.88);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup h2 {
+      margin: 6px 0 14px;
+      font-size: 26px;
+      letter-spacing: 0.2px;
+      text-align: center;
+    }
+
+    .popup p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 650;
+      text-align: center;
+    }
+
+
+    .popup .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 12px 0 18px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-weight: 950;
+      font-size: 16px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #061017;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.22);
+    }
+
+    /* space between Next and Play Again buttons */
+    #nextBtn {
+      margin-bottom: 12px;
+    }
+
+    .btn.secondary {
+      margin-top: 10px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.18);
+    }
+
+    @media (max-width: 420px) {
+      #hud {
+        font-size: 15px;
+        gap: 8px;
+        padding: 8px 10px;
+      }
+
+      .pill strong {
+        font-size: 16px;
+      }
+    }
+
+    body:not(.playing) #hud {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="hud">
+    <div class="pill">Score: <strong id="score">0</strong></div>
+    <div class="pill">⏱ <strong id="time">60</strong>s</div>
+    <div class="pill target">🎯 Target: <strong id="target">500</strong></div>
+    <div id="msg"></div>
+  </div>
+
+  <canvas id="game"></canvas>
+
+  <!-- HOW TO PLAY -->
+  <div id="howOverlay" class="overlay show">
+    <div class="popup">
+      <h2>How to Play</h2>
+      <p>Drag a shape from the tray and drop it on the board. Fill any full line (any colors) to clear it and earn bonus
+        points.</p>
+      <div class="row">
+        <div class="chip">⏱ 60 seconds</div>
+        <div class="chip">🎯 Score 500</div>
+        <div class="chip">✨ Clear lines</div>
+      </div>
+      <button id="startBtn" class="btn">Start Game</button>
+
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultOverlay" class="overlay">
+    <div class="popup">
+      <h2 id="resultTitle">Result</h2>
+      <p id="resultText">...</p>
+
+      <button id="nextBtn" class="btn secondary" style="display:none">
+        Next
+      </button>
+
+      <button id="replayBtn" class="btn">Play Again</button>
+    </div>
+  </div>
+
+
+  <script>
+    /* =========================
+       CANVAS / RESIZE
+    ========================= */
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    let GAME_CONFIG = null;
+
+    async function loadConfig() {
+      const res = await fetch("config.json");
+      GAME_CONFIG = await res.json();
+    }
+
+
+    /* =========================
+   AUDIO
+========================= */
+    const bgm = new Audio();
+    bgm.loop = true;
+    bgm.volume = 0.5;
+
+    const collectSfx = new Audio();
+    collectSfx.volume = 0.7;
+
+
+
+    function applyConfig() {
+      const { mechanics, audio, text } = GAME_CONFIG;
+
+      /* ===== mechanics ===== */
+      TARGET_SCORE = mechanics.target;
+      TIME_LIMIT = mechanics.timeLimit;
+      timeLeft = TIME_LIMIT;
+      SCORE_PER_BLOCK = mechanics.scorePerBlock;
+      SCORE_PER_LINE = mechanics.scorePerLine;
+
+      targetEl.textContent = TARGET_SCORE;
+      timeEl.textContent = TIME_LIMIT;
+
+      /* ===== audio ===== */
+      bgm.src = audio.bgm;
+      collectSfx.src = audio.collect;
+
+      /* ===== text ===== */
+      document.title = text.title;
+
+      document.querySelector("#hud .pill:nth-child(1)")
+        .childNodes[0].textContent = text.hudScore + ": ";
+
+      document.querySelector("#hud .pill:nth-child(3)")
+        .childNodes[0].textContent = "🎯 " + text.hudTarget + ": ";
+
+
+      document.querySelector("#howOverlay h2").textContent = text.howTitle;
+      document.querySelector("#howOverlay p").textContent = text.howDesc;
+
+      const chips = document.querySelectorAll(".chip");
+      chips[0].textContent = text.howChipTime;
+      chips[1].textContent = text.howChipTarget;
+      chips[2].textContent = text.howChipClear;
+
+      startBtn.textContent = text.startButton;
+      replayBtn.textContent = text.replayButton;
+
+      // rebind references (safe)
+      scoreEl.textContent = "0";
+      timeEl.textContent = TIME_LIMIT;
+      targetEl.textContent = TARGET_SCORE;
+
+    }
+
+
+
+
+    function resize() {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    }
+    resize();
+    addEventListener("resize", () => {
+      resize();
+      layout();
+    });
+
+    const scoreEl = document.getElementById("score");
+    const msgEl = document.getElementById("msg");
+    const timeEl = document.getElementById("time");
+    const targetEl = document.getElementById("target");
+
+    /* overlays */
+    const howOverlay = document.getElementById("howOverlay");
+    const resultOverlay = document.getElementById("resultOverlay");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const startBtn = document.getElementById("startBtn");
+    // const closeHowBtn = document.getElementById("closeHowBtn");
+    const replayBtn = document.getElementById("replayBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+
+    /* =========================
+       GAME CONFIG
+    ========================= */
+    let HEX_SIZE = 34;      // hex radius in pixels
+    const BOARD_RADIUS = 4;   // 4 => 61 cells
+    const COLORS = ["#22c55e", "#38bdf8", "#f97316", "#e879f9", "#facc15", "#fb7185", "#a78bfa"];
+
+    let TIME_LIMIT = 60;
+    let TARGET_SCORE = 500;
+    let SCORE_PER_BLOCK = 1;
+    let SCORE_PER_LINE = 10;
+
+
+    targetEl.textContent = String(TARGET_SCORE);
+
+    let score = 0;
+    let gameOver = false; // still used for "no moves" state, but now we also have win/lose
+    let playing = false;
+
+    let timeLeft = TIME_LIMIT;
+    let timerId = null;
+
+    /* Positions (portrait-friendly) */
+    let BOARD_CENTER = { x: 0, y: 0 };
+    let TRAY_Y = 0;
+    let TRAY_XS = [];
+
+    /* =========================
+       HEX MATH (POINTY-TOP AXIAL)
+    ========================= */
+    function hexToPixel(q, r, center = BOARD_CENTER) {
+      const x = center.x + HEX_SIZE * (Math.sqrt(3) * q + (Math.sqrt(3) / 2) * r);
+      const y = center.y + HEX_SIZE * (1.5 * r);
+      return { x, y };
+    }
+
+    function pixelToHex(x, y, center = BOARD_CENTER) {
+      const px = (x - center.x) / HEX_SIZE;
+      const py = (y - center.y) / HEX_SIZE;
+
+      const q = (Math.sqrt(3) / 3) * px - (1 / 3) * py;
+      const r = (2 / 3) * py;
+      return roundAxial(q, r);
+    }
+
+    function roundAxial(q, r) {
+      let x = q;
+      let z = r;
+      let y = -x - z;
+
+      let rx = Math.round(x);
+      let ry = Math.round(y);
+      let rz = Math.round(z);
+
+      const dx = Math.abs(rx - x);
+      const dy = Math.abs(ry - y);
+      const dz = Math.abs(rz - z);
+
+      if (dx > dy && dx > dz) rx = -ry - rz;
+      else if (dy > dz) ry = -rx - rz;
+      else rz = -rx - ry;
+
+      return { q: rx, r: rz };
+    }
+
+    const key = (q, r) => `${q},${r}`;
+
+    /* =========================
+       BOARD DATA
+    ========================= */
+    const board = new Map(); // key -> color|null
+    let linesQ = new Map();
+    let linesR = new Map();
+    let linesS = new Map();
+
+    function buildBoard() {
+      board.clear();
+      linesQ = new Map();
+      linesR = new Map();
+      linesS = new Map();
+
+      for (let q = -BOARD_RADIUS; q <= BOARD_RADIUS; q++) {
+        for (let r = -BOARD_RADIUS; r <= BOARD_RADIUS; r++) {
+          if (Math.abs(q + r) <= BOARD_RADIUS) {
+            const k = key(q, r);
+            board.set(k, null);
+
+            if (!linesQ.has(q)) linesQ.set(q, []);
+            if (!linesR.has(r)) linesR.set(r, []);
+            const s = q + r;
+            if (!linesS.has(s)) linesS.set(s, []);
+
+            linesQ.get(q).push(k);
+            linesR.get(r).push(k);
+            linesS.get(s).push(k);
+          }
+        }
+      }
+    }
+    buildBoard();
+
+    /* =========================
+       SHAPES
+    ========================= */
+    const SHAPES = [
+      [[0, 0]],
+
+      [[0, 0], [1, 0]],
+      [[0, 0], [0, 1]],
+      [[0, 0], [-1, 1]],
+
+      [[0, 0], [1, 0], [0, 1]],
+      [[0, 0], [-1, 0], [1, 0]],
+      [[0, 0], [0, -1], [0, 1]],
+
+      [[0, 0], [1, 0], [2, 0]],
+      [[0, 0], [0, 1], [0, 2]],
+      [[0, 0], [-1, 1], [-2, 2]],
+
+      [[0, 0], [1, 0], [0, 1], [-1, 1]],
+      [[0, 0], [1, 0], [0, 1], [0, 2]],
+      [[0, 0], [-1, 0], [0, 1], [1, 0]],
+    ];
+
+    function randomShape() {
+      const blocks = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      return { blocks, color };
+    }
+
+    /* =========================
+       TRAY
+    ========================= */
+    let tray = [];
+
+    function newTray() {
+      tray = [];
+      for (let i = 0; i < 3; i++) {
+        const s = randomShape();
+        tray.push({
+          ...s,
+          x: TRAY_XS[i],
+          y: TRAY_Y,
+          homeX: TRAY_XS[i],
+          homeY: TRAY_Y,
+          dragging: false,
+          bounds: null
+        });
+        computeTrayBounds(tray[tray.length - 1]);
+      }
+      msgEl.textContent = "";
+    }
+
+    function computeTrayBounds(shape) {
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (const [dq, dr] of shape.blocks) {
+        const p = hexToPixel(dq, dr, { x: 0, y: 0 });
+        minX = Math.min(minX, p.x);
+        minY = Math.min(minY, p.y);
+        maxX = Math.max(maxX, p.x);
+        maxY = Math.max(maxY, p.y);
+      }
+      const pad = HEX_SIZE * 1.2;
+      shape.bounds = { minX: minX - pad, minY: minY - pad, maxX: maxX + pad, maxY: maxY + pad };
+    }
+
+    function updateHexSize() {
+      const minW = Math.min(canvas.width, canvas.height);
+
+      if (minW < 380) {
+        HEX_SIZE = 24;   // small phones
+      } else if (minW < 480) {
+        HEX_SIZE = 28;   // normal phones
+      } else if (minW < 768) {
+        HEX_SIZE = 30;   // tablets
+      } else {
+        HEX_SIZE = 34;   // desktop
+      }
+    }
+
+
+    function layout() {
+      updateHexSize();
+      BOARD_CENTER.x = canvas.width / 2;
+      BOARD_CENTER.y = canvas.height * 0.46;
+
+      TRAY_Y = canvas.height * 0.80;
+      const trayGap = Math.min(160, canvas.width * 0.22); // responsive spacing
+
+      TRAY_XS = [
+        canvas.width / 2 - trayGap,
+        canvas.width / 2,
+        canvas.width / 2 + trayGap
+      ];
+
+
+      if (tray.length) {
+        tray.forEach((t, idx) => {
+          if (!t.dragging) {
+            t.homeX = TRAY_XS[Math.min(idx, 2)];
+            t.homeY = TRAY_Y;
+            t.x = t.homeX;
+            t.y = t.homeY;
+          }
+        });
+      }
+      clampBoardCenter();
+
+    }
+    layout();
+    newTray();
+
+    /* =========================
+       DRAWING
+    ========================= */
+    function drawHex(x, y, size, fill) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.PI / 3 * i + Math.PI / 6;
+        const px = x + size * Math.cos(a);
+        const py = y + size * Math.sin(a);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = "#020617";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    function notifyParent(type, data) {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type, ...data }, "*");
+      }
+    }
+
+
+    function drawShadowedHex(x, y, size, color) {
+      ctx.save();
+      ctx.shadowColor = "rgba(0,0,0,0.35)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 3;
+      drawHex(x, y, size, color);
+      ctx.restore();
+    }
+
+    /* ===== line clear animation storage ===== */
+    let clearFx = []; // array of {x,y,t} (t from 0..1)
+
+    function spawnClearFx(keys) {
+      for (const k of keys) {
+        const [q, r] = k.split(",").map(Number);
+        const p = hexToPixel(q, r, BOARD_CENTER);
+        clearFx.push({ x: p.x, y: p.y, t: 0 });
+      }
+    }
+
+    function drawClearFx(dt) {
+      // dt is a small constant step
+      for (const fx of clearFx) {
+        fx.t += dt;
+      }
+      clearFx = clearFx.filter(fx => fx.t < 1);
+
+      for (const fx of clearFx) {
+        // pop + fade
+        const s = (HEX_SIZE - 1) * (1 + fx.t * 0.25);
+        const alpha = Math.max(0, 1 - fx.t);
+        ctx.save();
+        ctx.globalAlpha = alpha * 0.75;
+        ctx.shadowColor = "rgba(56,189,248,0.5)";
+        ctx.shadowBlur = 18;
+        drawHex(fx.x, fx.y, s, "#ffffff");
+        ctx.restore();
+      }
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // ⛔ Don't render game before start
+      if (!playing) return;
+
+      // board cells
+      for (const [k, v] of board.entries()) {
+        const [q, r] = k.split(",").map(Number);
+        const p = hexToPixel(q, r, BOARD_CENTER);
+        const fill = v ? v : "#1e293b";
+        drawHex(p.x, p.y, HEX_SIZE - 1, fill);
+      }
+
+      // tray shapes
+      tray.forEach(t => {
+        for (const [dq, dr] of t.blocks) {
+          const local = hexToPixel(dq, dr, { x: 0, y: 0 });
+          const x = t.x + local.x;
+          const y = t.y + local.y;
+          drawShadowedHex(x, y, HEX_SIZE - 2, t.color);
+        }
+      });
+
+      // clear animation
+      drawClearFx(0.08);
+    }
+
+
+    /* =========================
+       INPUT / DRAG
+    ========================= */
+    let active = null;
+    let grabDX = 0, grabDY = 0;
+
+    function pointInShapeTray(px, py, shape) {
+      const b = shape.bounds;
+      return (px >= shape.x + b.minX && px <= shape.x + b.maxX &&
+        py >= shape.y + b.minY && py <= shape.y + b.maxY);
+    }
+
+    canvas.addEventListener("pointerdown", (e) => {
+      if (!playing) return;
+
+      if (gameOver) {
+        restart();
+        return;
+      }
+
+      for (let i = tray.length - 1; i >= 0; i--) {
+        const t = tray[i];
+        if (pointInShapeTray(e.clientX, e.clientY, t)) {
+          active = t;
+          t.dragging = true;
+          grabDX = e.clientX - t.x;
+          grabDY = e.clientY - t.y;
+          tray.splice(i, 1);
+          tray.push(t);
+          break;
+        }
+      }
+    });
+
+    canvas.addEventListener("pointermove", (e) => {
+      if (!active) return;
+      active.x = e.clientX - grabDX;
+      active.y = e.clientY - grabDY;
+    });
+
+    canvas.addEventListener("pointerup", () => {
+      if (!active) return;
+      active.dragging = false;
+      tryPlace(active);
+      active = null;
+    });
+
+    /* =========================
+       SCORE ANIMATION
+    ========================= */
+    let displayedScore = 0;
+
+    function bumpScoreUI() {
+      scoreEl.classList.remove("bump");
+      // restart animation
+      void scoreEl.offsetWidth;
+      scoreEl.classList.add("bump");
+    }
+
+    function animateScoreTo(newScore) {
+      const from = displayedScore;
+      const to = newScore;
+      const start = performance.now();
+      const dur = 240;
+
+      function step(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const v = Math.floor(from + (to - from) * (1 - Math.pow(1 - t, 3)));
+        displayedScore = v;
+        scoreEl.textContent = String(v);
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      bumpScoreUI();
+    }
+
+    function addScore(points) {
+      score += points;
+      animateScoreTo(score);
+
+      if (playing && score >= TARGET_SCORE) {
+        endGame(true);
+      }
+    }
+
+
+    function clampBoardCenter() {
+      const safeX = HEX_SIZE * 3;
+      BOARD_CENTER.x = Math.max(
+        safeX,
+        Math.min(canvas.width - safeX, BOARD_CENTER.x)
+      );
+    }
+
+
+    /* =========================
+       PLACEMENT (KEEP YOUR LOGIC)
+    ========================= */
+    function tryPlace(shape) {
+      if (!playing) return;
+
+      const originHex = pixelToHex(shape.x, shape.y, BOARD_CENTER);
+
+      const targets = [];
+      for (const [dq, dr] of shape.blocks) {
+        const q = originHex.q + dq;
+        const r = originHex.r + dr;
+        const k = key(q, r);
+
+        if (!board.has(k)) return sendHome(shape);
+        if (board.get(k)) return sendHome(shape);
+
+        targets.push(k);
+      }
+
+      // Place
+      targets.forEach(k => board.set(k, shape.color));
+      addScore(targets.length * SCORE_PER_BLOCK);
+
+
+      // Remove from tray
+      const idx = tray.indexOf(shape);
+      if (idx !== -1) tray.splice(idx, 1);
+
+      // Clear lines & scoring (NOW with animation)
+      const cleared = clearFullLines();
+      if (cleared.count > 0) {
+        // bonus
+        addScore(cleared.count * SCORE_PER_LINE);
+
+      }
+
+      // Refill tray
+      if (tray.length === 0) newTray();
+
+      // "No moves" can still show msg, but timer win/lose is primary
+      if (!anyMoveAvailable()) {
+        gameOver = true;
+        msgEl.textContent = "No moves! Tap Play Again";
+        // show lose (since stuck)
+        endGame(false, "No moves left!");
+      }
+    }
+
+    function sendHome(shape) {
+      shape.x = shape.homeX;
+      shape.y = shape.homeY;
+    }
+
+    /* =========================
+       LINE CLEAR (FULL LINE, ANY COLOR)
+       + returns which keys cleared so we can animate
+    ========================= */
+    function lineIsFull(keys) {
+      for (const k of keys) {
+        if (!board.get(k)) return false;
+      }
+      return true;
+    }
+
+    function clearLine(keys) {
+      collectSfx.currentTime = 0;
+      collectSfx.play().catch(() => { });
+
+      spawnClearFx(keys);
+      for (const k of keys) {
+        board.set(k, null);
+      }
+    }
+
+
+
+    function clearFullLines() {
+      let clearedCount = 0;
+
+      for (const keys of linesQ.values()) {
+        if (lineIsFull(keys)) {
+          clearLine(keys);
+          clearedCount++;
+        }
+      }
+
+      for (const keys of linesR.values()) {
+        if (lineIsFull(keys)) {
+          clearLine(keys);
+          clearedCount++;
+        }
+      }
+
+      for (const keys of linesS.values()) {
+        if (lineIsFull(keys)) {
+          clearLine(keys);
+          clearedCount++;
+        }
+      }
+
+      return { count: clearedCount };
+    }
+
+    /* =========================
+       GAME OVER CHECK (UNCHANGED)
+    ========================= */
+    function canPlaceShapeAnywhere(shape) {
+      for (const k of board.keys()) {
+        const [oq, or] = k.split(",").map(Number);
+
+        let ok = true;
+        for (const [dq, dr] of shape.blocks) {
+          const q = oq + dq;
+          const r = or + dr;
+          const kk = key(q, r);
+          if (!board.has(kk) || board.get(kk)) {
+            ok = false; break;
+          }
+        }
+        if (ok) return true;
+      }
+      return false;
+    }
+
+    function anyMoveAvailable() {
+      for (const t of tray) {
+        if (canPlaceShapeAnywhere(t)) return true;
+      }
+      return false;
+    }
+
+    /* =========================
+       TIMER + WIN/LOSE POPUP
+    ========================= */
+    function setMsg(text) {
+      msgEl.textContent = text || "";
+    }
+
+    function startTimer() {
+      clearInterval(timerId);
+      timeLeft = TIME_LIMIT;
+      timeEl.textContent = String(timeLeft);
+
+      timerId = setInterval(() => {
+        if (!playing) return;
+        timeLeft--;
+        timeEl.textContent = String(timeLeft);
+
+        if (timeLeft <= 10) {
+          timeEl.style.color = "#fffb";
+        }
+        if (timeLeft <= 5) {
+          timeEl.style.color = "#fff";
+        }
+
+        if (timeLeft <= 0) {
+          // time over -> win if reached target else lose
+          endGame(score >= TARGET_SCORE);
+        }
+      }, 1000);
+    }
+
+    function showResult(title, text) {
+      resultTitle.textContent = title;
+      resultText.textContent = text;
+      resultOverlay.classList.add("show");
+    }
+
+    function hideResult() {
+      resultOverlay.classList.remove("show");
+    }
+
+    function endGame(win, customLoseReason = "") {
+      if (!playing) return;
+      playing = false;
+      gameOver = true;
+      clearInterval(timerId);
+
+      nextBtn.style.display = "none"; // reset
+
+      if (win) {
+        setMsg("You Win!");
+        showResult("🎉 You Win!", `Score ${score} reached in time!`);
+        nextBtn.style.display = "block"; // ✅ SHOW NEXT
+      } else {
+        setMsg("You Lose!");
+        const reason = customLoseReason ? ` (${customLoseReason})` : "";
+        showResult(
+          "💀 You Lose",
+          `Target ${TARGET_SCORE} not reached. Your score: ${score}${reason}`
+        );
+      }
+    }
+
+
+    function restart() {
+      hideResult();
+      gameOver = false;
+      playing = true;
+
+      score = 0;
+      displayedScore = 0;
+      scoreEl.textContent = "0";
+      setMsg("");
+
+      buildBoard();
+      newTray();
+      startTimer();
+
+      bgm.currentTime = 0;
+      bgm.play().catch(() => { });
+    }
+
+    /* =========================
+       HOW TO PLAY BUTTONS
+    ========================= */
+    function startFromHow() {
+      howOverlay.classList.remove("show");
+      document.body.classList.add("playing");
+
+      playing = true;
+      gameOver = false;
+
+      score = 0;
+      displayedScore = 0;
+      scoreEl.textContent = "0";
+
+      buildBoard();
+      newTray();
+      layout();
+
+      timeLeft = TIME_LIMIT;   // ✅ ADD THIS
+      startTimer();            // already exists
+
+      bgm.currentTime = 0;
+      bgm.play().catch(() => { });
+    }
+
+
+
+    startBtn.addEventListener("click", startFromHow);
+    // closeHowBtn.addEventListener("click", startFromHow);
+    replayBtn.addEventListener("click", () => {
+      restart();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      notifyParent("sceneComplete", { result: "win" });
+    });
+
+
+    /* =========================
+       LOOP
+    ========================= */
+    /* =========================
+    BOOT GAME AFTER CONFIG LOAD
+ ========================= */
+    (async function boot() {
+      await loadConfig();   // ⬅️ load config.json
+      applyConfig();        // ⬅️ apply text, audio, mechanics
+
+      function loop() {
+        render();
+        requestAnimationFrame(loop);
+      }
+
+      loop(); // start rendering
+    })();
+
+  </script>
+</body>
+
+</html>

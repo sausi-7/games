@@ -1,0 +1,66 @@
+{
+  "entry": "Customcircuitbulb/index.html",
+  "images1": {
+    "bulb": "assets/obj1.png",
+    "player": "assets/player.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "tile": "assets/tile.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3",
+    "collect":"assets/collect.mp3"
+  },
+  "texts": {
+    "htp_title": "How to Play",
+    "htp_instruction_rotate": "Tap to rotate:",
+    "htp_instruction_connect": "Connect:",
+    "gameover_title": "Game Over",
+    "gameover_sub": "Try Again!",
+    "win_title": "Level Completed",
+    "time_label": "Time"
+  },
+  "settings": {
+    "gridSize": 6,
+    "margin": 20,
+    "bulbSize": 129,
+    "tilePadding": 4,
+    "timerSeconds": 120,
+    "wireThickness": 8,
+    "unlitWireColor": "#666666",
+    "litWireColor": "#ffff00",
+    "tileFill": "white",
+    "tileBorder": "white",
+    "bulbPositions": [
+      [
+        5,
+        2
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        5
+      ]
+    ]
+  },
+  "spritesheets": {  
+  }
+}

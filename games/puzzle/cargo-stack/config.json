@@ -1,0 +1,52 @@
+{
+  "entry": "Customcargostack/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Tap the screen  to release the cargo from the moving crane. Stack  boxes to win. Don't miss more than 3!",
+    "score_label": "Stacked:",
+    "missed_label": "Missed:",
+    "target_label": "Target:",
+    "win_title": "You're a Master Stacker!",
+    "game_over_title": "Stacking Failed!"
+  },
+  "gameplay": {
+    "gravity": 900,
+    "craneSpeed": 250,
+    "platformSpeed": {
+      "min": 150,
+      "max": 300
+    },
+    "winStackCount": 20,
+    "loseMissCount": 3,
+    "minOverlapFraction": 0.6
+  },
+  "images1": {
+    "crane": "assets/obj1.png",
+    "cargo": "assets/obj10.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "drop": "assets/attack.mp3",
+    "land": "assets/collision.mp3",
+    "miss": "assets/destroy.mp3",
+    "win": "assets/win.mp3",
+    "lose": "assets/lose.mp3"
+  }
+}

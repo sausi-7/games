@@ -1,0 +1,83 @@
+{
+    "entry": "Customtrenchdefence/index.html",
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    },
+    "game": {
+        "levelDuration": 60,
+        "spawnDelay": 1000,
+        "hpIncreaseInterval": 10000,
+        "initialTroopHp": 1,
+        "towerXPercent": 0.85,
+        "zigzag": {
+            "margin": 120,
+            "steps": 8,
+            "amplitudePercent": 0.32
+        }
+    },
+    "images1": {
+        "tower": "assets/tower.png",
+        "enemy": "assets/troop.png"
+    },
+    "images2": {
+        "background": "assets/bg.png"
+    },
+    "ui": {
+        "explosion": "assets/explosion.png",
+        "htp": "assets/htp_landscape.png",
+        "play_game": "assets/play_game.png",
+        "game_over": "assets/game_over.png",
+        "replay_level": "assets/replay_level.png",
+        "level_complete": "assets/level_complete.png",
+        "replay": "assets/replay.png",
+        "scorebar": "assets/scorebar.png",
+        "next": "assets/next.png"
+    },
+    "texts": {
+        "title": "TRENCH DEFENCE",
+        "tapToStart": "Tap to Start",
+        "gameOver": "GAME OVER",
+        "levelComplete": "LEVEL COMPLETE",
+        "score": "Score: {score}",
+        "timer": "Time Left: {timer}",
+        "howToPlay": "Tap to shoot enemies before they reach the other end.",
+        "targetScore": "10",
+        "timeLeftLabel": "Time Left:",
+        "timeTakenLabel": "You Win!"
+    },
+    "overlays": {
+        "start": {
+            "width": 600,
+            "height": 300,
+            "bgColor": "#222222",
+            "bgAlpha": 0.85,
+            "titleColor": "#ffd400",
+            "descColor": "#ffffff"
+        },
+        "gameover": {
+            "width": 600,
+            "height": 320,
+            "bgColor": "#380b0b",
+            "bgAlpha": 0.92,
+            "titleColor": "#ff6767",
+            "scoreColor": "#ffffff"
+        },
+        "win": {
+            "width": 600,
+            "height": 320,
+            "bgColor": "#1b461b",
+            "bgAlpha": 0.92,
+            "titleColor": "#ffd400",
+            "scoreColor": "#ffffff"
+        }
+    },
+    "colors": {
+        "background": "#4e4636"
+    },
+    "audio": {
+        "bgm": "assets/bgm.mp3",
+        "hit": "assets/hit.mp3"
+    }
+}

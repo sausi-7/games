@@ -1,0 +1,62 @@
+{
+    "entry": "Customcannonblaster/index.html",
+    "images1": {
+        "stone": "assets/stone.png",
+        "bomb": "assets/cannon_shot.png",
+        "cannon": "assets/cannon.png"
+    },
+    "images2": {
+        "background": "assets/background.png",
+        "winbg": "assets/winbg.png",
+        "ovrbg": "assets/ovrbg.png",
+        "htpbg": "assets/htpbg.png"
+    },
+    "ui": {
+        "cannon": "assets/cannon.png",
+        "htpbox": "assets/htpbox.png",
+        "playbtn": "assets/playbtn.png",
+        "lvlbox": "assets/lvlbox.png",
+        "nextbtn": "assets/nextbtn.png",
+        "restart": "assets/restart.png",
+        "restart1": "assets/restart1.png",
+        "gameovrbg": "assets/gameovrbg.png",
+        "pointbox": "assets/pointbox.png",
+        "hpbox": "assets/hpbox.png"
+    },
+    "audio": {
+        "bg_music": "assets/bg_music.mp3",
+        "shoot": "assets/shoot.mp3",
+        "stone_hit": "assets/stone_hit.mp3",
+        "stone_ground": "assets/stone_ground.mp3",
+        "explosion": "assets/explosion.mp3"
+    },
+    "texts": {
+        "howToPlayTitle": "How to Play",
+        "howToPlayInstructions": "Control:",
+        "scoreLabel": "Score",
+        "livesLabel": "Lives",
+        "gameOver": "Game Over",
+        "levelComplete": "Level Completed",
+        "pausedResume": "Paused\nResume"
+    },
+    "mechanics": {
+        "spawnInterval": 2000,
+        "fireDelay": 400,
+        "scoreTarget": 30,
+        "invincibilityTime": 2000,
+        "cannonFrame": 19,
+        "initialLives": 7
+    },
+    "spritesheets": {
+        "shark": {
+            "path": "assets/shark.png",
+            "frameWidth": 103,
+            "frameHeight": 157
+        }
+    },
+    "orientation": {
+        "frame": "landscape",
+        "width": 1920,
+        "height": 1080
+    }
+}

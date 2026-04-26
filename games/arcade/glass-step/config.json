@@ -1,0 +1,53 @@
+{
+  "entry": "Customglassstepin/index.html",
+  "stepCount": 8,
+  "platformWidth": 300,
+  "platformHeight": 150,
+  "platformGap": 180,
+  "platformOffsetY": 350,
+  "timer": 45,
+  "safeColor": 65280,
+  "failColor": 16711680,
+  "defaultColor": "#000000FF",
+  "playerScale": 0.5,
+  "howToPlayText": "Tap to stop the moving block at the right time and stack it perfectly. Each perfect stop builds your combo. Get {perfectCount} perfect stacks in 60 seconds to win!",
+  "images2": {
+    "background": "assets/space.png"
+  },
+  "ui": {
+    "htp": "assets/htp.png",
+    "play_game": "assets/play_game.png",
+    "replay_level": "assets/replay.png",
+    "level_complete": "assets/level_complete.png",
+    "replay": "assets/replay_level.png",
+    "next": "assets/next.png",
+    "game_over": "assets/game_over.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "orientation": {
+    "frame": "portrait",
+    "width": 1080,
+    "height": 1920
+  },
+  "audio": {
+    "bgm": "./assets/calm.mp3",
+    "gameover": "./assets/gameover.mp3",
+    "tap": "./assets/Destroy.mp3",
+    "jump": "./assets/Jump.mp3",
+    "levelCompleted": "./assets/levelCompleted.mp3"
+  },
+  "spritesheets": {
+    "character": {
+      "url": "assets/hero.png",
+      "frameWidth": 100,
+      "frameHeight": 158
+    }
+  },
+  "blockColors": [
+    "#4a90e2",
+    "#50c878",
+    "#ff6b6b",
+    "#ffd93d",
+    "#6c5ce7"
+  ]
+}

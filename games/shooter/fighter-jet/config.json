@@ -1,0 +1,55 @@
+{
+  "entry": "Customfighterjet/index.html",
+  "orientation": {
+    "frame": "landscape",
+    "width": 1920,
+    "height": 1080
+  },
+  "requiredKills": 8,
+  "maxTerrorists": 8,
+  "images1": {
+    "missile": "assets/missile.png",
+    "rocket": "assets/rocket.png",
+    "terrorist1": "assets/terrorist1.png",
+    "terrorist2": "assets/terrorist2.png",
+    "terrorist3": "assets/terrorist3.png",
+    "terrorist4": "assets/terrorist4.png",
+    "fighter": "assets/fighter.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png"
+  },
+  "ui": {
+    "explosion2": "assets/explosion2.png",
+    "explosion": "assets/explosion.png",
+    "joystick_bg": "assets/joystick_bg.png",
+    "joystick_knob": "assets/joystick_knob.png",
+    "dialog_bg": "assets/dialog_bg.png",
+    "play_button": "assets/play_button.png",
+    "level_complete": "assets/levelcomplete_bg.png",
+    "replay_button": "assets/replay_button.png",
+    "replay_button2": "assets/replay_button2.png",
+    "game_over_bg": "assets/game_over_bg.png",
+    "next_level_button": "assets/next_level_button.png"
+  },
+  "text": {
+    "game_over": "Game Over!",
+    "level_complete": "Level Completed",
+    "how_to_play": "How to Play",
+    "play_description": "Control:",
+    "retry_message": "💥 Jet Destroyed!",
+    "retry_button": "🔁 Retry"
+  },
+  "audio": {
+    "jet_move": "assets/jet_move.mp3",
+    "bgm": "assets/bgm.mp3",
+    "jet_missile": "assets/missile_launch.mp3",
+    "terrorist_rocket": "assets/rocket_launch.mp3",
+    "missile_hit": "assets/missile_hit.mp3",
+    "rocket_hit": "assets/rocket_hit.mp3",
+    "explosion": "assets/explosion.mp3"
+  }
+}

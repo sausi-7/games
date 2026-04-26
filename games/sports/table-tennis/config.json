@@ -1,0 +1,77 @@
+{
+  "entry": "Customtabletennis/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "How to Play",
+    "how_to_play1": "Control:",
+    "score_label": "Score: ",
+    "win_title": "Level Completed",
+    "game_over_title": "Game Over"
+  },
+  "gameplay": {
+    "timerSeconds": 0,
+    "targetScore": 5,
+    "paddle": {
+      "width": 26,
+      "height": 180,
+      "speed": 600
+    },
+    "ball": {
+      "size": 58,
+      "speed": 520,
+      "speedIncPerHit": 12,
+      "maxSpeed": 980
+    },
+    "ai": {
+      "speed": 520,
+      "reactDelayMs": 90,
+      "missJitter": 14
+    },
+    "power": {
+      "spawnEveryMs": 6000,
+      "maxOnField": 1,
+      "durationMs": 6000
+    },
+    "arenaInset": 40
+  },
+  "images1": {
+    "enemy": "assets/obj5.png",
+    "collectible": "assets/obj12.png",
+    "ball": "assets/obj7.png",
+    "power_speed": "assets/obj7.png",
+    "power_grow": "assets/obj7.png",
+    "power_shrink": "assets/obj7.png",
+    "power_multi": "assets/obj7.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "htpbg": "assets/htpbg.png",
+    "winbg": "assets/winbg.png",
+    "ovrbg": "assets/ovrbg.png",
+    "platform": "assets/platform2.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "scoreback": "assets/scoreback.png",
+    "right": "assets/right.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "hit": "assets/hit.mp3",
+    "collect": "assets/collect.mp3",
+    "score": "assets/collect.mp3",
+    "game_over": "assets/lose.mp3",
+    "level_complete": "assets/win.mp3"
+  }
+}

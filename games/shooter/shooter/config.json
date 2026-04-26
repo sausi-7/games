@@ -1,0 +1,88 @@
+{
+  "entry": "Customshooter/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Landscape. Survive for 60s. Move with ←/→, jump with ↑ or Space. Shoot with Z or Action. Pick up crates for AK/Shotgun.",
+    "score_label": "Kills: ",
+    "win_title": "Temple Survived!",
+    "game_over_title": "You Fell in the Temple!"
+  },
+  "gameplay": {
+    "timerSeconds": 60,
+    "playerHP": 3,
+    "playerSpeed": 280,
+    "jumpSpeed": -750,
+    "gravityY": 900,
+    "spawn": {
+      "startMs": 1400,
+      "endMs": 500
+    },
+    "enemy": {
+      "baseSpeed": 80,
+      "maxSpeed": 200
+    },
+    "crate": {
+      "cooldownMs": 10000
+    },
+    "weapon": {
+      "pistol": {
+        "fireMs": 350,
+        "bulletSpeed": 900,
+        "oneBulletRule": true
+      },
+      "ak": {
+        "durationMs": 10000,
+        "fireMs": 110,
+        "bulletSpeed": 1100
+      },
+      "shotgun": {
+        "durationMs": 10000,
+        "pellets": 5,
+        "spreadDeg": 24,
+        "fireMs": 500,
+        "bulletSpeed": 800
+      }
+    }
+  },
+  "images1": {
+    "enemy": "assets/obj5.png",
+    "enemyFast": "assets/obj6.png",
+    "bullet": "assets/obj12.png",
+    "pellet": "assets/obj13.png",
+    "ebullet": "assets/obj21.png",
+    "crate": "assets/obj20.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform1": "assets/platform2.png",
+    "platform2": "assets/platform3.png"
+  },
+  "ui": {
+    "player": "assets/obj1.png",
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "jump": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/Game_Background.mp3",
+    "shoot": "assets/Attack.mp3",
+    "blast": "assets/Explosion.mp3",
+    "kill": "assets/Destroy.mp3",
+    "hit": "assets/Taking_a_Hit.mp3",
+    "collect": "assets/Collection.mp3",
+    "win": "assets/Level_Complete.mp3",
+    "lose": "assets/Game_Over.mp3"
+  }
+}

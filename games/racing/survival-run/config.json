@@ -1,0 +1,66 @@
+{
+  "entry": "Customsurvivalrun/index.html",
+  "font": {
+    "family": "Outfit",
+    "url": "assets/outfit.ttf"
+  },
+  "texts": {
+    "how_to_play": "Move through the haunted maze. Get close to a portal and press Action to rotate runes. Match all runes to seal the portal. Seal them all before time runs out. Avoid ghosts!",
+    "score_label": "Score: ",
+    "win_title": "All portals sealed!",
+    "game_over_title": "You were caught!"
+  },
+  "gameplay": {
+    "timerSeconds": 90,
+    "playerHP": 300,
+    "playerSpeed": 240,
+    "portalCount": 3,
+    "ghostSpawnRateMs": 2500,
+    "ghostSpeed": 120,
+    "ghostSpeedStep": 20,
+    "ghostSpeedMax": 260,
+    "difficultyStepMs": 12000,
+    "sealScore": 100,
+    "playerSize": {
+      "w": 80,
+      "h": 80
+    },
+    "maxGhosts": 10,
+    "ghostsPerWave": 2,
+    "portalSpawnChance": 0.6,
+    "minSpawnDist": 160
+  },
+  "images1": {
+    "player": "assets/player.png",
+    "enemy": "assets/obj10.png",
+    "portal": "assets/obj25.png",
+    "rune": "assets/obj14.png"
+  },
+  "images2": {
+    "background": "assets/background.png",
+    "platform": "assets/platform.png"
+  },
+  "ui": {
+    "left": "assets/left.png",
+    "right": "assets/right.png",
+    "action": "assets/action.png",
+    "htpbox": "assets/htpbox.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "playbtn": "assets/playbtn.png"
+  },
+  "spritesheets": {},
+  "audio": {
+    "bgm": "assets/bgm.mp3",
+    "attack": "assets/Attack.mp3",
+    "collect": "assets/Collect.mp3",
+    "explosion": "assets/Explosion.mp3",
+    "gameover": "assets/lose.mp3",
+    "hit": "assets/hit.mp3",
+    "level_complete": "assets/win.mp3",
+    "jump": "assets/jump.mp3"
+  }
+}

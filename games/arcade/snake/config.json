@@ -1,0 +1,43 @@
+{
+  "entry": "Customsnake/index.html",
+  "images1": {
+    "enemy": "assets/obj1.png",
+    "normal": "assets/obj1.png",
+    "big": "assets/obj2.png",
+    "slow": "assets/obj3.png",
+    "boost": "assets/obj4.png",
+    "bomb": "assets/obj5.png",
+    "ghost": "assets/obj6.png",
+    "snake": "assets/snake.png",
+    "body": "assets/body.png",
+    "tail": "assets/tail.png",
+    "magnet": "assets/obj7.png"
+  },
+  "images2": {
+    "background": "assets/bg1.png"
+  },
+  "ui": {
+    "htpbox": "assets/htpbox.png",
+    "playbtn": "assets/playbtn.png",
+    "ovrbox": "assets/ovrbox.png",
+    "replay": "assets/replay.png",
+    "lvlbox": "assets/lvlbox.png",
+    "next": "assets/next.png",
+    "lvl_replay": "assets/lvl_replay.png",
+    "scorebar": "assets/scorebar.png"
+  },
+  "audio": {
+    "bg_music": "assets/background_music.mp3"
+  },
+  "config": {
+    "speed": 150,
+    "powerUpInterval": 2
+  },
+  "spritesheets": {
+    "player": {
+      "path": "assets/spritesheet.png",
+      "frameWidth": 103,
+      "frameHeight": 158
+    }
+  }
+}
