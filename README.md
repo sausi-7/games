@@ -15,7 +15,9 @@ Click any card on the live site and play instantly — no build step, no signup,
 [![Made with Phaser](https://img.shields.io/badge/Made_with-Phaser_3-orange?style=for-the-badge)](https://phaser.io/)
 [![Stars](https://img.shields.io/github/stars/sausi-7/games?style=for-the-badge&color=yellow)](https://github.com/sausi-7/games/stargazers)
 
-[**▶ Live Demo**](https://sausi-7.github.io/games/) · [**Browse Categories**](#-categories) · [**Add Your Own**](CONTRIBUTING.md)
+[**▶ Live Demo**](https://sausi-7.github.io/games/) · [**Browse Categories**](#-categories) · [**Add Your Own**](CONTRIBUTING.md) · [**💬 Discussions**](https://github.com/sausi-7/games/discussions)
+
+`games` · `html5-games` · `phaser` · `threejs` · `javascript` · `browser-games` · `mini-games` · `vanilla-js` · `no-build` · `github-pages`
 
 </div>
 
@@ -152,9 +154,29 @@ Got an idea? [Open an issue](https://github.com/sausi-7/games/issues/new/choose)
 
 ## 🤝 Contributing
 
-PRs welcome — from new games, to bug fixes, to landing-page polish. See [CONTRIBUTING.md](CONTRIBUTING.md).
+PRs welcome — from new games, to bug fixes, to landing-page polish.
 
-If a game has a bug, [open an issue](https://github.com/sausi-7/games/issues/new/choose) with the game's slug (e.g. `bug: snake — wall collision wrong`).
+- 📖 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the dev setup and code style.
+- 🌱 Browse [**`good first issue`**](https://github.com/sausi-7/games/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) — friendly tasks for newcomers.
+- 🆘 Browse [**`help wanted`**](https://github.com/sausi-7/games/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) — bigger projects looking for an owner.
+- 💬 Got an idea or just want to chat? [Open a discussion](https://github.com/sausi-7/games/discussions).
+- 🐛 Bug in a game? [File a bug](https://github.com/sausi-7/games/issues/new/choose) — include the game's slug (e.g. `bug: snake — wall collision wrong`).
+
+By participating you agree to follow the [Code of Conduct](.github/CODE_OF_CONDUCT.md). Found a security issue? See [SECURITY.md](SECURITY.md) — please don't open a public issue for those.
+
+### 💖 Support the project
+
+If you'd like to help fund continued work on the collection, you can [sponsor on GitHub](https://github.com/sponsors/sausi-7) — every bit helps and is hugely appreciated.
+
+A free way to support: **[give the repo a ⭐](https://github.com/sausi-7/games/stargazers)** and share it with friends. Stars genuinely help it reach more people.
+
+---
+
+## 📈 Star history
+
+<a href="https://star-history.com/#sausi-7/games&Date">
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=sausi-7/games&type=Date" width="640" />
+</a>
 
 ---
 
