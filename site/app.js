@@ -1,9 +1,4 @@
-/* =========================================================
-   Games Hub — landing page logic
-   - Loads games/registry.json
-   - Renders grid, search, category filters
-   - Modal iframe player with deep-link via URL hash
-   ========================================================= */
+
 
 const GH_REPO = "sausi-7/games";
 const DEFAULT_LOCALE = "en";
