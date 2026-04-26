@@ -6,6 +6,96 @@
    ========================================================= */
 
 const GH_REPO = "sausi-7/games";
+const DEFAULT_LOCALE = "en";
+const LOCALE_STORAGE_KEY = "language";
+const I18N = {
+  en: {
+    "brand.name": "Games Hub",
+    "hero.titleLine1": "140+ playable games.",
+    "hero.titleLine2": "One repo. Zero installs.",
+    "hero.subtitle": "A growing collection of browser-built HTML5 games — built with Phaser, Three.js, and vanilla JS. Click any card to play instantly.",
+    "cta.playRandom": "Play random",
+    "cta.browseAll": "Browse all",
+    "search.placeholder": "Search games — name, tag, category…",
+    "empty.noMatches": "No games match this search.",
+    "empty.clearFilters": "Clear filters",
+    "footer.builtBy": "Built by",
+    "footer.source": "Source",
+    "footer.contribute": "Contribute",
+    "footer.licensed": "MIT licensed",
+    "footer.language": "Language:",
+    "footer.press": "Press",
+    "footer.toSearch": "to search",
+    "footer.toClose": "to close",
+    "footer.forRandom": "for random",
+    "language.english": "English",
+    "language.hindi": "Hindi",
+    "modal.defaultTitle": "—",
+    "aria.toggleTheme": "Toggle theme",
+    "aria.viewSourceGithub": "View source on GitHub",
+    "aria.filterGames": "Filter games",
+    "aria.categories": "Categories",
+    "aria.toggleFullscreen": "Toggle fullscreen",
+    "aria.restartGame": "Restart game",
+    "aria.openInNewTab": "Open in new tab",
+    "aria.close": "Close",
+    "title.fullscreen": "Fullscreen",
+    "title.restart": "Restart",
+    "title.openInNewTab": "Open in new tab",
+    "title.close": "Close",
+    "title.game": "Game",
+    "errors.registryLoad": "Couldn't load <code>games/registry.json</code>. Are you serving over HTTP? Try <code>python -m http.server</code>.",
+    "stats.games": "games",
+    "filters.all": "All",
+    "card.tech.phaser": "Phaser",
+    "card.tech.three": "Three.js",
+    "card.tech.html": "HTML5",
+    "card.aria.play": "Play {name}",
+  },
+  hi: {
+    "brand.name": "गेम्स हब",
+    "hero.titleLine1": "140+ गेम्स।",
+    "hero.titleLine2": "एक रिपो। बिना किसी इंस्टॉलेशन के।",
+    "hero.subtitle": "ब्राउज़र-आधारित HTML5 गेम्स का बढ़ता कलेक्शन — Phaser, Three.js और vanilla JS से बना। किसी भी कार्ड पर क्लिक करें और तुरंत खेलें।",
+    "cta.playRandom": "रैंडम खेलें",
+    "cta.browseAll": "सभी देखें",
+    "search.placeholder": "गेम खोजें — नाम, टैग, श्रेणी…",
+    "empty.noMatches": "इस खोज से कोई गेम नहीं मिला।",
+    "empty.clearFilters": "फिल्टर हटाएं",
+    "footer.builtBy": "निर्माता",
+    "footer.source": "सोर्स",
+    "footer.contribute": "योगदान दें",
+    "footer.licensed": "MIT लाइसेंस",
+    "footer.language": "भाषा:",
+    "footer.press": "दबाएं",
+    "footer.toSearch": "खोजने के लिए",
+    "footer.toClose": "बंद करने के लिए",
+    "footer.forRandom": "रैंडम के लिए",
+    "language.english": "अंग्रेज़ी",
+    "language.hindi": "हिंदी",
+    "modal.defaultTitle": "—",
+    "aria.toggleTheme": "थीम बदलें",
+    "aria.viewSourceGithub": "GitHub पर सोर्स देखें",
+    "aria.filterGames": "गेम फिल्टर करें",
+    "aria.categories": "श्रेणियां",
+    "aria.toggleFullscreen": "फुलस्क्रीन बदलें",
+    "aria.restartGame": "गेम रीस्टार्ट करें",
+    "aria.openInNewTab": "नए टैब में खोलें",
+    "aria.close": "बंद करें",
+    "title.fullscreen": "फुलस्क्रीन",
+    "title.restart": "रीस्टार्ट",
+    "title.openInNewTab": "नए टैब में खोलें",
+    "title.close": "बंद करें",
+    "title.game": "गेम",
+    "errors.registryLoad": "<code>games/registry.json</code> लोड नहीं हो सका। क्या आप HTTP सर्वर चला रहे हैं? <code>python -m http.server</code> आज़माएं।",
+    "stats.games": "गेम्स",
+    "filters.all": "सभी",
+    "card.tech.phaser": "Phaser",
+    "card.tech.three": "Three.js",
+    "card.tech.html": "HTML5",
+    "card.aria.play": "{name} खेलें",
+  },
+};
 
 // per-category emoji used as the visual on cards
 const CATEGORY_EMOJI_FALLBACK = {
@@ -104,6 +194,7 @@ const els = {
   modalOpen: document.getElementById("modal-open"),
   modalReload: document.getElementById("modal-reload"),
   modalFs: document.getElementById("modal-fullscreen"),
+  languageSelect: document.getElementById("language-select"),
 };
 
 const state = {
@@ -111,13 +202,18 @@ const state = {
   categories: [],
   q: "",
   category: "all",
+  locale: DEFAULT_LOCALE,
 };
 
 // ---------- Init ----------
 init();
 
 async function init() {
+  state.locale = loadLanguage();
+  document.documentElement.lang = state.locale;
   loadTheme();
+  applyI18n();
+  if (els.languageSelect) els.languageSelect.value = state.locale;
   attachUiEvents();
 
   try {
@@ -129,7 +225,7 @@ async function init() {
   } catch (err) {
     console.error("Failed to load registry:", err);
     els.grid.innerHTML = `<p style="grid-column:1/-1;color:var(--text-dim);text-align:center;padding:40px">
-      Couldn't load <code>games/registry.json</code>. Are you serving over HTTP? Try <code>python -m http.server</code>.</p>`;
+      ${t("errors.registryLoad")}</p>`;
     return;
   }
 
@@ -154,6 +250,12 @@ function setTheme(t) {
 
 // ---------- UI events ----------
 function attachUiEvents() {
+  if (els.languageSelect) {
+    els.languageSelect.addEventListener("change", (e) => {
+      setLanguage(e.target.value);
+      window.location.reload();
+    });
+  }
   els.themeToggle.addEventListener("click", () => {
     setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
   });
@@ -211,7 +313,7 @@ function renderStats() {
     .sort((a, b) => b.n - a.n)
     .slice(0, 4);
   els.stats.innerHTML = `
-    <span class="stat"><span class="stat__num">${state.games.length}</span> games</span>
+    <span class="stat"><span class="stat__num">${state.games.length}</span> ${t("stats.games")}</span>
     ${top.map(({ c, n }) => `<span class="stat"><span class="stat__num">${n}</span> ${c.emoji} ${c.label}</span>`).join("")}
   `;
 }
@@ -221,7 +323,7 @@ function renderFilters() {
   const counts = {};
   for (const g of state.games) counts[g.category] = (counts[g.category] || 0) + 1;
   const all = `<button class="chip" type="button" data-cat="all" aria-pressed="${state.category === "all"}">
-    All <span class="chip__count">${state.games.length}</span>
+    ${t("filters.all")} <span class="chip__count">${state.games.length}</span>
   </button>`;
   const cats = state.categories
     .map((c) => `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${state.category === c.id}">
@@ -265,10 +367,10 @@ function renderCard(g) {
   const emoji = GAME_EMOJI[g.slug] || CATEGORY_EMOJI_FALLBACK[g.category] || "🎮";
   const grad = CATEGORY_GRAD[g.category] || ["#444", "#222"];
   const cat = state.categories.find((c) => c.id === g.category);
-  const techLabel = g.tech === "phaser" ? "Phaser" : g.tech === "three" ? "Three.js" : "HTML5";
+  const techLabel = g.tech === "phaser" ? t("card.tech.phaser") : g.tech === "three" ? t("card.tech.three") : t("card.tech.html");
   return `
     <button class="card" data-slug="${g.slug}" data-category="${g.category}"
-      style="--card-c1:${grad[0]};--card-c2:${grad[1]}" aria-label="Play ${escapeAttr(g.name)}">
+      style="--card-c1:${grad[0]};--card-c2:${grad[1]}" aria-label="${escapeAttr(t("card.aria.play", { name: g.name }))}">
       <div class="card__art">
         <span class="card__emoji" aria-hidden="true">${emoji}</span>
         <span class="card__play" aria-hidden="true">▶</span>
@@ -366,3 +468,39 @@ function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 function escapeAttr(s) { return escapeHtml(s); }
+
+function loadLanguage() {
+  const saved = localStorage.getItem(LOCALE_STORAGE_KEY);
+  if (saved && I18N[saved]) return saved;
+  return DEFAULT_LOCALE;
+}
+
+function setLanguage(locale) {
+  state.locale = I18N[locale] ? locale : DEFAULT_LOCALE;
+  localStorage.setItem(LOCALE_STORAGE_KEY, state.locale);
+  document.documentElement.lang = state.locale;
+}
+
+function t(key, vars = {}) {
+  const dict = I18N[state.locale] || I18N[DEFAULT_LOCALE];
+  let text = dict[key] ?? key;
+  for (const [name, value] of Object.entries(vars)) {
+    text = text.replaceAll(`{${name}}`, String(value));
+  }
+  return text;
+}
+
+function applyI18n(root = document) {
+  root.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  root.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.setAttribute("placeholder", t(el.dataset.i18nPlaceholder));
+  });
+  root.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAriaLabel));
+  });
+  root.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.setAttribute("title", t(el.dataset.i18nTitle));
+  });
+}
