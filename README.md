@@ -191,7 +191,6 @@ You're free to fork, remix, and ship. Attribution appreciated, not required.
 ## 🙏 Acknowledgements
 
 - [Phaser](https://phaser.io/) and [Three.js](https://threejs.org/) — the engines under almost everything here.
-- These games were built and iterated using **[Pikoo](https://pikoo.ai)** — a free AI-powered game-creation agent. If you want to build your own micro-games, that's a great starting point.
 
 ---
 
