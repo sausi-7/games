@@ -32,7 +32,10 @@ Or run locally — no dependencies, just a static server:
 ```bash
 git clone https://github.com/sausi-7/games.git
 cd games
+# serve the index.html or just double click it or just serve using python
+
 python3 -m http.server 8000
+
 # open http://localhost:8000
 ```
 
