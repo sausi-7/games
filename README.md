@@ -32,7 +32,10 @@ Or run locally — no dependencies, just a static server:
 ```bash
 git clone https://github.com/sausi-7/games.git
 cd games
+# serve the index.html or just double click it or just serve using python
+
 python3 -m http.server 8000
+
 # open http://localhost:8000
 ```
 
@@ -191,7 +194,6 @@ You're free to fork, remix, and ship. Attribution appreciated, not required.
 ## 🙏 Acknowledgements
 
 - [Phaser](https://phaser.io/) and [Three.js](https://threejs.org/) — the engines under almost everything here.
-- These games were built and iterated using **[Pikoo](https://pikoo.ai)** — a free AI-powered game-creation agent. If you want to build your own micro-games, that's a great starting point.
 
 ---
 
