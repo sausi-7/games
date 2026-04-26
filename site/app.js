@@ -189,13 +189,15 @@ function attachUiEvents() {
 
   // Keyboard
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !els.modal.hidden) {
-      closeModal();
+    if (e.key === "Escape") {
+      if (!els.modal.hidden) { closeModal(); return; }
+      hideShortcuts();
       return;
     }
     if (e.target.matches("input, textarea")) return;
     if (e.key === "/") { e.preventDefault(); els.search.focus(); }
     else if (e.key.toLowerCase() === "r" && els.modal.hidden) playRandom();
+    else if (e.key === "?") showShortcuts();
   });
 
   // Hash changes
@@ -366,3 +368,17 @@ function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 function escapeAttr(s) { return escapeHtml(s); }
+
+// ---------- KEYBOARD SHORTCUT OVERLAY ----------
+const shortcutOverlay = document.getElementById('shortcut-overlay');
+
+function showShortcuts() {
+  shortcutOverlay.style.display = 'flex';
+}
+
+function hideShortcuts() {
+  shortcutOverlay.style.display = 'none';
+}
+
+document.getElementById('shortcut-backdrop').addEventListener('click', hideShortcuts);
+document.getElementById('shortcut-close').addEventListener('click', hideShortcuts);
