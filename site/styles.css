@@ -625,3 +625,81 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+/* ---------- KEYBOARD SHORTCUT OVERLAY ---------- */
+#shortcut-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#shortcut-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 23, 43, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] #shortcut-backdrop {
+  background: rgba(5, 7, 12, 0.78);
+}
+
+#shortcut-box {
+  position: relative;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 28px 32px;
+  min-width: 300px;
+  box-shadow: 0 30px 70px rgba(80, 70, 180, 0.35);
+  animation: pop 0.22s cubic-bezier(.2,.9,.3,1.2);
+}
+
+#shortcut-box h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+#shortcut-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#shortcut-box li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+#shortcut-box kbd {
+  min-width: 32px;
+  text-align: center;
+  font-size: 13px;
+  padding: 3px 8px;
+}
+
+#shortcut-close {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+#shortcut-close:hover {
+  background: var(--bg-card-hover);
+}
